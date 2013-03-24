@@ -1,0 +1,46 @@
+{
+    "content": [
+        {
+            "name": "Week 1",
+            "deadline": "Tue 26 Mar 2013 11:59 PM PDT -0700",
+            "questions": [
+                {
+                    "name": "Question 1",
+                    "description": "A certain substance C can be decomposed into the elements A and B. ",
+                    "answers": [
+                        {
+                            "id": "1",
+                            "text": "Substance C is a compound"
+                        },
+                        {
+                            "id": "2",
+                            "text": "Substance C is a mixture"
+                        },
+                        {
+                            "id": "3",
+                            "text": "Element B is more massive than element A"
+                        },
+                        {
+                            "id": "4",
+                            "text": "Substance C may be a compound but more data is required"
+                        }
+                    ]
+                },
+                {
+                    "name": "Question 2",
+                    "description": "Consider the following  mass composition data:",
+                    "answers": [
+                        {
+                            "id": "1",
+                            "text": "Yes"
+                        },
+                        {
+                            "id": "2",
+                            "text": "No"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

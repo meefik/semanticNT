@@ -1,0 +1,48 @@
+{
+        "imageUrl": "https://www.edx.org/static/content-berkeley-cs169x~2013_Spring/images/course_image.jpg", 
+        "name": "Software as a Service", 
+        "university": "University of California, Berkeley", 
+        "beginDate": "Mar 01, 2013",
+        "endDate": "Apr 25, 2013",
+        "effort": "12 hours/week",
+        "prerequisites": true,
+        "description": "CS169.1x teaches the fundamentals for engineering long-lasting software using highly-productive Agile techniques to develop Software as a Service (SaaS) using Ruby on Rails. Students will understand the new challenges and opportunities of SaaS versus shrink-wrapped software. They will understand and apply fundamental programming techniques to the design, development, testing, and public cloud deployment of a simple SaaS application. Students will use best-of-breed tools that support modern development techniques including behavior-driven design, user stories, test-driven development, velocity, and pair programming. Students will learn how modern programming language features like metaprogramming and reflection can improve productivity and code maintainability.\n\rStudents will work individually on weekly coding projects. Those who successfully complete each assignment and earn a passing grade will get an honor code certificate from BerkeleyX.",
+        "staff": [
+            {
+                "photoUrl": "https://www.edx.org/c4x/BerkeleyX/CS169.1x/asset/images_professor-fox.jpg", 
+                "name": "Armando Fox", 
+                "description": "Armando Fox is an Adjunct Associate Professor at UC Berkeley and was previously an Assistant Professor at Stanford, where he received teaching and mentoring awards from the Associated Students of Stanford University, the Society of Women Engineers, and Tau Beta Pi Engineering Honor Society. In previous lives he helped design the Intel Pentium Pro microprocessor and founded a successful startup to commercialize his UC Berkeley dissertation research on mobile computing. His degrees in electrical engineering and computer science are from MIT, the University of Illinois, and UC Berkeley, and he is an ACM Distinguished Member."
+            },
+            {
+                "photoUrl": "https://www.edx.org/c4x/BerkeleyX/CS169.1x/asset/images_professor-patterson.jpg", 
+                "name": "David Patterson", 
+                "description": "David Patterson is the Pardee Professor of Computer Science at UC Berkeley and the recipient of the Distinguished Teaching Award (UC Berkeley), the Karlstrom Outstanding Educator Award (ACM), the Mulligan Education Medal (IEEE), and the Undergraduate Teaching Award (IEEE). He has served as Chair of Berkeley's CS Division, Chair of the CRA, and President of the ACM. His best-known research projects are Reduced Instruction Set Computers (RISC), Redundant Arrays of Inexpensive Disks (RAID), and Network of Workstations (NOW). Among other distinctions, he's been elected to the National Academy of Engineering, the National Academy of Sciences, and the Silicon Valley Engineering Hall of Fame, and is a Fellow of the Computer History Museum. He received all his degrees from UCLA."
+            }
+        ],
+        "parts": [
+            {
+                "id": "about",
+                "name": "About"
+            },
+            {
+                "id": "news",
+                "name": "Announcements"
+            },
+            {
+                "id": "lectures",
+                "name": "Lectures"
+            },
+            {
+                "id": "exam",
+                "name": "Quizzes"
+            },
+            {
+                "id": "forum",
+                "name": "Discussion"
+            },
+            {
+                "id": "progress",
+                "name": "Progress"
+            }
+        ]
+}

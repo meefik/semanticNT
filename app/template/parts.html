@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row">
+        <div class="span3">
+            <img ng-src="{{course.imageUrl}}" class="class-thumb thumbnail">
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="tab in course.parts" class="{{tab.status}}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="span9">
+            <br>
+            <h1>{{course.name}}</h1>
+            <h4>{{course.university}}</h4>
+            <div class="tab-content">
+                <div ng-include src="getContent()"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

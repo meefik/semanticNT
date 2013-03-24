@@ -1,0 +1,124 @@
+/* app css stylesheet */
+
+html,
+body {
+    height: 100%;
+}
+
+.courses {
+    list-style: none;
+}
+
+img.list-thumb {
+    float: left;
+    margin: 1em;
+    height: 120px;
+    width: 220px;
+}
+
+img.class-thumb {
+    margin: 1em 0 1em 0;
+    height: 110px;
+    width: 210px;
+}
+
+.courses li {
+    clear: both;
+    height: 160px;
+    margin-bottom: 1em;
+}
+
+.nav {
+    width: 220px;
+}
+
+/** Detail View **/
+img.courses {
+    float: left;
+    border: 1px solid black;
+    margin-right: 3em;
+    margin-bottom: 2em;
+    background-color: white;
+    padding: 2em;
+    height: 400px;
+    width: 400px;
+}
+
+img.staff {
+    float: left;
+    margin-right: 1em;
+    height: 100px;
+    width: 90px;
+}
+
+div.staff {
+    margin-bottom: 2em;
+}
+
+h1 {
+    border-bottom: 1px solid gray;
+}
+
+
+/* Wrapper for page content to push down footer */
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* Negative indent footer by it's height */
+    margin: 0 auto -60px;
+}
+
+/* Set the fixed height of the footer here */
+#push,
+#footer {
+    height: 60px;
+}
+#footer {
+    background-color: #f5f5f5;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+    #footer {
+        margin-left: -20px;
+        margin-right: -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+h2, h3, h4, h5, h6 {
+    font-weight: normal;
+}
+
+.header {
+    margin-top: 40px;
+    margin-bottom: 20px; 
+}
+
+p {
+    color: #505050;
+    text-align: justify;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+#wrap > .container {
+    padding-top: 60px;
+}
+.container .credit {
+    margin: 20px 0;
+}
+
+code {
+    font-size: 80%;
+}
+
+.brand
+{
+    height: 20px;
+}

@@ -1,0 +1,26 @@
+{
+    "content": [{
+            "name": "Introduction & Atomic Molecular Theory",
+            "chapters": [
+                {
+                    "name": "Week 1 (11:32 min) Introduction",
+                    "description": "Description for lecture introduction.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                },
+                {
+                    "name": "Week 1 (17 minutes) CDS 1 Atomic Molecular Theory Lecture 1",
+                    "description": "Description for lecture 1.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                },
+                {
+                    "name": "Week 1 (17.51 min) CDS 1 Atomic Molecular Theory Lecture 2",
+                    "description": "Description for lecture 2.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                }
+            ]
+        }
+    ]
+}

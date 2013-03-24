@@ -1,0 +1,10 @@
+<div ng-repeat="lecture in part.content">
+    <h3>{{lecture.name}}</h3>
+    <hr>
+    <div ng-repeat="chapter in lecture.chapters">
+        <i class="icon-film"></i> <b><a href="{{chapter.video}}">{{chapter.name}}</b></a>
+        <p>{{chapter.description}}</p>
+        <a href="{{chapter.text}}"><i class="icon-print"></i> Full version</a>
+        <hr>
+    </div>
+</div>

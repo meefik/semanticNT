@@ -1,0 +1,20 @@
+[
+    {
+        "age": 0, 
+        "id": "CS0001", 
+        "imageUrl": "https://www.edx.org/static/content-berkeley-cs169x~2013_Spring/images/course_image.jpg", 
+        "name": "Software as a Service", 
+        "university": "Berkeley", 
+        "beginDate": "Mar 01, 2013",
+        "description": "CS169.1x teaches the fundamentals for engineering long-lasting software using highly-productive Agile techniques to develop Software as a Service (SaaS) using Ruby on Rails."
+    },
+    {
+        "age": 1, 
+        "id": "CS0002", 
+        "imageUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/course_image.jpg", 
+        "name": "Introduction to Biology", 
+        "university": "MIT", 
+        "beginDate": "Mar 05, 2013",
+        "description": "7.00x is an introductory level biology course hosted by professor Eric Lander, who was one of the leaders of the Human Genome Project."
+    }
+]

@@ -1,0 +1,43 @@
+<div class="container">
+    <div class="row">
+        <div class="span4">
+            <div class="well" style="text-align: center">
+                <h2>{{profile.login}}</h2>
+            </div>
+            <table class="table">
+                <tr>
+                    <td><i class="icon-info-sign"></i> Full Name</td>
+                    <td><b>{{profile.fullname}}</b></td>
+                </tr>
+                <tr>
+                    <td><i class="icon-envelope"></i> E-mail</td>
+                    <td><b>{{profile.email}}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="span8">
+            <h4>CURRENT COURSES</h4>
+            <hr>
+            <ul class="courses">
+                <li ng-repeat="course in courses | isStatus | orderBy:orderProp" class="thumbnail">
+                    <a href="#/courses/{{course.id}}"><img ng-src="{{course.imageUrl}}" class="list-thumb"></a>
+                    <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
+                    <p><b>{{course.beginDate}} // {{course.university}}</b></p>
+                    <div style="display: none">{{course.id}}</div>
+                    <div style="margin-top: 1.5em">
+                        <a class="btn btn-success" href="#/courses/{{course.id}}/news">
+                            View Course
+                        </a>
+                        <a class="btn btn-primary" ng-click="unReg(course.id)">
+                            Unregister
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
