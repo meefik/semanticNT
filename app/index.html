@@ -16,7 +16,7 @@
   <script src="js/filters.js"></script>
   <script src="js/services.js"></script>
 </head>
-<body ng-controller="MenuCtrl">
+<body ng-controller="MainCtrl">
 
     <!-- Modal Sign Up -->
     <div ng-include src="'template/signup.html'"></div>
@@ -42,10 +42,10 @@
                             <li><a href="#/about">ABOUT</a></li>
                             <li><a href="#/contact">CONTACT</a></li>
                             <li class="divider-vertical"></li>
-                                <div ng-show="isAuth() == 0">
+                                <div ng-show="isAuth() == false">
                                     <li style="text-align: right"><a href="#signup" data-toggle="modal"><button type="button" class="btn" style="width: 135px">SIGN UP</button></a></li>
                                 </div>
-                                <div ng-show="isAuth() == 1">
+                                <div ng-show="isAuth() == true">
                                     <li style="text-align: right">
                                         <div class="btn-group">
                                             <a href="#/profile"><button class="btn" style="width: 100px"><i class="icon-home"></i> PROFILE</button></a>

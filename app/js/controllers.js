@@ -10,15 +10,15 @@ function ContactCtrl($scope) {
 
 }
 
-function MenuCtrl($rootScope, $scope, $cookieStore, $location) {
+function MainCtrl($rootScope, $scope, $cookieStore, $location) {
     if (!$rootScope.profile)
         $rootScope.profile = $cookieStore.get('profile');
     
     $scope.isAuth = function() {
         if ($rootScope.profile)
-            return 1;
+            return true;
         else
-            return 0;
+            return false;
     };
     
     $scope.logout = function() {

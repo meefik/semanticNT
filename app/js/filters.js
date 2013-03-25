@@ -15,8 +15,8 @@ angular.module('profileCoursesFilter', [])
         var out = [];
         var reg = $rootScope.profile.courses;
         for (var i = 0; i < input.length; i++) {
-            for (var j = 0; j < reg.length; j++){
-                if (input[i].id === reg[i]) {
+            for (var j = 0; j < reg.length; j++) {
+                if (input[i].id === reg[j]) {
                     out.push(input[i]);
                     break;
                 }
