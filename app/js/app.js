@@ -2,7 +2,7 @@
 
 /* App Module */
 
-var lmsApp = angular.module('lmsApp', ['ngCookies', 'coursesListFilter', 'profileCoursesFilter', 'getCoursesService', 'getPartsService']).
+angular.module('openLMS', ['ngCookies', 'coursesListFilter', 'profileCoursesFilter', 'getCoursesService', 'getPartsService']).
         config(['$routeProvider', '$locationProvider', function($routeProvider) {
         $routeProvider.
                 when('/', {templateUrl: 'template/list.html', controller: ListCtrl}).
