@@ -68,7 +68,8 @@ function ProfileCtrl($rootScope, $scope, $cookieStore, Course) {
 }
 
 function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
-    $scope.course = Course.get({courseId: $routeParams.courseId}, function() {
+    $scope.course = Course.get({courseId: $routeParams.courseId, 
+        partId: '/json/info.json'}, function() {
         $scope.course.id = $routeParams.courseId;
     });
     
@@ -91,20 +92,23 @@ function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
 }
 
 function PartsCtrl($scope, $routeParams, Course, Part) {
-    $scope.course = Course.get({courseId: $routeParams.courseId}, function(course) {
+    $scope.course = Course.get({courseId: $routeParams.courseId, 
+        partId: '/json/info.json'}, function() {
         $scope.course.id = $routeParams.courseId;
-        for (var i in course.parts) {
+        for (var i in $scope.course.parts) {
             if ($scope.course.parts[i].id === $routeParams.partId) {
                 $scope.course.parts[i].status = "active";
                 break;
             }
         }
     });
+
     $scope.part = Part.get({courseId: $routeParams.courseId,
-        partId: $routeParams.partId}, function(part) {
+        partId: $routeParams.partId}, function() {
         $scope.part.id = $routeParams.partId;
         $scope.getContent = function() {
-            return 'template/courses/' + part.id + '.html';
+            return 'courses/' + $routeParams.courseId + '/tpl/' + 
+                    $routeParams.partId + '.html';
         };
     });
 }

@@ -11,16 +11,21 @@
                 {
                     "name": "Week 1 (17 minutes) CDS 1 Atomic Molecular Theory Lecture 1",
                     "description": "Description for lecture 1.",
-                    "video": "link_for_video",
-                    "text": "link_for_text"
+                    "video": "<iframe class='youtube-player' type='text/html' width='460' title=' YouTube проигрыватель видео ' height='300' src='//www.youtube.com/embed/YzWt7vl3TxE?rel=0' frameborder='0' allowfullscreen></iframe>",
+                    "text": ""
                 },
                 {
                     "name": "Week 1 (17.51 min) CDS 1 Atomic Molecular Theory Lecture 2",
-                    "description": "Description for lecture 2.",
+                    "description": "",
                     "video": "link_for_video",
                     "text": "link_for_text"
                 }
-            ]
+            ],
+            "activity":
+                {
+                    "name": "Activity name",
+                    "description": "Activity description."
+                }
         },
 {
             "name": "Atomic Masses and Molecular Formulas",
