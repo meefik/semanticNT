@@ -4,10 +4,10 @@
             <h1>{{course.name}}</h1>
             <h4>{{course.university}}</h4>
 
-            <h4 class="header">OVERVIEW</h4>
+            <h3 class="header">О курсе</h3>
             <p>{{course.description}}</p>
             
-            <h4 class="header">COURSE STAFF</h4>
+            <h3 class="header">Авторы</h3>
             <div ng-repeat="person in course.staff" class="staff">
                     <img ng-src="{{person.photoUrl}}" class="img-polaroid staff">
                     <h4>{{person.name}}</h4>
@@ -19,23 +19,23 @@
             <br>
             <table class="table">
                 <tr>
-                    <td><i class="icon-info-sign"></i> Course Number</td>
+                    <td><i class="icon-info-sign"></i> Номер курса</td>
                     <td><b>{{course.id}}</b></td>
                 </tr>
                 <tr>
-                    <td><i class="icon-calendar"></i> Classes Start</td>
+                    <td><i class="icon-calendar"></i> Начало</td>
                     <td><b>{{course.beginDate}}</b></td>
                 </tr>
                 <tr>
-                    <td><i class="icon-calendar"></i> Classes End</td>
+                    <td><i class="icon-calendar"></i> Окончание</td>
                     <td><b>{{course.endDate}}</b></td>
                 </tr>
                 <tr>
-                    <td><i class="icon-pencil"></i> Estimated Effort</td>
+                    <td><i class="icon-pencil"></i> Нагрузка</td>
                     <td><b>{{course.effort}}</b></td>
                 </tr>
                 <tr>
-                    <td><i class="icon-book"></i> Prerequisites</td>
+                    <td><i class="icon-book"></i> Требования</td>
                     <td><b>{{course.prerequisites | checkmark}}</b></td>
                 </tr>
             </table>
@@ -43,12 +43,12 @@
                 <div ng-show="isAuth() == true">
                     <div ng-show="isReg(course.id) == false">
                         <a class="btn btn-primary btn-large" ng-click="setReg(course.id)">
-                            REGISTER
+                            Записаться
                         </a>                                
                     </div>
                     <div ng-show="isReg(course.id) == true">
                         <a class="btn btn-success btn-large" href="#/courses/{{course.id}}/news">
-                            GO TO COURSE
+                            Перейти к курсу
                         </a>    
                     </div>
                 </div>

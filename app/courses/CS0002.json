@@ -1,27 +1,17 @@
 {
         "imageUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/course_image.jpg", 
-        "name": "Introduction to Biology - The Secret of Life", 
-        "university": "Massachusetts Institute of Technology (MIT)", 
-        "beginDate": "Mar 05, 2013",
-        "endDate": "May 28, 2013",
-        "effort": "6-8 hours per week",
+        "name": "Кодирование информации", 
+        "university": "НИУ ИТМО", 
+        "beginDate": "3 апреля 2013 г.",
+        "endDate": "24 мая 2013 г.",
+        "effort": "2-4 часа в неделю",
 	"prerequisites": false,
         "description": "7.00x is an introductory level biology course hosted by professor Eric Lander, who was one of the leaders of the Human Genome Project. Although this course has been designed exclusively for edX, the course content reflects the topics taught in the MIT introductory biology courses and many biology courses across the world. As a student, you will first focus on the structure and function of macromolecules such as DNA, RNA and proteins. You will discover how changes in the structure of some of these macromolecules alters their functions and what the implications of such changes have on human health. As you continue in the course, you will apply an understanding of heredity and information flow within cells to human health and disease and will learn about molecular biological techniques and their potential to impact our changing world. After you complete this course, you will have a foundation in biology that will allow you to understand the remarkable medical revolution going on today.\n\rStudents will complete this course in 12 weeks. Each week features a series of lecture sequences that are supported by interactive video tutorials and interspersed exercises or problems. Additionally, students will work on a homework assignment or exam each week. The course will conclude with a comprehensive final exam.\n\rAdditionally, for teachers of science, we have forged a collaboration with the National Science Teachers Association (NSTA) to facilitate understanding of challenging content and help with practical classroom applications of the courseware. There will be four NSTA web seminars and moderated community forums for discussion related to 7.00x Secret of Life subject matter and pedagogy. Visit NSTA/MITx for web seminar details.\n\r7.00x – The Secret of Life will let you explore the mysteries of biochemistry, genetics, molecular biology, recombinant DNA technology and genomics, and rational medicine. We are excited to take this journey with you!",
         "staff": [
         {
-                "photoUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/lander.jpg", 
-                "name": "Eric S. Lander", 
-                "description": "Eric Lander is a Professor of Biology at MIT and Professor of Systems Biology at Harvard Medical School. He is the President and Founding Director of the Broad Institute of MIT and Harvard. Lander was one of the principal leaders of the Human Genome Project. He and his colleagues are using these findings to explore the molecular mechanisms underlying the basis of human diseases. Lander also serves as co-chair of the President’s Council of Advisors on Science and Technology (PCAST), which directly advises the White House on matters of science and technology."
-        },
-        {
-                "photoUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/walker.jpg", 
-                "name": "Graham Walker", 
-                "description": "Graham Walker is a Professor of Biology at MIT and an HHMI Professor at the Howard Hughes Medical Institute. The Walker lab focuses on the regulation and mechanism of action of proteins involved in DNA repair and mutagenesis and in other cellular responses to DNA damage."
-        },
-        {
-                "photoUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/mischke.jpg", 
-                "name": "Michelle Mischke", 
-                "description": "Dr. Michelle Mischke is an Instructor in the Department of Biology at MIT. She serves as a course coordinator for 7.00x."
+                "photoUrl": "http://www.ifmo.ru/images/person/small/p220.jpg", 
+                "name": "Лямин Андрей Владимирович", 
+                "description": "Кандидат технических наук, профессор кафедры компьютерных образовательнях технологий НИУ ИТМО. Область научных интересов — автоматизированные системы обработки информации и управления в науке и образовании. Является автором более 110 научных и научно-методических трудов.  В 2009 году награжден премией Правительства Санкт-Петербурга за выдающиеся достижения в области высшего и среднего профессионального образования, номинация «Развитие инновационной деятельности в образовательном учреждении»."
         }
         ]
 }

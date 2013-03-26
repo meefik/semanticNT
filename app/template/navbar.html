@@ -1,0 +1,42 @@
+<!-- Modal Log In -->
+<div ng-include src="'template/login.html'"></div>
+
+<!-- Modal Sign Up -->
+<div ng-include src="'template/signup.html'"></div>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="#"><img src="img/logo2.png" style="margin-top: -8px"><!--<span style="color: blue">ИТМО</span>--><span class="divider-vertical"></span><span style="color: #2c9ee7">Открытое онлайн-обучение</span></a>
+            <div class="nav-collapse collapse">
+                <ul class="nav pull-right" style="width: 350px">
+                    <li><a href="#/about">О проекте</a></li>
+                    <li><a href="#/contact">Контакты</a></li>
+                    <li class="divider-vertical"></li>
+                    <div ng-show="isAuth() == false">
+                        <li style="text-align: right"><a href="#login" data-toggle="modal"><button type="button" class="btn" style="width: 135px; font-weight: bold">ВХОД</button></a></li>
+                    </div>
+                    <div ng-show="isAuth() == true">
+                        <li style="text-align: right">
+                            <div class="btn-group">
+                                <a href="#/profile"><button class="btn" style="width: 100px"><i class="icon-home"></i> Профиль</button></a>
+                                <a class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a ng-click="logout()">Выход</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

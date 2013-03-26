@@ -14,15 +14,16 @@
     <div class="row">
         <div class="span7">
             <div>
-                <h1>openITMO</h1>
-                <h4>Open learning managment system</h4>
-                <p style="margin-top: 2em">
+                <!--<img src="img/itmo.png" style="float: left; margin: 1em;">-->
+                <h1>Коротко о главном</h1>
+                <p style="margin-top: 2em; text-align: left">
                     Harvard University is devoted to excellence in teaching, learning, and research, and to developing leaders in many disciplines who make a difference globally. Harvard faculty are engaged with teaching and research to push the boundaries of human knowledge. The University has twelve degree-granting Schools in addition to the Radcliffe Institute for Advanced Study.
                 </p>
-                <p style="text-align: right"><a href="#/about">Learn more</a></p>
+                <div style="text-align: right"><a href="#/about">Подробнее</a></div>
             </div>
         </div>
         <div class="span5">
+            <!--
             <div id="myCarousel" class="carousel slide img-polaroid">
                 <ol class="carousel-indicators">
                     <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -52,19 +53,21 @@
                 <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
                 <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
             </div>
+            -->
+            <img src="img/glass_balls.png">
         </div>
     </div>
-    <h3 style="margin-bottom: 1em">SEARCH COURSES</h3>
+    <h3 style="margin-bottom: 1em">Каталог курсов</h3>
     <div class="row">
         <div class="span3">
             <!--Sidebar content-->
 
-            Search:
-            <input ng-model="query" type="text" placeholder="course name">
-            Sort by:
+            Поиск:
+            <input ng-model="query" type="text" placeholder="название курса">
+            Сортировать по:
             <select ng-model="orderProp">
-                <option value="name">Alphabetical</option>
-                <option value="age">Newest</option>
+                <option value="name">названию</option>
+                <option value="age">дате</option>
             </select>
 
         </div>
@@ -76,7 +79,7 @@
                     <a href="#/courses/{{course.id}}"><img ng-src="{{course.imageUrl}}" class="list-thumb"></a>
                     <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
                     <p><b>{{course.beginDate}} // {{course.university}}</b></p>
-                    <p>{{course.description}}</p>
+                    <p style="text-align: left">{{course.description}}</p>
                 </li>
             </ul>
         </div>

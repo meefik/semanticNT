@@ -6,11 +6,11 @@
             </div>
             <table class="table">
                 <tr>
-                    <td><i class="icon-info-sign"></i> Full Name</td>
+                    <td><i class="icon-info-sign"></i></td>
                     <td><b>{{profile.fullname}}</b></td>
                 </tr>
                 <tr>
-                    <td><i class="icon-envelope"></i> E-mail</td>
+                    <td><i class="icon-envelope"></i></td>
                     <td><b>{{profile.email}}</b></td>
                 </tr>
                 <tr>
@@ -19,7 +19,7 @@
             </table>
         </div>
         <div class="span8">
-            <h4>CURRENT COURSES</h4>
+            <h3>Текущие курсы</h3>
             <hr>
             <ul class="courses">
                 <li ng-repeat="course in courses | isStatus | orderBy:orderProp" class="thumbnail">
@@ -29,12 +29,12 @@
                     <div style="display: none">{{course.id}}</div>
                     <div style="margin-top: 1.5em">
                         <a class="btn btn-success" href="#/courses/{{course.id}}/news">
-                            View Course
+                            Перейти к курсу
                         </a>
-                        <a class="btn btn-primary" ng-click="unReg(course.id)">
-                            Unregister
+                        <a class="btn" ng-click="unReg(course.id)">
+                            Отказаться
                         </a>
-                    </div>
+                     </div>
                 </li>
             </ul>
         </div>
