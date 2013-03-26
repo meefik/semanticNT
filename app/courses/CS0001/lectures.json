@@ -21,6 +21,29 @@
                     "text": "link_for_text"
                 }
             ]
+        },
+{
+            "name": "Atomic Masses and Molecular Formulas",
+            "chapters": [
+                {
+                    "name": "Week 2 (17:32 min) CDS 2 Atomic Masses and Molecular Formulas Lecture 1",
+                    "description": "Description for lecture 1.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                },
+                {
+                    "name": "Week 2 (13:19) CDS 2 Atomic Masses and Molecular Formulas Lecture 2",
+                    "description": "Description for lecture 2.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                },
+                {
+                    "name": "Week 2 (17:13 min) CDS 2 Atomic Masses and Molecular Formulas Lecture 3",
+                    "description": "Description for lecture 3.",
+                    "video": "link_for_video",
+                    "text": "link_for_text"
+                }
+            ]
         }
     ]
 }

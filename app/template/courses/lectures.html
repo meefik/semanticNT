@@ -1,10 +1,31 @@
 <div ng-repeat="lecture in part.content">
     <h3>{{lecture.name}}</h3>
-    <hr>
-    <div ng-repeat="chapter in lecture.chapters">
-        <i class="icon-film"></i> <b><a href="{{chapter.video}}">{{chapter.name}}</b></a>
-        <p>{{chapter.description}}</p>
-        <a href="{{chapter.text}}"><i class="icon-print"></i> Full version</a>
-        <hr>
+    <table class="table">
+        <tr ng-repeat="chapter in lecture.chapters">
+            <td>
+                <i class="icon-film"></i> <a href="#videoPlayer" data-toggle="modal"><b>{{chapter.name}}</b></a>
+                <p>{{chapter.description}}</p>
+            </td>
+            <td>
+                <a href="{{chapter.text}}"><i class="icon-print"></i> Full version</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+    </table>
+</div>
+<!-- Modal -->
+<div id="videoPlayer" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria>×</button>
+        <h3 id="myModalLabel">I am the header</h3>
+    </div>
+    <div class="modal-body">
+        Link: {{video}}
+        <!--<p><iframe width="100%" height="315" src="http:com/embed/662KGcqjT5Q" frameborder="0" allowfullscreen></iframe></p>-->
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
     </div>
 </div>
