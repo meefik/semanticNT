@@ -1,17 +1,2 @@
-<div ng-repeat="test in part.content">
-    <h3>{{test.name}}</h3>
-    <p><i>Deadline: {{test.deadline}}</i></p>
-    <div ng-repeat="question in test.questions" class="well">
-        <h4>{{question.name}}</h4>
-        <p>{{question.description}}</p>
-        <div ng-repeat="item in question.answers">
-            <label class="radio">
-                <input type="radio" name="{{question.name}}" id="{{item.id}}" value="{{item.text}}">
-                {{item.text}}
-            </label>
-        </div>
-    </div>
-    <a class="btn btn-primary">
-        Send Results
-    </a>
-</div>
+<!-- Include default template -->
+<div ng-include src="'courses/tpl/'+part.id+'.html'"></div>

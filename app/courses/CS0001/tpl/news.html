@@ -1,5 +1,2 @@
-<div ng-repeat="news in part.content">
-    <h3>{{news.name}}</h3>
-    <p><i>{{news.date}}</i></p>
-    <p>{{news.description}}</p>
-</div>
+<!-- Include default template -->
+<div ng-include src="'courses/tpl/'+part.id+'.html'"></div>
