@@ -106,9 +106,11 @@ function PartsCtrl($scope, $routeParams, Course, Part) {
     $scope.part = Part.get({courseId: $routeParams.courseId,
         partId: $routeParams.partId}, function() {
         $scope.part.id = $routeParams.partId;
+        $scope.part.template = 'courses/tpl/'+$scope.part.id+'.html';
         $scope.getContent = function() {
             return 'courses/' + $routeParams.courseId + '/tpl/' + 
                     $routeParams.partId + '.html';
         };
     });
+
 }
