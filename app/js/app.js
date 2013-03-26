@@ -5,7 +5,7 @@
 angular.module('openLMS', ['ngCookies', 'coursesListFilter', 'profileCoursesFilter', 'getCoursesService', 'getPartsService']).
         config(['$routeProvider', '$locationProvider', function($routeProvider) {
         $routeProvider.
-                when('/', {templateUrl: 'template/list.html', controller: ListCtrl}).
+                when('/', {templateUrl: 'template/main.html', controller: ListCtrl}).
                 when('/about', {templateUrl: 'template/about.html', controller: AboutCtrl}).
                 when('/contact', {templateUrl: 'template/contact.html', controller: ContactCtrl}).
                 when('/profile', {templateUrl: 'template/profile.html', controller: ProfileCtrl}).

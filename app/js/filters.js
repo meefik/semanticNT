@@ -9,6 +9,16 @@ angular.module('coursesListFilter', []).
     };
 });
 
+angular.module('sortFilter', []).
+        filter('sort', function(mode) {
+    return function(input) {
+        var out = [];
+        
+
+        return out;
+    };
+});
+
 angular.module('profileCoursesFilter', [])
         .filter('isStatus', function($rootScope) {
     return function(input) {
