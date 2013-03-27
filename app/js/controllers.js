@@ -10,18 +10,18 @@ function ContactCtrl($scope) {
 
 }
 
-function MainCtrl($rootScope, $scope, $cookieStore, $location) {
+function MainCtrl($rootScope, $cookieStore, $location) {
     if (!$rootScope.profile)
         $rootScope.profile = $cookieStore.get('profile');
     
-    $scope.isAuth = function() {
+    $rootScope.isAuth = function() {
         if ($rootScope.profile)
             return true;
         else
             return false;
     };
     
-    $scope.logout = function() {
+    $rootScope.logout = function() {
         $rootScope.profile = '';
         $cookieStore.remove('profile');
         $location.path("/");
@@ -91,7 +91,10 @@ function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
     };
 }
 
-function PartsCtrl($scope, $routeParams, Course, Part) {
+function PartsCtrl($rootScope, $scope, $routeParams, $location, Course, Part) {
+    if (!$rootScope.isAuth()) {
+        $location.path('/');
+    }
     $scope.course = Course.get({courseId: $routeParams.courseId, 
         partId: '/json/info.json'}, function() {
         $scope.course.id = $routeParams.courseId;
