@@ -32,7 +32,7 @@ img.class-thumb {
     width: 220px;
 }
 
-/** Detail View **/
+/*
 img.courses {
     float: left;
     border: 1px solid black;
@@ -42,6 +42,12 @@ img.courses {
     padding: 2em;
     height: 400px;
     width: 400px;
+}
+*/
+
+img.img-course {
+    height: 160px;
+    width: 290px;
 }
 
 img.staff {
