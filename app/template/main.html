@@ -12,17 +12,25 @@
     </div>
     -->
     <div class="row">
-        <div class="span7">
+        <div class="span9">
             <div>
                 <!--<img src="img/itmo.png" style="float: left; margin: 1em;">-->
                 <h1>Коротко о главном</h1>
                 <p style="margin-top: 2em; text-align: left">
-                    Онлайн-обучение – это метод изучения новых знаний с помощью Интернета в режиме реального времени. Коммуникация между участниками процесса происходит с помощью компьютера.
+                    Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО. Курсы содержат видеолекции, электронные презентации к ним, текстовые материалы, вопросы для самоконтроля, экзаменационные задания.
                 </p>
-                <div style="text-align: right"><a href="#/about">Подробнее</a></div>
+                <div>
+                    <!--
+                    <div style="margin-left: 15em">Познавайте новое </div>
+                    <div style="margin-left: 10em">в компактной форме</div>
+                    <div style="margin-left: 5em">в любой точке мира</div>
+                    <div style="margin-left: 0em">в удобное для себя время!</div>
+                    -->
+                    Познавайте новое в компактной форме в любой точке мира в удобное для себя время!
+                </div>
             </div>
         </div>
-        <div class="span5">
+        <div class="span3">
             <!--
             <div id="myCarousel" class="carousel slide img-polaroid">
                 <ol class="carousel-indicators">
@@ -54,34 +62,22 @@
                 <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
             </div>
             -->
-            <img src="img/glass_balls.png">
+            <div style="margin: 3em"><img src="img/itmo.png"></div>
         </div>
     </div>
-    <h3 style="margin-bottom: 1em">Каталог курсов</h3>
     <div class="row">
-        <div class="span3">
-            <!--Sidebar content-->
-
-            Поиск:
-            <input ng-model="query" type="text" placeholder="название курса">
-            Сортировать по:
-            <select ng-model="orderProp">
-                <option value="name">названию</option>
-                <option value="age">дате</option>
-            </select>
-
-        </div>
-        <div class="span9">
-            <!--Body content-->
-
-            <ul class="courses">
-                <li ng-repeat="course in courses | filter:query | orderBy:orderProp" class="thumbnail">
-                    <a href="#/courses/{{course.id}}"><img ng-src="{{course.imageUrl}}" class="list-thumb"></a>
-                    <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
-                    <p><b>{{course.beginDate}} // {{course.university}}</b></p>
-                    <p style="text-align: left">{{course.description}}</p>
-                </li>
-            </ul>
+        <div class="span12">
+            <h3>Курсы</h3>
+            <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
+                    <a class="carousel-inner thumbnail" href="#/courses/{{course.id}}">
+                        <div class="active item"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-block-img"></div>
+                        <div class="carousel-caption" style="padding-bottom: 0.5em; padding-top: 0.5em">
+                            <div style="color: white">
+                                <b>{{course.name}}</b><br>{{course.beginDate}}
+                            </div>
+                        </div>
+                    </a>
+            </div>
         </div>
     </div>
 </div>

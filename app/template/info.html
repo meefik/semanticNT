@@ -6,16 +6,18 @@
 
             <h3 class="header">О курсе</h3>
             <p>{{course.description}}</p>
-            
+
             <h3 class="header">Авторы</h3>
-            <div ng-repeat="person in course.staff" class="staff">
-                    <img ng-src="{{person.photoUrl}}" class="img-polaroid staff">
+            <div ng-repeat="person in course.staff" style="margin-bottom: 1em">
+                <span style="display: inline-block">
+                    <img ng-src="courses/{{course.id}}/img/{{person.photoUrl}}" class="staff-photo">
                     <h4>{{person.name}}</h4>
-                    <p>{{person.description}}</p>
+                    <p style="white-space:pre">{{person.description}}</p>
+                </span>
             </div>
         </div>
         <div class="span4">
-            <img ng-src="{{course.imageUrl}}" class="thumbnail img-course">
+            <img ng-src="courses/{{course.id}}/img/logo.png" class="thumbnail course-logo-large">
             <br>
             <table class="table">
                 <tr>

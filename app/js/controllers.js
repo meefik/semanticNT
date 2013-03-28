@@ -6,8 +6,9 @@ function AboutCtrl($scope) {
 
 }
 
-function ContactCtrl($scope) {
-
+function CoursesCtrl($scope, Course) {
+    $scope.courses = Course.query();
+    $scope.orderProp = 'age';
 }
 
 function MainCtrl($rootScope, $cookieStore, $location) {
