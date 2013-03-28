@@ -1,17 +1,61 @@
 {
-        "imageUrl": "https://www.edx.org/static/content-mit-7012x~2013_Spring/images/course_image.jpg", 
-        "name": "Кодирование информации", 
+        "name": "Кто хочет стать миллионером?", 
         "university": "НИУ ИТМО", 
-        "beginDate": "24 мая 2013 г.",
-        "endDate": "15 июня 2013 г.",
-        "effort": "2-4 часа в неделю",
-	"prerequisites": false,
-        "description": "7.00x is an introductory level biology course hosted by professor Eric Lander, who was one of the leaders of the Human Genome Project. Although this course has been designed exclusively for edX, the course content reflects the topics taught in the MIT introductory biology courses and many biology courses across the world. As a student, you will first focus on the structure and function of macromolecules such as DNA, RNA and proteins. You will discover how changes in the structure of some of these macromolecules alters their functions and what the implications of such changes have on human health. As you continue in the course, you will apply an understanding of heredity and information flow within cells to human health and disease and will learn about molecular biological techniques and their potential to impact our changing world. After you complete this course, you will have a foundation in biology that will allow you to understand the remarkable medical revolution going on today.\n\rStudents will complete this course in 12 weeks. Each week features a series of lecture sequences that are supported by interactive video tutorials and interspersed exercises or problems. Additionally, students will work on a homework assignment or exam each week. The course will conclude with a comprehensive final exam.\n\rAdditionally, for teachers of science, we have forged a collaboration with the National Science Teachers Association (NSTA) to facilitate understanding of challenging content and help with practical classroom applications of the courseware. There will be four NSTA web seminars and moderated community forums for discussion related to 7.00x Secret of Life subject matter and pedagogy. Visit NSTA/MITx for web seminar details.\n\r7.00x – The Secret of Life will let you explore the mysteries of biochemistry, genetics, molecular biology, recombinant DNA technology and genomics, and rational medicine. We are excited to take this journey with you!",
+        "beginDate": "4 мая 2013 г.",
+        "endDate": "25 мая 2013 г.",
+        "effort": "3 часа в неделю",
+        "prerequisites": false,
+        "description": "Монтаж познавательного видеоролика \"Кто хочет стать миллионером?\" сделан в \"Adobe After Effects CS3\" и \"Adobe Premiere CS3\", трехмерная анимация при помощи \"Autodesk 3ds Max 2009\", звук обработан в \"Adobe Audition 3.0\".",
         "staff": [
         {
-                "photoUrl": "http://www.ifmo.ru/images/person/small/p220.jpg", 
-                "name": "Лямин Андрей Владимирович", 
-                "description": "Кандидат технических наук, профессор кафедры компьютерных образовательнях технологий НИУ ИТМО. Область научных интересов — автоматизированные системы обработки информации и управления в науке и образовании. Является автором более 110 научных и научно-методических трудов.  В 2009 году награжден премией Правительства Санкт-Петербурга за выдающиеся достижения в области высшего и среднего профессионального образования, номинация «Развитие инновационной деятельности в образовательном учреждении»."
+                "photoUrl": "Antonov.jpg", 
+                "name": "Семенова Дарья", 
+                "description": "Режиссер\nСтудент группы 1508, 2009/2010 уч.г."
+        },
+        {
+                "photoUrl": "Krilova.jpg", 
+                "name": "Крылова Лидия", 
+                "description": "Оператор\nСтудент группы 1508, 2009/2010 уч.г."
+        },
+        {
+                "photoUrl": "Makarov.jpg", 
+                "name": "Макаров Илья", 
+                "description": "Анимация/Монтаж\nСтудент группы 1508, 2009/2010 уч.г."
+        },
+        {
+                "photoUrl": "Semenova.jpg", 
+                "name": "Антонов Владимир", 
+                "description": "Анимация/Монтаж\nСтудент группы 1508, 2009/2010 уч.г."
         }
+        ],
+        "parts": [
+            {
+                "id": "struct",
+                "name": "Содержание"
+            },
+            {
+                "id": "news",
+                "name": "Объявления"
+            },
+            {
+                "id": "lectures",
+                "name": "Лекции"
+            },
+            {
+                "id": "work",
+                "name": "Практикум"
+            },
+            {
+                "id": "exam",
+                "name": "Контроль"
+            },
+            {
+                "id": "forum",
+                "name": "Форум"
+            },
+            {
+                "id": "progress",
+                "name": "Успеваемость"
+            }
         ]
 }

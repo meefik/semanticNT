@@ -35,7 +35,7 @@
         ],
         "parts": [
             {
-                "id": "about",
+                "id": "struct",
                 "name": "Содержание"
             },
             {

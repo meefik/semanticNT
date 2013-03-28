@@ -33,6 +33,7 @@ img.course-logo-large {
 }
 
 img.course-logo {
+    float: left;
     margin: 1em 0 1em 0;
     height: 110px;
     width: 210px;
@@ -41,19 +42,6 @@ img.course-logo {
 .nav-parts {
     width: 220px;
 }
-
-/*
-img.courses {
-    float: left;
-    border: 1px solid black;
-    margin-right: 3em;
-    margin-bottom: 2em;
-    background-color: white;
-    padding: 2em;
-    height: 400px;
-    width: 400px;
-}
-*/
 
 img.staff-photo {
     float: left;

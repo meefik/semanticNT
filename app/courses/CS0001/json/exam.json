@@ -1,42 +1,42 @@
 {
     "content": [
         {
-            "name": "Week 1",
-            "deadline": "Tue 26 Mar 2013 11:59 PM PDT -0700",
+            "name": "Тест 1",
+            "deadline": "29 марта 2013 г.",
             "questions": [
                 {
-                    "name": "Question 1",
-                    "description": "A certain substance C can be decomposed into the elements A and B. ",
+                    "name": "Вопрос 1",
+                    "description": "Выберите один из вариантов ответа. ",
                     "answers": [
                         {
                             "id": "1",
-                            "text": "Substance C is a compound"
+                            "text": "A"
                         },
                         {
                             "id": "2",
-                            "text": "Substance C is a mixture"
+                            "text": "B"
                         },
                         {
                             "id": "3",
-                            "text": "Element B is more massive than element A"
+                            "text": "C"
                         },
                         {
                             "id": "4",
-                            "text": "Substance C may be a compound but more data is required"
+                            "text": "D"
                         }
                     ]
                 },
                 {
-                    "name": "Question 2",
-                    "description": "Consider the following  mass composition data:",
+                    "name": "Вопрос 2",
+                    "description": "Ответьте да или нет:",
                     "answers": [
                         {
                             "id": "1",
-                            "text": "Yes"
+                            "text": "Да"
                         },
                         {
                             "id": "2",
-                            "text": "No"
+                            "text": "Нет"
                         }
                     ]
                 }

@@ -22,19 +22,17 @@
             <h3>Текущие курсы</h3>
             <hr>
             <ul class="courses">
-                <li ng-repeat="course in courses | isStatus | orderBy:orderProp" class="thumbnail">
-                    <a href="#/courses/{{course.id}}"><img ng-src="{{course.imageUrl}}" class="list-thumb"></a>
+                <li ng-repeat="course in courses | isStatus | orderBy:orderProp" class="thumbnail" style="height: 150px; margin-bottom: 1em">
+                    <a href="#/courses/{{course.id}}"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-logo img-polaroid" style="margin: 1em"></a>
                     <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
-                    <p><b>{{course.beginDate}} // {{course.university}}</b></p>
-                    <div style="display: none">{{course.id}}</div>
-                    <div style="margin-top: 1.5em">
+                    <div style="margin-top: 1em">
                         <a class="btn btn-success" href="#/courses/{{course.id}}/news">
                             Перейти к курсу
                         </a>
                         <a class="btn" ng-click="unReg(course.id)">
                             Отказаться
                         </a>
-                     </div>
+                    </div>
                 </li>
             </ul>
         </div>
