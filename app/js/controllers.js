@@ -32,13 +32,14 @@ function MainCtrl($rootScope, $cookieStore, $location) {
 function LoginFormCtrl($rootScope, $scope, $cookieStore) {
     $scope.submitLoginForm = function() {
         // get profile from DB
-        $rootScope.profile = {
+        /*$rootScope.profile = {
             "login": "student",
             "courses": [],
             "email": "student@example.com",
             "fullname": "Ivanov S."
         };
         $cookieStore.put('profile', $rootScope.profile);
+        */
 
         $('#login').modal('hide');
         //console.log('signin');
