@@ -1,0 +1,1 @@
+Licensed under the [GPL version 3](http://www.gnu.org/licenses/) or later.
