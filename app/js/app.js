@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('openLMS', ['ngCookies', 'coursesListFilter', 'profileCoursesFilter', 'getCoursesService', 'getPartsService']).
+angular.module('openITMO', ['ngCookies', 'coursesListFilter', 'profileCoursesFilter', 'getCoursesService', 'getPartsService']).
         config(['$routeProvider', '$locationProvider', function($routeProvider) {
         $routeProvider.
                 when('/', {templateUrl: 'template/main.html', controller: ListCtrl}).
