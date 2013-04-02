@@ -109,7 +109,7 @@ code {
 
 .navbar-inner {
     font-family: 'Jura', sans-serif;
-    font-size: 110%;
+    font-size: 120%;
     min-height: 50px;
     padding-right: 20px;
     padding-left: 20px;
@@ -155,7 +155,10 @@ code {
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     color: white;
-    background: rgba(48, 121, 89, 0.85);
+    /* background: rgba(48, 121, 89, 0.85); green */
+    /* background: rgba(255,94,0, 0.85); yellow */
+    background: rgba(10,190,40, 0.75);
+    
 }
 
 li {

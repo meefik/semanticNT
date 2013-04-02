@@ -69,13 +69,28 @@
         <div class="span12">
             <h3>Курсы</h3>
             <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
-                    <a class="carousel-inner thumbnail" href="#/courses/{{course.id}}">
+                    <a class="carousel-inner thumbnail" href="#video" ng-click="part.name=course.name; part.video=course.video" data-toggle="modal">
                         <div class="active item"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-block-img"></div>
                         <div class="carousel-caption">
                             <b>{{course.name}}</b><!--<br>{{course.beginDate}}-->
                         </div>
                     </a>
             </div>
+            
+            <!-- Modal window -->
+            <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria>×</button>
+                    <h3 id="myModalLabel">{{part.name}}</h3>
+                </div>
+                <div class="modal-body text-center">
+                    <div ng-bind-html-unsafe="part.video"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
