@@ -14,19 +14,19 @@ body {
     padding: 0;
 }
 img.course-block-img:hover {
-    opacity: 0.6;
-    filter: alpha(opacity=60) black;
-    -moz-opacity: 0.6;
-    -khtml-opacity: 0.6;
+    opacity: 0.8;
+    filter: alpha(opacity=80) black;
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
 }
 
 img.course-block-img {
     width: 290px;
     height: 160px;
-    opacity: 0.8;
-    filter: alpha(opacity=80) black;
-    -moz-opacity: 0.8;
-    -khtml-opacity: 0.8;
+    opacity: 1;
+    filter: alpha(opacity=100) black;
+    -moz-opacity: 1;
+    -khtml-opacity: 1;
 }
 img.course-logo-large {
     height: 160px;
@@ -54,6 +54,7 @@ img.staff-photo {
 }
 
 h1 {
+    border-bottom: 1px solid gray;
     color: #208cd8;
     text-shadow: 0 1px 0 #505050;
     font-family: 'Jura', sans-serif;
@@ -105,9 +106,10 @@ code {
     font-size: 80%;
 }
 
+
 .navbar-inner {
     font-family: 'Jura', sans-serif;
-    font-size: 105%;
+    font-size: 110%;
     min-height: 50px;
     padding-right: 20px;
     padding-left: 20px;
@@ -118,8 +120,6 @@ code {
     background-image: -o-linear-gradient(top, #0665b6, #31a4ee);
     background-image: linear-gradient(to bottom, #0665b6, #31a4ee);
     border: 1px solid #d4d4d4;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0665b6', endColorstr='#ff31a4ee, GradientType=0);
-    *zoom: 1;
 }
 
 .navbar .brand {
@@ -143,15 +143,19 @@ code {
     color: #b9defb;
 }
 
-.carousel-caption {
-    background: rgba(48, 121, 89, 0.75);
+.navbar-inner {
     font-family: 'Jura', sans-serif;
-  right: 4px;
-  bottom: 4px;
-  left: 4px;
+}
+
+.carousel-caption {
+    font-family: 'Jura', sans-serif;
+    right: 4px;
+    bottom: 4px;
+    left: 4px;
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     color: white;
+    background: rgba(48, 121, 89, 0.85);
 }
 
 li {
