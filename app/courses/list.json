@@ -4,20 +4,20 @@
         "id": "CS0001", 
         "name": "История вычислительной техники", 
         "beginDate": "23 апреля 2013 г.",
-        "video": ""
+        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/YzWt7vl3TxE?rel=0' frameborder='0' allowfullscreen></iframe>"
     },
     {
         "age": 5, 
         "id": "CS0005",
         "name": "Криптография", 
         "beginDate": "25 апреля 2013 г.",
-        "video": ""
+        "video": "bbb"
     },
     {
         "age": 7, 
         "id": "CS0007", 
         "name": "Компьютерные сети", 
         "beginDate": "17 июля 2013 г.",
-        "video": ""
+        "video": "ccc"
     }
 ]
