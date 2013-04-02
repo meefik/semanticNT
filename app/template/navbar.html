@@ -13,28 +13,23 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#"><img src="img/logo2.png" style="margin-top: -8px"><!--<span style="color: blue">ИТМО</span>--><span class="divider-vertical"></span>Открытое онлайн-обучение</a>
+            <a class="brand" href="#"><img src="img/logo2.png" style="margin-top: -20px; margin-bottom: -15px"><!--<span style="color: blue">ИТМО</span><span class="divider-vertical"></span>--><span style="margin-left: 20px">Открытое онлайн-обучение</span></a>
             <div class="nav-collapse collapse">
-                <ul class="nav pull-right" style="width: 400px">
+                <ul class="nav pull-right" style="width: 350px">
                     <li><a href="#/about">О проекте</a></li>
                     <li><a href="#/courses">Каталог курсов</a></li>
-                    <li class="divider-vertical"></li>
-                    <div ng-show="isAuth() == false">
-                        <li style="text-align: right"><a href="#login" data-toggle="modal"><button type="button" class="btn" style="width: 135px">Вход</button></a></li>
-                    </div>
-                    <div ng-show="isAuth() == true">
-                        <li style="text-align: right">
-                            <div class="btn-group">
-                                <a href="#/profile"><button class="btn" style="width: 100px"><i class="icon-home"></i> Профиль</button></a>
-                                <a class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a ng-click="logout()">Выход</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </div>
+                    <li ng-show="isAuth() == false"><a href="#login" data-toggle="modal">Вход</a></li>
+                    <li ng-show="isAuth() == true">
+                        <div class="btn-group">
+                            <a href="#/profile"><button class="btn"><i class="icon-home"></i> Профиль</button></a>
+                            <a class="btn dropdown-toggle" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="logout()">Выход</a></li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>

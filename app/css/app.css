@@ -3,13 +3,14 @@
 html,
 body {
     height: 100%;
+    font-family: 'Ubuntu', sans-serif;
 }
 
 .course-block {
     float:left;
     width: 290px;
     height: 180px;
-    margin: 0 1.5em 1em 0;
+    margin: 0 1.4em 1em 0;
     padding: 0;
 }
 img.course-block-img:hover {
@@ -53,7 +54,9 @@ img.staff-photo {
 }
 
 h1 {
-    border-bottom: 1px solid gray;
+    color: #208cd8;
+    text-shadow: 0 1px 0 #505050;
+    font-family: 'Jura', sans-serif;
 }
 
 
@@ -77,11 +80,8 @@ h1 {
 
 h2, h3, h4, h5, h6 {
     font-weight: normal;
-}
-
-.header {
-    margin-top: 20px;
-    margin-bottom: 20px; 
+    color: #208cd8;
+    font-family: 'Jura', sans-serif;
 }
 
 p {
@@ -105,7 +105,55 @@ code {
     font-size: 80%;
 }
 
-.brand
-{
-    height: 20px;
+.navbar-inner {
+    font-family: 'Jura', sans-serif;
+    font-size: 105%;
+    min-height: 50px;
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #0665b6;
+    background-image: -moz-linear-gradient(top, #0665b6, #31a4ee);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0665b6), to(#31a4ee));
+    background-image: -webkit-linear-gradient(top, #0665b6, #31a4ee);
+    background-image: -o-linear-gradient(top, #0665b6, #31a4ee);
+    background-image: linear-gradient(to bottom, #0665b6, #31a4ee);
+    border: 1px solid #d4d4d4;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0665b6', endColorstr='#ff31a4ee, GradientType=0);
+    *zoom: 1;
+}
+
+.navbar .brand {
+    padding: 15px 20px 15px;
+    margin-left: -20px;
+    font-size: 21px;
+    font-weight: bold;
+    color: #FFFFFF;
+    text-shadow: 0 1px 0 #0665b6;
+}
+
+.navbar .nav > li > a {
+    padding: 15px 15px 15px;
+    color: #FFFFFF;
+    text-shadow: 0 1px 0 #0665b6;
+    padding-bottom: 0;
+}
+
+.navbar .nav > li > a:focus,
+.navbar .nav > li > a:hover {
+    color: #b9defb;
+}
+
+.carousel-caption {
+    background: rgba(48, 121, 89, 0.75);
+    font-family: 'Jura', sans-serif;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    color: white;
+}
+
+li {
+    padding-bottom: 0.5em;
 }
