@@ -22,7 +22,7 @@
             </div>
 
             <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
-                <a class="carousel-inner thumbnail" _href="#/courses/{{course.id}}">
+                <a class="carousel-inner thumbnail" href="#/courses/{{course.id}}">
                     <div class="active item"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-block-img"></div>
                     <div class="carousel-caption" style="padding-bottom: 0.5em; padding-top: 0.5em">
                         <div style="color: white">
