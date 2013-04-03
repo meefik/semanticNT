@@ -114,12 +114,12 @@ code {
     padding-right: 20px;
     padding-left: 20px;
     background-color: #0665b6;
-    background-image: -moz-linear-gradient(top, #0665b6, #31a4ee);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0665b6), to(#31a4ee));
-    background-image: -webkit-linear-gradient(top, #0665b6, #31a4ee);
-    background-image: -o-linear-gradient(top, #0665b6, #31a4ee);
-    background-image: linear-gradient(to bottom, #0665b6, #31a4ee);
-    border: 1px solid #d4d4d4;
+    background-image: -moz-linear-gradient(top, #092040, #0665b6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#092040), to(#0665b6));
+    background-image: -webkit-linear-gradient(top, #092040, #0665b6);
+    background-image: -o-linear-gradient(top, #092040, #0665b6);
+    background-image: linear-gradient(to bottom, #092040, #0665b6);
+    /*border: 1px solid #d4d4d4;*/
 }
 
 .navbar .brand {
@@ -155,7 +155,7 @@ code {
     padding-bottom: 0.5em;
     padding-top: 0.5em;
     color: white;
-    background: rgba(50, 130, 80, 0.8);
+    background: rgba(8, 32, 64, 0.8);
     /* background: rgba(220,94,0, 0.8); */
     /* background: rgba(10,190,40, 0.75); green light*/
     
