@@ -120,12 +120,11 @@ code {
     background-image: -o-linear-gradient(top, #092040, #0665b6);
     background-image: linear-gradient(to bottom, #092040, #0665b6);
     */
-  background-image: -moz-linear-gradient(top, #6080a0, #306080);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6080a0), to(#306080));
-  background-image: -webkit-linear-gradient(top, #6080a0, #306080);
-  background-image: -o-linear-gradient(top, #6080a0, #306080);
-  background-image: linear-gradient(to bottom, #6080a0, #306080);
-  border: 2px solid #d4d4d4;
+    background-image: -moz-linear-gradient(top, #6080a0, #306080);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6080a0), to(#306080));
+    background-image: -webkit-linear-gradient(top, #6080a0, #306080);
+    background-image: -o-linear-gradient(top, #6080a0, #306080);
+    background-image: linear-gradient(to bottom, #6080a0, #306080);
 }
 
 .navbar .brand {
