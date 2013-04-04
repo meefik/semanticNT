@@ -35,9 +35,9 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             $scope.error = false;
             // get profile from DB
             $rootScope.profile = {
-                "login": "student",
+                "login": "teach",
                 "courses": [],
-                "email": "student@example.com",
+                "email": user.email,
                 "fullname": "Ivanov S."
             };
             $cookieStore.put('profile', $rootScope.profile);
