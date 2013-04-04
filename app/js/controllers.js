@@ -42,6 +42,7 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             };
             $cookieStore.put('profile', $rootScope.profile);
             $('#login').modal('hide');
+            $scope.user = {};
         } else {
             $scope.error = true;
         }
