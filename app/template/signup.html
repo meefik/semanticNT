@@ -1,53 +1,55 @@
-<form class="form-horizontal">
+<form class="form-horizontal" novalidate>
     <div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">SIGN UP</h3>
+            <h3 id="myModalLabel">Регистрация</h3>
         </div>
         <div class="modal-body">
             <div class="control-group">
-                <label class="control-label" for="inputEmail">E-mail</label>
+                <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
                     <input type="email" id="inputEmail" placeholder="yourname@domain.com" required>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputPassword">Password</label>
+                <label class="control-label" for="inputPassword">Пароль:</label>
                 <div class="controls">
                     <input type="password" id="inputPassword" placeholder="******" required>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputNickname">Public Username</label>
+                <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
                 <div class="controls">
-                    <input type="text" id="inputNickname" placeholder="Showing for others" required>
+                    <input type="password" id="inputRePassword" placeholder="******" required>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label" for="inputFullname">Full Name</label>
+                <label class="control-label" for="inputNickname">Псевдоним:</label>
                 <div class="controls">
-                    <input type="text" id="inputFullname" placeholder="For your sertificate" required>
+                    <input type="text" id="inputNickname" placeholder="виден остальным участникам" required>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputFullname">Полное имя:</label>
+                <div class="controls">
+                    <input type="text" id="inputFullname" placeholder="указывается в сертификате" required>
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        <input type="checkbox" required> I agree to the <a href="#/terms" target="_blank">Terms of Service</a>?
+                        <input type="checkbox" required>Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
                     </label>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-            <table width="100%">
-                <tr>
-                    <td style="text-align: left">
-                        Already have an account? <a href="#login" data-toggle="modal" onclick="$('#signup').modal('hide');">Login</a>.
-                    </td>
-                    <td>
-                        <button type="submit" class="btn btn-primary">CREATE MY ACCOUNT</button>
-                    </td>
-                </tr>
-            </table>
+            <div style="float: left; text-align: left; margin-top: 4px">
+                Уже есть учетная запись? <a href="#login" data-toggle="modal" onclick="$('#signup').modal('hide');">Авторизоваться</a>.
+            </div>
+            <div style="float: right">
+                <button type="submit" class="btn btn-primary">Создать учетную запись</button>
+            </div>
         </div>
     </div>
 </form>

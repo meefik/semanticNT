@@ -1,12 +1,12 @@
-<form class="form-horizontal" name="loginForm" ng-submit="submitLoginForm(user)" ng-controller="LoginFormCtrl">
+<form class="form-horizontal" name="loginForm" ng-submit="submitLoginForm(user)" ng-controller="LoginFormCtrl" novalidate>
     <div id="login" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Авторизация</h3>
         </div>
-        <div class="modal-body" style="padding-bottom: 2.5em">
-            <div class="alert alert-error" ng-show="error == true">
-                Введен неправильный адрес электронной почты или пароль!
+        <div class="modal-body">
+            <div class="alert alert-error" ng-show="error">
+                {{error}}
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>

@@ -31,8 +31,21 @@ function MainCtrl($rootScope, $cookieStore, $location) {
 
 function LoginFormCtrl($rootScope, $scope, $cookieStore) {
     $scope.submitLoginForm = function(user) {
+        if (!user) {
+            $scope.error = "Не заполнены все обязательные поля!";
+            return false;
+        };
+        var re = /\S+@\S+\.\S+/;
+        if (!re.test(user.email)) {
+            $scope.error = "Адрес электронной почты не соответствует формату!";
+            return false;
+        }
+        if (user.password.length < 4) {
+            $scope.error = "Длина пароля меньше четырех символов!";
+            return false;
+        }
         if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
-            $scope.error = false;
+            $scope.error = "";
             // get profile from DB
             $rootScope.profile = {
                 "login": "teach",
@@ -43,8 +56,10 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             $cookieStore.put('profile', $rootScope.profile);
             $('#login').modal('hide');
             $scope.user = {};
+            return true;
         } else {
-            $scope.error = true;
+            $scope.error = "Введен неправильный адрес электронной почты или пароль!";
+            return false;
         }
         //console.log('signin');
     };
