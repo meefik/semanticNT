@@ -31,7 +31,7 @@ function MainCtrl($rootScope, $cookieStore, $location) {
 
 function LoginFormCtrl($rootScope, $scope, $cookieStore) {
     $scope.submitLoginForm = function(user) {
-        if (!user) {
+        if ((!user) || ((user.email.length === 0) || (user.password.length === 0))) {
             $scope.error = "Не заполнены все обязательные поля!";
             return false;
         };
@@ -61,6 +61,13 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             $scope.error = "Введен неправильный адрес электронной почты или пароль!";
             return false;
         }
+        //console.log('signin');
+    };
+}
+
+function SignupFormCtrl($rootScope, $scope, $cookieStore) {
+    $scope.submitSignupForm = function(user) {
+        $scope.error = "Регистрация временно приостановлена.";
         //console.log('signin');
     };
 }

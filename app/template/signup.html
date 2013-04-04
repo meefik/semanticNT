@@ -1,44 +1,47 @@
-<form class="form-horizontal" novalidate>
+<form class="form-horizontal" name="signupForm" ng-submit="submitSignupForm(user)" ng-controller="SignupFormCtrl" novalidate>
     <div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Регистрация</h3>
         </div>
         <div class="modal-body">
+            <div class="alert alert-error" ng-show="error">
+                {{error}}
+            </div>
             <div class="control-group">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
-                    <input type="email" id="inputEmail" placeholder="yourname@domain.com" required>
+                    <input type="email" id="inputEmail" placeholder="yourname@domain.com">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputPassword">Пароль:</label>
                 <div class="controls">
-                    <input type="password" id="inputPassword" placeholder="******" required>
+                    <input type="password" id="inputPassword" placeholder="******">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
                 <div class="controls">
-                    <input type="password" id="inputRePassword" placeholder="******" required>
+                    <input type="password" id="inputRePassword" placeholder="******">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNickname">Псевдоним:</label>
                 <div class="controls">
-                    <input type="text" id="inputNickname" placeholder="виден остальным участникам" required>
+                    <input type="text" id="inputNickname" placeholder="виден остальным участникам">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputFullname">Полное имя:</label>
                 <div class="controls">
-                    <input type="text" id="inputFullname" placeholder="указывается в сертификате" required>
+                    <input type="text" id="inputFullname" placeholder="указывается в сертификате">
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        <input type="checkbox" required>Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
+                        <input type="checkbox">Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
                     </label>
                 </div>
             </div>
