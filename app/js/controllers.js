@@ -30,17 +30,21 @@ function MainCtrl($rootScope, $cookieStore, $location) {
 }
 
 function LoginFormCtrl($rootScope, $scope, $cookieStore) {
-    $scope.submitLoginForm = function() {
-        // get profile from DB
-        $rootScope.profile = {
-            "login": "student",
-            "courses": [],
-            "email": "student@example.com",
-            "fullname": "Ivanov S."
-        };
-        $cookieStore.put('profile', $rootScope.profile);
-
-        $('#login').modal('hide');
+    $scope.submitLoginForm = function(user) {
+        if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
+            $scope.error = false;
+            // get profile from DB
+            $rootScope.profile = {
+                "login": "student",
+                "courses": [],
+                "email": "student@example.com",
+                "fullname": "Ivanov S."
+            };
+            $cookieStore.put('profile', $rootScope.profile);
+            $('#login').modal('hide');
+        } else {
+            $scope.error = true;
+        }
         //console.log('signin');
     };
 }
