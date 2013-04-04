@@ -2,7 +2,7 @@
     <div class="row">
         <div class="span8">
             <h1>{{course.name}}</h1>
-            <h4>{{course.university}}</h4>
+            <!--<h4>{{course.university}}</h4>-->
 
             <h3 class="header">О курсе</h3>
             <p>{{course.description}}</p>
@@ -44,12 +44,12 @@
             <div style="margin-top: 20px; margin-bottom: 30px; text-align: center">
                 <div ng-show="isAuth() == true">
                     <div ng-show="isReg(course.id) == false">
-                        <a class="btn btn-primary btn-large" ng-click="setReg(course.id)">
+                        <a class="btn btn-primary" ng-click="setReg(course.id)">
                             Записаться
                         </a>                                
                     </div>
                     <div ng-show="isReg(course.id) == true">
-                        <a class="btn btn-success btn-large" href="#/courses/{{course.id}}/news">
+                        <a class="btn btn-success" href="#/courses/{{course.id}}/news">
                             Перейти к курсу
                         </a>    
                     </div>
