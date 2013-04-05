@@ -6,6 +6,8 @@ body {
     font-family: 'Ubuntu', sans-serif;
 }
 
+/* Инонка курса на главной странице */
+
 .course-block {
     float:left;
     width: 290px;
@@ -13,14 +15,21 @@ body {
     margin: 0 1.4em 1em 0;
     padding: 0;
 }
-img.course-block-img:hover {
+
+.course-block > a {
+    text-decoration: none;
+    color: #404040;
+    font-family: 'Jura', sans-serif;
+}
+
+.course-block > .logo:hover {
     opacity: 0.8;
     filter: alpha(opacity=80) black;
     -moz-opacity: 0.8;
     -khtml-opacity: 0.8;
 }
 
-img.course-block-img {
+.course-block > .logo {
     width: 290px;
     height: 160px;
     opacity: 1;
@@ -28,6 +37,61 @@ img.course-block-img {
     -moz-opacity: 1;
     -khtml-opacity: 1;
 }
+
+.course-caption {
+    font-family: 'Jura', sans-serif;
+    font-weight: bold;
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    left: 4px;
+    padding: 5px 15px 5px 15px;
+    color: white;
+    background: #333333;
+    background: rgba(48, 96, 128, 0.85);
+    /* background: rgba(220,94,0, 0.8); */
+    /* background: rgba(10,190,40, 0.75); green light*/
+}
+
+.crouse-title {
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 8px;
+    font-weight: bold;
+    font-family: 'Jura', sans-serif;
+    font-size: 16px;
+}
+
+#box1{
+    height:160px;
+    width: 290px;
+    /*border:1px solid #666;*/
+}
+
+#box1:hover+#box2 {
+    height: 0px;
+}
+
+#box2  {
+    position:absolute;
+    margin-top: -160px;
+    height:160px;
+    width: 290px;
+    /*border:1px solid #666;*/
+    -webkit-transition:500ms all ease-in-out;
+    -moz-transition:500ms all ease-in-out;
+    -o-transition:500ms all ease-in-out;
+    -ms-transition:500ms all ease-in-out;
+    background-repeat: no-repeat;
+}
+
+#box2:hover {
+    height: 0px;
+}
+
+
+
+
 img.course-logo-large {
     height: 160px;
     width: 290px;
@@ -156,20 +220,7 @@ code {
     font-family: 'Jura', sans-serif;
 }
 
-.carousel-caption {
-    font-family: 'Jura', sans-serif;
-    right: 4px;
-    bottom: 4px;
-    left: 4px;
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-    color: white;
-    background: rgba(48, 96, 128, 0.85);
-    /* background: rgba(220,94,0, 0.8); */
-    /* background: rgba(10,190,40, 0.75); green light*/
-    
-}
-
 li {
     padding-bottom: 0.5em;
 }
+

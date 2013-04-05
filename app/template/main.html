@@ -72,12 +72,27 @@
         <div class="span12">
             <h3>Курсы</h3>
             <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
-                    <a class="carousel-inner thumbnail" href="#video" ng-click="courses.name=course.name; courses.video=course.video" data-toggle="modal">
-                        <div class="active item"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-block-img"></div>
-                        <div class="carousel-caption">
-                            <b>{{course.name}}</b><!--<br>{{course.beginDate}}-->
-                        </div>
-                    </a>
+                <a class="carousel-inner thumbnail" href="#video" ng-click="courses.name=course.name; courses.video=course.video" data-toggle="modal">
+                    <!--<img ng-src="courses/{{course.id}}/img/logo.png">-->
+                <div id="box1">
+                    Авторы курса: 
+                    <div ng-repeat="author in course.authors">
+                        - {{author}}
+                    </div>
+                </div>
+                <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
+                    <span class="course-caption">
+                        <span style="float: left; text-align: left">
+                            {{course.beginDate}}
+                        </span>
+                        <span style="float: right">
+                            {{course.duration}}
+                        </span>
+                    </span>
+                </a>
+                <div class="crouse-title">
+                    {{course.name}}
+                </div>
             </div>
             
             <!-- Modal window -->
@@ -95,7 +110,6 @@
                 </div>
                 -->
             </div>
-            
         </div>
     </div>
 </div>
