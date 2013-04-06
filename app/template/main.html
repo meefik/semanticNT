@@ -1,0 +1,115 @@
+<div class="container">
+
+    <!--
+    <div class="hero-unit">
+        <h1>openITMO</h1>
+        <p>Open learning managment system</p>
+        <p>
+            <a class="btn btn-primary btn-normal" href="#/about">
+                Learn more
+            </a>
+        </p>
+    </div>
+    -->
+    <div class="row">
+        <div class="span9">
+            <div>
+                <!--<img src="img/itmo.png" style="float: left; margin: 1em;">-->
+                <h1 class="page-header">Коротко о главном</h1>
+                <p style="margin-top: 2em; text-align: left">
+                    Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО. Курсы содержат видеолекции, электронные презентации к ним, текстовые материалы, вопросы для самоконтроля, экзаменационные задания.
+                </p>
+                <p>
+                    <!--
+                    <div style="margin-left: 15em">Познавайте новое </div>
+                    <div style="margin-left: 10em">в компактной форме</div>
+                    <div style="margin-left: 5em">в любой точке мира</div>
+                    <div style="margin-left: 0em">в удобное для себя время!</div>
+                    -->
+                    Познавайте новое в компактной форме в любой точке мира в удобное для себя время!
+                </p>
+                <p>
+                    Приглашаем всех желающих принять участие в проекте разработки системы открытого онлайн-обучения, размещенном в <a href="https://github.com/meefik/openitmo"><img src="img/github-icon.png"></a>.  
+                </p>
+            </div>
+        </div>
+        <div class="span3">
+            <!--
+            <div id="myCarousel" class="carousel slide img-polaroid">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="http://www.ifmo.ru/images/slider/big/p34.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>First Thumbnail label</h4>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="http://www.ifmo.ru/images/slider/big/p33.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>Second Thumbnail label</h4>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <img src="http://www.ifmo.ru/images/slider/big/p32.jpg" alt="">
+                        <div class="carousel-caption">
+                            <h4>Third Thumbnail label</h4>
+                        </div>
+                    </div>
+                </div>
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
+            -->
+            <div style="margin-top: 3em; margin-bottom: 1em; text-align: center"><img src="img/itmo.png"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="span12">
+            <h3>Курсы</h3>
+            <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
+                <a class="carousel-inner thumbnail" href="#video" ng-click="courses.name=course.name; courses.video=course.video" data-toggle="modal">
+                    <!--<img ng-src="courses/{{course.id}}/img/logo.png">-->
+                <div id="box1">
+                    Авторы курса: 
+                    <div ng-repeat="author in course.authors">
+                        - {{author}}
+                    </div>
+                </div>
+                <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
+                    <span class="course-caption">
+                        <span style="float: left; text-align: left">
+                            {{course.beginDate}}
+                        </span>
+                        <span style="float: right">
+                            {{course.duration}}
+                        </span>
+                    </span>
+                </a>
+                <div class="crouse-title">
+                    {{course.name}}
+                </div>
+            </div>
+            
+            <!-- Modal window -->
+            <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria>×</button>
+                    <h3 id="myModalLabel">{{courses.name}}</h3>
+                </div>
+                <div class="modal-body text-center">
+                    <div ng-bind-html-unsafe="courses.video"></div>
+                </div>
+                <!--
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
