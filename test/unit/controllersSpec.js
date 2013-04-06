@@ -1,73 +1,31 @@
 'use strict';
 
 /* jasmine specs for controllers go here */
-describe('PhoneCat controllers', function() {
+
+describe('MyCtrl1', function(){
+  var myCtrl1;
 
   beforeEach(function(){
-    this.addMatchers({
-      toEqualData: function(expected) {
-        return angular.equals(this.actual, expected);
-      }
-    });
+    myCtrl1 = new MyCtrl1();
   });
 
 
-  beforeEach(module('phonecatServices'));
+  it('should ....', function() {
+    //spec body
+  });
+});
 
 
-  describe('PhoneListCtrl', function(){
-    var scope, ctrl, $httpBackend;
-
-    beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
-      $httpBackend = _$httpBackend_;
-      $httpBackend.expectGET('phones/phones.json').
-          respond([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
-
-      scope = $rootScope.$new();
-      ctrl = $controller(PhoneListCtrl, {$scope: scope});
-    }));
+describe('MyCtrl2', function(){
+  var myCtrl2;
 
 
-    it('should create "phones" model with 2 phones fetched from xhr', function() {
-      expect(scope.phones).toEqual([]);
-      $httpBackend.flush();
-
-      expect(scope.phones).toEqualData(
-          [{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
-    });
-
-
-    it('should set the default value of orderProp model', function() {
-      expect(scope.orderProp).toBe('age');
-    });
+  beforeEach(function(){
+    myCtrl2 = new MyCtrl2();
   });
 
 
-  describe('PhoneDetailCtrl', function(){
-    var scope, $httpBackend, ctrl,
-        xyzPhoneData = function() {
-          return {
-            name: 'phone xyz',
-                images: ['image/url1.png', 'image/url2.png']
-          }
-        };
-
-
-    beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
-      $httpBackend = _$httpBackend_;
-      $httpBackend.expectGET('phones/xyz.json').respond(xyzPhoneData());
-
-      $routeParams.phoneId = 'xyz';
-      scope = $rootScope.$new();
-      ctrl = $controller(PhoneDetailCtrl, {$scope: scope});
-    }));
-
-
-    it('should fetch phone detail', function() {
-      expect(scope.phone).toEqualData({});
-      $httpBackend.flush();
-
-      expect(scope.phone).toEqualData(xyzPhoneData());
-    });
+  it('should ....', function() {
+    //spec body
   });
 });

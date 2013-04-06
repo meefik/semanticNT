@@ -2,20 +2,20 @@
 
 /* Services */
 
-angular.module('getCoursesService', ['ngResource']).
-        factory('Course', function($resource) {
-    var path = 'courses/:courseId:partId';
+angular.module('CatalogService', ['ngResource']).
+        factory('Catalog', function($resource) {
+    var path = 'courses/catalog.json';
     return $resource(path, {}, {
-        query: {method: 'GET', params: {courseId: 'list.json', partId: ''}, isArray: true}
+        query: {method: 'GET', params: {}, isArray: true}
     });
 
 });
 
-angular.module('getPartsService', ['ngResource']).
-        factory('Part', function($resource) {
+angular.module('CourseService', ['ngResource']).
+        factory('Course', function($resource) {
     var path = 'courses/:courseId/json/:partId.json';
     return $resource(path, {}, {
-        query: {method: 'GET', params: {courseId: 'notfound', partId: 'summary'},
-            isArray: true}
+        query: {method: 'GET', params: {courseId: 'unknown', partId: 'info'}, isArray: true}
     });
+
 });

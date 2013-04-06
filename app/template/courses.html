@@ -21,7 +21,7 @@
                 </table>
             </div>
 
-            <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
+            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="carousel course-block">
                 <a class="carousel-inner thumbnail" href="#/courses/{{course.id}}">
                     <img ng-src="courses/{{course.id}}/img/logo.png">
                     <div class="course-caption" style="padding-bottom: 0.5em; padding-top: 0.5em">

@@ -3,7 +3,7 @@
         <div class="span12">
             <h2 class="page-header">Мои курсы</h2>
             <ul class="courses" style="margin-left: 0">
-                <li ng-repeat="course in courses | isStatus | orderBy:orderProp" class="thumbnail" style="height: 150px; margin-bottom: 1em">
+                <li ng-repeat="course in catalog | isStatus | orderBy:orderProp" class="thumbnail" style="height: 150px; margin-bottom: 1em">
                     <a href="#/courses/{{course.id}}"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-logo img-polaroid" style="margin: 1em"></a>
                     <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
                     <div style="margin-top: 1em">

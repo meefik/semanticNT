@@ -71,16 +71,16 @@
     <div class="row">
         <div class="span12">
             <h3>Курсы</h3>
-            <div ng-repeat="course in courses | filter:query | orderBy:orderProp" class="carousel course-block">
-                <a class="carousel-inner thumbnail" href="#video" ng-click="courses.name=course.name; courses.video=course.video" data-toggle="modal">
+            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="carousel course-block">
+                <a class="carousel-inner thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal">
                     <!--<img ng-src="courses/{{course.id}}/img/logo.png">-->
-                <div id="box1">
-                    Авторы курса: 
-                    <div ng-repeat="author in course.authors">
-                        - {{author}}
+                    <div id="box1">
+                        Авторы курса: 
+                        <div ng-repeat="author in course.authors">
+                            - {{author}}
+                        </div>
                     </div>
-                </div>
-                <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
+                    <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
                     <span class="course-caption">
                         <span style="float: left; text-align: left">
                             {{course.beginDate}}
@@ -99,10 +99,10 @@
             <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria>×</button>
-                    <h3 id="myModalLabel">{{courses.name}}</h3>
+                    <h3 id="myModalLabel">{{catalog.name}}</h3>
                 </div>
                 <div class="modal-body text-center">
-                    <div ng-bind-html-unsafe="courses.video"></div>
+                    <div ng-bind-html-unsafe="catalog.video"></div>
                 </div>
                 <!--
                 <div class="modal-footer">

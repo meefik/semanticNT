@@ -2,14 +2,14 @@
 
 /* Filters */
 
-angular.module('coursesListFilter', []).
+angular.module('CatalogFilter', []).
         filter('checkmark', function() {
     return function(input) {
         return input ? '\u2713' : '\u2718';
     };
 });
 
-angular.module('profileCoursesFilter', [])
+angular.module('MyCoursesFilter', [])
         .filter('isStatus', function($rootScope) {
     return function(input) {
         var out = [];

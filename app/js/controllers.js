@@ -6,8 +6,8 @@ function AboutCtrl($scope) {
 
 }
 
-function CoursesCtrl($scope, Course) {
-    $scope.courses = Course.query();
+function HomeCtrl($scope, Catalog) {
+    $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
 }
 
@@ -29,8 +29,9 @@ function MainCtrl($rootScope, $cookieStore, $location) {
     };
 }
 
-function LoginFormCtrl($rootScope, $scope, $cookieStore) {
+function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
     $scope.submitLoginForm = function(user) {
+        /*
         if ((!user) || ((user.email.length === 0) || (user.password.length === 0))) {
             $scope.error = "Не заполнены все обязательные поля!";
             return false;
@@ -45,6 +46,13 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             return false;
         }
         if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
+        */    
+            $http.post('/openitmo/api/login', $scope.user).
+                    success(function(data) {
+                $scope.error = "данные успешно отправлены";
+                console.log(data);
+            });
+            /*
             $scope.error = "";
             // get profile from DB
             $rootScope.profile = {
@@ -56,11 +64,12 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore) {
             $cookieStore.put('profile', $rootScope.profile);
             $('#login').modal('hide');
             $scope.user = {};
-            return true;
-        } else {
+            */
+            return false;
+        /*} else {
             $scope.error = "Введен неправильный адрес электронной почты или пароль!";
             return false;
-        }
+        }*/
         //console.log('signin');
     };
 }
@@ -72,15 +81,15 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore) {
     };
 }
 
-function ListCtrl($scope, Course) {
-    $scope.courses = Course.query();
+function CoursesCtrl($scope, Catalog) {
+    $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
 }
 
-function ProfileCtrl($rootScope, $scope, $cookieStore, Course) {
-    $scope.courses = Course.query();
+function MyCoursesCtrl($rootScope, $scope, $cookieStore, Catalog) {
+    $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
-
+    
     $scope.unReg = function(courseid) {
         if (!$rootScope.profile)
             return false;
@@ -95,9 +104,13 @@ function ProfileCtrl($rootScope, $scope, $cookieStore, Course) {
     };
 }
 
+function ProfileCtrl() {
+    
+}
+
 function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
     $scope.course = Course.get({courseId: $routeParams.courseId, 
-        partId: '/json/info.json'}, function() {
+        partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
     });
     
@@ -119,12 +132,12 @@ function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
     };
 }
 
-function PartsCtrl($rootScope, $scope, $routeParams, $location, Course, Part) {
+function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
     if (!$rootScope.isAuth()) {
         $location.path('/');
     }
     $scope.course = Course.get({courseId: $routeParams.courseId, 
-        partId: '/json/info.json'}, function() {
+        partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
         for (var i in $scope.course.parts) {
             if ($scope.course.parts[i].id === $routeParams.partId) {
@@ -134,7 +147,7 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course, Part) {
         }
     });
 
-    $scope.part = Part.get({courseId: $routeParams.courseId,
+    $scope.part = Course.get({courseId: $routeParams.courseId,
         partId: $routeParams.partId}, function() {
         $scope.part.id = $routeParams.partId;
         $scope.part.template = 'courses/tpl/'+$scope.part.id+'.html';
