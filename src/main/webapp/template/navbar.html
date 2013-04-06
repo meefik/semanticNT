@@ -1,0 +1,35 @@
+<!-- Modal Log In -->
+<div ng-include src="'template/login.html'"></div>
+
+<!-- Modal Sign Up -->
+<div ng-include src="'template/signup.html'"></div>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#"><img src="img/logo.png" style="margin-top: -18px; margin-bottom: -15px"><span style="margin-left: 20px">Открытое онлайн-обучение</span></a>
+            <div class="nav-collapse collapse" ng-show="isAuth() == false">
+                <ul class="nav pull-right" style="width: 320px">
+                    <li><a href="#/about">О проекте</a></li>
+                    <li><a href="#/courses">Каталог курсов</a></li>
+                    <li><a href="#login" data-toggle="modal">Вход</a></li>
+                </ul>
+            </div>
+            <div class="nav-collapse collapse" ng-show="isAuth() == true">
+                <ul class="nav pull-right" style="width: 520px">
+                    <li><a href="#/about">О проекте</a></li>
+                    <li><a href="#/courses">Каталог курсов</a></li>
+                    <li><a href="#/mycourses">Мои курсы</a></li>
+                    <li><a href="#/profile">Профиль</a></li>
+                    <li><a ng-click="logout()">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

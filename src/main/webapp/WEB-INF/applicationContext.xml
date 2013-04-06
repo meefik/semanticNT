@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/mvc
+            http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" /-->
+
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+    
+    <context:component-scan base-package="ru.ifmo.open.controller" />
+ 
+    <mvc:annotation-driven />
+
+</beans>
