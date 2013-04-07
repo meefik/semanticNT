@@ -101,7 +101,7 @@ StaticServlet.prototype.handleRequest = function(req, res) {
       path += '/index.html';
     return self.sendFile_(req, res, path);
   });
-}
+};
 
 StaticServlet.prototype.sendError_ = function(req, res, error) {
   res.writeHead(500, {
