@@ -11,7 +11,7 @@ function HomeCtrl($scope, Catalog) {
     $scope.orderProp = 'age';
 }
 
-function MainCtrl($rootScope, $cookieStore, $location) {
+function AppCtrl($rootScope, $cookieStore, $location) {
     if (!$rootScope.profile)
         $rootScope.profile = $cookieStore.get('profile');
     
@@ -30,7 +30,7 @@ function MainCtrl($rootScope, $cookieStore, $location) {
 }
 
 function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
-    $scope.submitLoginForm = function(user) {
+    $scope.submitLoginForm = function() {
         /*
         if ((!user) || ((user.email.length === 0) || (user.password.length === 0))) {
             $scope.error = "Не заполнены все обязательные поля!";
@@ -74,10 +74,15 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
     };
 }
 
-function SignupFormCtrl($rootScope, $scope, $cookieStore) {
-    $scope.submitSignupForm = function(user) {
-        $scope.error = "Регистрация временно приостановлена.";
-        //console.log('signin');
+function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
+    $scope.submitSignupForm = function() {
+        //$scope.error = "Регистрация временно приостановлена.";
+            $http.post('api/profile', $scope.user).
+                    success(function(data) {
+                $scope.error = "данные успешно отправлены";
+                console.log(data);
+            });
+        console.log('signin');
     };
 }
 

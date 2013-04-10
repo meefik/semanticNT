@@ -149,7 +149,7 @@ p {
     height: auto !important;
     height: 100%;
     /* Negative indent footer by it's height */
-    margin: -20px auto -40px;
+    margin: 0px auto -40px;
 }
 
 /* Set the fixed height of the footer here */

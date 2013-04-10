@@ -1,4 +1,4 @@
-<form class="form-horizontal" name="signupForm" ng-submit="submitSignupForm(user)" ng-controller="SignupFormCtrl" novalidate>
+<form class="form-horizontal" name="signupForm" ng-submit="submitSignupForm()" ng-controller="SignupFormCtrl" novalidate>
     <div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -11,37 +11,37 @@
             <div class="control-group">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
-                    <input type="email" id="inputEmail" placeholder="yourname@domain.com">
+                    <input ng-model="user.email" type="email" id="inputEmail" placeholder="yourname@domain.com">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputPassword">Пароль:</label>
                 <div class="controls">
-                    <input type="password" id="inputPassword" placeholder="******">
+                    <input ng-model="user.passwd" type="password" id="inputPassword" placeholder="******">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
                 <div class="controls">
-                    <input type="password" id="inputRePassword" placeholder="******">
+                    <input ng-model="user.repasswd" type="password" id="inputRePassword" placeholder="******">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNickname">Псевдоним:</label>
                 <div class="controls">
-                    <input type="text" id="inputNickname" placeholder="виден остальным участникам">
+                    <input ng-model="user.nickname" type="text" id="inputNickname" placeholder="виден остальным участникам">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputFullname">Полное имя:</label>
                 <div class="controls">
-                    <input type="text" id="inputFullname" placeholder="указывается в сертификате">
+                    <input ng-model="user.fullname" type="text" id="inputFullname" placeholder="указывается в сертификате">
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        <input type="checkbox">Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
+                        <input ng-model="user.terms" type="checkbox">Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
                     </label>
                 </div>
             </div>
