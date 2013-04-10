@@ -1,0 +1,21 @@
+.container
+    h2.page-header Профиль
+      .row
+        .span4
+          .well(style='text-align: center;')
+            h2 {{profile.login}}
+          table.table
+            tr
+              td
+                i.icon-info-sign
+              td
+                b {{profile.fullname}}
+            tr
+              td
+                i.icon-envelope
+              td
+                b {{profile.email}}
+            tr
+              td(colspan='2')
+        .span8
+          p В разработке...

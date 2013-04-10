@@ -1,0 +1,41 @@
+.container
+    .row
+        .span9
+          div
+            h1.page-header Коротко о главном
+            p(style='margin-top: 2em; text-align: left;')
+              | Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО. Курсы содержат видеолекции, электронные презентации к ним, текстовые материалы, вопросы для самоконтроля, экзаменационные задания.
+            p
+              | Познавайте новое в компактной форме в любой точке мира в удобное для себя время!
+            p
+              | Приглашаем всех желающих принять участие в проекте разработки системы открытого онлайн-обучения, размещенном в
+              a(href='https://github.com/meefik/openitmo')
+                img(src='img/github-icon.png')
+              | .
+        .span3
+          div(style='margin-top: 3em; margin-bottom: 1em; text-align: center;')
+            img(src='img/itmo.png')
+      .row
+        .span12
+          h3 Курсы
+          .carousel.course-block(ng-repeat='course in catalog | filter:query | orderBy:orderProp')
+            a.carousel-inner.thumbnail(href='#video', ng-click='catalog.name=course.name; catalog.video=course.video', data-toggle='modal')
+              #box1
+                | Авторы курса:
+                div(ng-repeat='author in course.authors')
+                  | - {{author}}
+              #box2(style='background-image: url(\'courses/{{course.id}}/img/logo.png\');')
+              span.course-caption
+                span(style='float: left; text-align: left;')
+                  | {{course.beginDate}}
+                span(style='float: right;')
+                  | {{course.duration}}
+            .crouse-title
+              | {{course.name}}
+
+          #video.modal.hide.fade(tabindex='-1', role='labelledby=', mymodallabel='myModalLabel', aria-hidden='true')
+            .modal-header
+              button.close(type='button', data-dismiss='modal', aria='aria') ×
+              h3#myModalLabel {{catalog.name}}
+            .modal-body.text-center
+              div(ng-bind-html-unsafe='catalog.video')

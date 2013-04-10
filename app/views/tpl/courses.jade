@@ -1,0 +1,23 @@
+.container
+    .row
+        .span12
+          div(style='padding-bottom: 1em;')
+            h2.page-header Каталог курсов
+            table
+              tr
+                td(style='padding-right: 2em;')
+                  | Поиск:
+                  br
+                  input(ng-model='query', type='text', placeholder='название курса')
+                td
+                  | Сортировать по:
+                  br
+                  select(ng-model='orderProp')
+                    option(value='name') названию
+                    option(value='age') дате
+          .carousel.course-block(ng-repeat='course in catalog | filter:query | orderBy:orderProp')
+            a.carousel-inner.thumbnail(href='#/courses/{{course.id}}')
+              img(ng-src='courses/{{course.id}}/img/logo.png')
+              .course-caption(style='padding-bottom: 0.5em; padding-top: 0.5em;')
+                div(style='color: white;')
+                  b {{course.name}}

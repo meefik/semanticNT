@@ -11,7 +11,7 @@ function HomeCtrl($scope, Catalog) {
     $scope.orderProp = 'age';
 }
 
-function AppCtrl($rootScope, $cookieStore, $location) {
+function AppCtrl($rootScope, $scope, $cookieStore, $location) {
     if (!$rootScope.profile)
         $rootScope.profile = $cookieStore.get('profile');
     
@@ -26,6 +26,13 @@ function AppCtrl($rootScope, $cookieStore, $location) {
         $rootScope.profile = '';
         $cookieStore.remove('profile');
         $location.path("/");
+    };
+    
+    $scope.getAuthWindow = function() {
+        if ($rootScope.isAuth())
+            return '';
+        else
+            return 'tpl/auth';
     };
 }
 
@@ -47,7 +54,7 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
         }
         if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
         */    
-            $http.post('/openitmo/api/login', $scope.user).
+            $http.post('api/profile', $scope.user).
                     success(function(data) {
                 $scope.error = "данные успешно отправлены";
                 console.log(data);

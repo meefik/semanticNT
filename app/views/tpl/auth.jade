@@ -1,0 +1,68 @@
+// Sign In
+form.form-horizontal(name='loginForm', ng-submit='submitLoginForm()', ng-controller='LoginFormCtrl', novalidate='novalidate')
+    #login.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h3#myModalLabel Авторизация
+        .modal-body
+          .alert.alert-error(ng-show='error')
+            | {{error}}
+          .control-group
+            label.control-label(for='inputEmail') Электронная почта:
+            .controls
+              input#inputEmail(ng-model='user.email', type='text', placeholder='yourname@domain.com')
+          .control-group
+            label.control-label(for='inputPassword') Пароль:
+            .controls
+              input#inputPassword(ng-model='user.password', type='password', placeholder='******')
+        .modal-footer
+          div(style='float: left; text-align: left; margin-top: 4px;')
+            a(href='#signup', data-toggle='modal', onclick='$(\'#login\').modal(\'hide\');') Нет учетной записи
+            |  или 
+            a(href='#forgot', data-toggle='modal') забыли пароль
+            | ?
+          div(style='float: right;')
+            button#submit.btn.btn-primary(type='submit') Войти
+
+// Sign Up
+form.form-horizontal(name='signupForm', ng-submit='submitSignupForm()', ng-controller='SignupFormCtrl', novalidate='novalidate')
+    #signup.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true')
+        .modal-header
+          button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+          h3#myModalLabel Регистрация
+        .modal-body
+          .alert.alert-error(ng-show='error')
+            | {{error}}
+          .control-group
+            label.control-label(for='inputEmail') Электронная почта:
+            .controls
+              input#inputEmail(ng-model='user.email', type='email', placeholder='yourname@domain.com')
+          .control-group
+            label.control-label(for='inputPassword') Пароль:
+            .controls
+              input#inputPassword(ng-model='user.passwd', type='password', placeholder='******')
+          .control-group
+            label.control-label(for='inputRePassword') Подтверждение пароля:
+            .controls
+              input#inputRePassword(ng-model='user.repasswd', type='password', placeholder='******')
+          .control-group
+            label.control-label(for='inputNickname') Псевдоним:
+            .controls
+              input#inputNickname(ng-model='user.nickname', type='text', placeholder='виден остальным участникам')
+          .control-group
+            label.control-label(for='inputFullname') Полное имя:
+            .controls
+              input#inputFullname(ng-model='user.fullname', type='text', placeholder='указывается в сертификате')
+          .control-group
+            .controls
+              label.checkbox
+                input(ng-model='user.terms', type='checkbox')
+                | Я принимаю 
+                a(href='#/terms', target='_blank') условия обслуживания
+        .modal-footer
+          div(style='float: left; text-align: left; margin-top: 4px;')
+            | Уже есть учетная запись? 
+            a(href='#login', data-toggle='modal', onclick='$(\'#signup\').modal(\'hide\');') Авторизоваться
+            | .
+          div(style='float: right;')
+            button.btn.btn-primary(type='submit') Зарегистрироваться

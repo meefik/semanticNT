@@ -1,0 +1,13 @@
+.container
+    .row
+        .span3
+          a(href='#/courses/{{course.id}}')
+            img.thumbnail.course-logo(ng-src='courses/{{course.id}}/img/logo.png')
+          .tabbable.tabs-left
+            ul.nav.nav-tabs.nav-parts
+              li.{{tab.status}}(ng-repeat='tab in course.parts')
+                a(href='#/courses/{{course.id}}/{{tab.id}}') {{tab.name}}
+        .span9
+          h2.page-header {{course.name}}
+          .tab-content
+            div(ng-include, src='getContent()')

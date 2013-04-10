@@ -4,6 +4,7 @@
  */
 
 var express = require('express'),
+  stylus = require('stylus'),
   routes = require('./routes'),
   api = require('./routes/api');
 
@@ -14,8 +15,11 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.set("view options", {layout: false});
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.logger('dev'));
+  app.use(stylus.middleware({ src: __dirname + '/public', compress: true }));
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
@@ -31,7 +35,7 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
+app.get('/tpl/:name', routes.template);
 
 // JSON API
 

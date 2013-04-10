@@ -1,0 +1,15 @@
+.container
+    .row
+        .span12
+          h2.page-header Мои курсы
+          ul.courses(style='margin-left: 0;')
+            li.thumbnail(ng-repeat='course in catalog | isStatus | orderBy:orderProp', style='height: 150px; margin-bottom: 1em;')
+              a(href='#/courses/{{course.id}}')
+                img.course-logo.img-polaroid(ng-src='courses/{{course.id}}/img/logo.png', style='margin: 1em;')
+              h3
+                a(href='#/courses/{{course.id}}') {{course.name}}
+              div(style='margin-top: 1em;')
+                a.btn.btn-success(href='#/courses/{{course.id}}/news')
+                  | Перейти к курсу
+                a.btn(ng-click='unReg(course.id)')
+                  | Отказаться

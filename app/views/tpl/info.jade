@@ -1,0 +1,53 @@
+.container
+    .row
+        .span8
+          h2.page-header {{course.name}}
+          h3.header О курсе
+          p {{course.description}}
+          h3.header Авторы
+          div(ng-repeat='person in course.staff', style='margin-bottom: 1em;')
+            span(style='display: inline-block;')
+              img.staff-photo(ng-src='courses/{{course.id}}/img/{{person.photoUrl}}')
+              h4 {{person.name}}
+              p(style='white-space: pre;') {{person.description}}
+        .span4
+          img.thumbnail.course-logo-large(ng-src='courses/{{course.id}}/img/logo.png')
+          table.table
+            tr
+              td
+                i.icon-info-sign
+                | Номер курса
+              td
+                b {{course.id}}
+            tr
+              td
+                i.icon-calendar
+                | Начало
+              td
+                b {{course.beginDate}}
+            tr
+              td
+                i.icon-calendar
+                | Окончание
+              td
+                b {{course.endDate}}
+            tr
+              td
+                i.icon-pencil
+                | Нагрузка
+              td
+                b {{course.effort}}
+            tr
+              td
+                i.icon-book
+                | Требования
+              td
+                b {{course.prerequisites | checkmark}}
+          div(style='margin-top: 20px; margin-bottom: 30px; text-align: center;')
+            div(ng-show='isAuth() == true')
+              div(ng-show='isReg(course.id) == false')
+                a.btn.btn-primary(ng-click='setReg(course.id)')
+                  | Записаться
+              div(ng-show='isReg(course.id) == true')
+                a.btn.btn-success(href='#/courses/{{course.id}}/news')
+                  | Перейти к курсу

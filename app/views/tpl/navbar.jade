@@ -1,0 +1,30 @@
+.navbar.navbar-fixed-top
+    .navbar-inner
+        .container
+            a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a.brand(href='#')
+                img(src='img/logo.png', style='margin-top: -18px; margin-bottom: -15px;')
+                span(style='margin-left: 20px;') Открытое онлайн-обучение
+            .nav-collapse.collapse(ng-show='isAuth() == false')
+                ul.nav.pull-right(style='width: 320px;')
+                    li
+                        a(href='#/about') О проекте
+                    li
+                        a(href='#/courses') Каталог курсов
+                    li
+                        a(href='#login', data-toggle='modal') Вход
+            .nav-collapse.collapse(ng-show='isAuth() == true')
+                ul.nav.pull-right(style='width: 520px;')
+                    li
+                        a(href='#/about') О проекте
+                    li
+                        a(href='#/courses') Каталог курсов
+                    li
+                        a(href='#/mycourses') Мои курсы
+                    li
+                        a(href='#/profile') Профиль
+                    li
+                        a(ng-click='logout()') Выход
