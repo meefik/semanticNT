@@ -4,8 +4,9 @@
   , "private": true
   , "dependencies": {
       "express": "2.5.8"
-    , "stylus": ">= 0.0.1"
     , "jade": ">= 0.0.1"
-    , "mongoose": ">= 3.6.4"
+    , "mongoose": ">= 0.0.1"
+    , "connect-mongo": ">= 0.0.1"
+    , "crypto": ">= 0.0.1"
   }
 }

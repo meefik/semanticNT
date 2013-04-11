@@ -54,11 +54,17 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
         }
         if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
         */    
-            $http.post('api/profile', $scope.user).
-                    success(function(data) {
-                $scope.error = "данные успешно отправлены";
-                console.log(data);
-            });
+        return $http.post('api/login', $scope.user).
+                success(function(data, status) {
+            $scope.error = "данные успешно отправлены";
+            $rootScope.profile = data;
+            console.log(status);
+            console.log(data);
+        }).
+                error(function(data, status) {
+            console.log(status);
+            console.log(data);
+        });
             /*
             $scope.error = "";
             // get profile from DB
@@ -72,7 +78,6 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
             $('#login').modal('hide');
             $scope.user = {};
             */
-            return false;
         /*} else {
             $scope.error = "Введен неправильный адрес электронной почты или пароль!";
             return false;
@@ -84,11 +89,18 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
 function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
     $scope.submitSignupForm = function() {
         //$scope.error = "Регистрация временно приостановлена.";
-            $http.post('api/profile', $scope.user).
-                    success(function(data) {
-                $scope.error = "данные успешно отправлены";
-                console.log(data);
-            });
+        var profile = {
+            email: $scope.user.email,
+            passwd: $scope.user.passwd,
+            nickname: $scope.user.nickname,
+            fullname: $scope.user.fullname,
+            courses: []
+        };
+        $http.post('api/profile', profile).
+                success(function(data, status) {
+            $scope.error = "данные успешно отправлены";
+            console.log(data);
+        });
         console.log('signin');
     };
 }

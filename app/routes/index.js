@@ -7,9 +7,9 @@ exports.index = function(req, res) {
     res.render('index');
 };
 
-exports.template = function(req, res) {
+exports.partials = function(req, res) {
     var name = req.params.name;
-    res.render('tpl/' + name);
+    res.render('partials/' + name);
 };
 
 exports.redirect = function(req, res) {

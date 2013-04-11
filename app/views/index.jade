@@ -22,7 +22,7 @@ html(ng-app='openITMO')
         script(src='js/services.js')
     body(ng-controller='AppCtrl')
 
-        include tpl/navbar
+        include partials/navbar
 
         #wrap
             #push
@@ -31,5 +31,5 @@ html(ng-app='openITMO')
 
         div(ng-include, src="getAuthWindow()")
 
-        include tpl/banner
-        include tpl/footer
+        include partials/banner
+        include partials/footer
