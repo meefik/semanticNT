@@ -1,14 +1,35 @@
+/**
+ * Module dependencies
+ */
+
+var
+        crypto = require('crypto'),
+        mongoose = require('mongoose');
+
+/**
+ * Schemas
+ */
+
+var Schema = mongoose.Schema; //Schema.ObjectId
+
+var Courses = new Schema({
+    number: String
+});
+
+var Profile = new Schema({
+    email: {type: String, unique: true, required: true},
+    passwd: {type: String},
+    nickname: {type: String},
+    fullname: {type: String},
+    date: {type: Date},
+    courses: [Courses]
+});
+
+ProfileModel = mongoose.model('Profile', Profile);
+
 /*
  * Serve JSON to our AngularJS client
  */
-
-var crypto = require('crypto');
-
-exports.name = function(req, res) {
-    res.json({
-        name: 'Bob'
-    });
-};
 
 exports.profiles = function(req, res) {
     ProfileModel.find(function(err, profiles) {
@@ -16,20 +37,30 @@ exports.profiles = function(req, res) {
             res.json(profiles);
         } else {
             console.log(err);
+            //errorHandler(err);
         }
     });
 };
 
-exports.profile = function(req, res) {
+exports.getProfile = function(req, res) {
     var profile = req.session.profile;
     if (!profile) {
-        res.json(401);
+        res.send(401);
     } else {
         res.json(profile);
     };
 };
 
-exports.registration = function(req, res) {
+exports.setProfile = function(req, res) {
+    var profile = req.session.profile;
+    if (!profile) {
+        res.send(401);
+    } else {
+
+    };
+};
+
+exports.signup = function(req, res) {
     if (!req.body.email || !req.body.passwd)
         return res.send(400);
     var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
@@ -38,6 +69,7 @@ exports.registration = function(req, res) {
         passwd: passwd,
         nickname: req.body.nickname,
         fullname: req.body.fullname,
+        date: new Date,
         courses: req.body.courses
     });
     profile.save(function(err) {
@@ -58,6 +90,7 @@ exports.login = function(req, res) {
     ProfileModel.findOne({email: req.body.email}, function(err, profile) {
         if (!err && profile && profile.passwd === passwd) {
             req.session.profile = profile;
+            console.log(req.session.profile);
             return res.json(profile);
             //console.log("auth: ok");
         } else {
@@ -65,4 +98,12 @@ exports.login = function(req, res) {
             //console.log("auth: error");
         }
     });
+};
+
+exports.logout = function(req, res) {
+    if (req.session) {
+        req.session.destroy(function() {
+            res.send(200);
+        });
+    }
 };

@@ -11,9 +11,14 @@ function HomeCtrl($scope, Catalog) {
     $scope.orderProp = 'age';
 }
 
-function AppCtrl($rootScope, $scope, $cookieStore, $location) {
-    if (!$rootScope.profile)
-        $rootScope.profile = $cookieStore.get('profile');
+function AppCtrl($rootScope, $scope, $location, $http) {
+    if (!$rootScope.profile) {
+        $http.get('api/profile').
+                success(function(data, status) {
+            $rootScope.profile = data;
+            //console.log(status + ": " + data);
+        });
+    }
     
     $rootScope.isAuth = function() {
         if ($rootScope.profile)
@@ -23,9 +28,12 @@ function AppCtrl($rootScope, $scope, $cookieStore, $location) {
     };
     
     $rootScope.logout = function() {
-        $rootScope.profile = '';
-        $cookieStore.remove('profile');
-        $location.path("/");
+        $http.get('api/logout').
+                success(function(data, status) {
+            $rootScope.profile = '';
+            //$cookieStore.remove('profile');
+            $location.path("/");
+        });
     };
     
     $scope.getAuthWindow = function() {
@@ -54,16 +62,16 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
         }
         if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
         */    
-        return $http.post('api/login', $scope.user).
+        $http.post('api/login', $scope.user).
                 success(function(data, status) {
-            $scope.error = "данные успешно отправлены";
+            $scope.error = "";
+            $scope.user = {};
             $rootScope.profile = data;
-            console.log(status);
-            console.log(data);
+            $('#login').modal('hide');
         }).
                 error(function(data, status) {
-            console.log(status);
-            console.log(data);
+            $scope.error = "Доступ запрещен! Проверьте правильность введенных данных.";
+            console.log(status + ": " + data);
         });
             /*
             $scope.error = "";
@@ -89,6 +97,8 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
 function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
     $scope.submitSignupForm = function() {
         //$scope.error = "Регистрация временно приостановлена.";
+        if (!$scope.user)
+            return $scope.error = "Ошибка ввода данных!";
         var profile = {
             email: $scope.user.email,
             passwd: $scope.user.passwd,
@@ -96,12 +106,17 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
             fullname: $scope.user.fullname,
             courses: []
         };
-        $http.post('api/profile', profile).
+        $http.post('api/signup', profile).
                 success(function(data, status) {
-            $scope.error = "данные успешно отправлены";
-            console.log(data);
+            $scope.error = "";
+            $scope.user = {};
+            $rootScope.profile = data;
+            $('#signup').modal('hide');
+        }).
+                error(function(data, status) {
+            $scope.error = "Ошибка регистрации! Повторите попытку позже.";
+            console.log(status + ": " + data);
         });
-        console.log('signin');
     };
 }
 
