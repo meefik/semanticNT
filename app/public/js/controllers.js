@@ -32,7 +32,7 @@ function AppCtrl($rootScope, $scope, $cookieStore, $location) {
         if ($rootScope.isAuth())
             return '';
         else
-            return 'tpl/auth';
+            return 'tpl/auth.html';
     };
 }
 

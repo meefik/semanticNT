@@ -4,7 +4,7 @@
  */
 
 var express = require('express'),
-  stylus = require('stylus'),
+//  stylus = require('stylus'),
   routes = require('./routes'),
   api = require('./routes/api');
 
@@ -19,7 +19,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.logger('dev'));
-  app.use(stylus.middleware({ src: __dirname + '/public', compress: true }));
+//  app.use(stylus.middleware({ src: __dirname + '/public', compress: true }));
   app.use(express.static(__dirname + '/public'));
   app.use(app.router);
 });
@@ -35,14 +35,14 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
-app.get('/tpl/:name', routes.template);
+//app.get('/tpl/:name', routes.template);
 
 // JSON API
 
 app.get('/api/name', api.name);
 
 // redirect all others to the index (HTML5 history)
-app.get('*', routes.redirect);
+app.get('*', routes.e404);
 
 // Start server
 

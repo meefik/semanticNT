@@ -16,3 +16,7 @@ exports.redirect = function(req, res) {
     req.method = 'get';
     res.redirect('/');
 };
+
+exports.e404 = function(req, res) {
+    res.send(404);
+};
