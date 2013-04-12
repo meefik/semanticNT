@@ -1,7 +1,7 @@
-
 /**
  * Module dependencies.
  */
+ 
 
 var express = require('express'),
     mongoose = require('mongoose'),
@@ -46,42 +46,6 @@ db.once('open', function callback() {
 
 var Schema = mongoose.Schema; //Schema.ObjectId
 
-// Schemas
-
-var Sizes = new Schema({
-    size: {type: String, required: true},
-    available: {type: Number, required: true, min: 0, max: 1000},
-    sku: {
-        type: String,
-        required: true,
-        validate: [/[a-zA-Z0-9]/, 'Product sku should only have letters and numbers']
-    },
-    price: {type: Number, required: true, min: 0}
-});
-
-var Images = new Schema({
-    kind: {
-        type: String,
-        enum: ['thumbnail', 'catalog', 'detail', 'zoom'],
-        required: true
-    },
-    url: {type: String, required: true}
-});
-
-var Variants = new Schema({
-    color: String,
-    images: [Images],
-    sizes: [Sizes]
-});
-
-var Categories = new Schema({
-    name: String
-});
-
-var Catalogs = new Schema({
-    name: String
-});
-
 // Model
 
 var Courses = new Schema({
@@ -98,23 +62,6 @@ var Profile = new Schema({
 
 var ProfileModel = mongoose.model('Profile', Profile);
 
-/*
- var profile = new ProfileModel({ email: "teach@cde.ifmo.ru", passwd: "secret", nickname: "teach", fullname: "Ivanov Ivan Ivanovich", courses: [ {number: "CS0001"}, {number: "CS0007"}] });
- profile.save(function (err) {
- console.log(err) // ValidationError: Validator "min" failed for path name with value `4`
- //console.log(err.errors.age.value) // 4
- })
- 
- ProfileModel.find(
- function (err, products) {
- if (!err) {
- return console.log(products);
- } else {
- return console.log(err);
- }
- });
- 
- */
 
 /**
  * HTTP responses
