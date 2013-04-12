@@ -2,9 +2,10 @@
  * Module dependencies
  */
 
-var
-        crypto = require('crypto'),
-        mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var crypto = require('crypto');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 /**
  * Schemas
@@ -28,6 +29,34 @@ var Courses = new Schema({
 ProfileModel = mongoose.model('Profile', Profile);
 CoursesModel = mongoose.model('Courses', Courses);
 
+/**
+ * Auth
+ */
+
+passport.serializeUser(function(userid, done) {
+    done(null, userid);
+});
+
+passport.deserializeUser(function(userid, done) {
+    done(null, userid);
+});
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'passwd'
+},
+function(username, password, done) {
+    ProfileModel.findOne({email: username}, function(err, profile) {
+        var passwd = crypto.createHash('sha1').update(password).digest('hex');
+        if (!err && profile && profile.passwd === passwd) {
+            return done(null, profile._id);
+        } else {
+            return done(err);
+        }
+    });
+}
+));
+
 /*
  * Serve JSON to our AngularJS client
  */
@@ -40,6 +69,7 @@ exports.profiles = function(req, res) {
             return res.send(404);
         }
     });
+
     /*
     ProfileModel.find(function(err, profiles) {
         if (!err) {
@@ -52,7 +82,7 @@ exports.profiles = function(req, res) {
 };
 
 exports.getProfile = function(req, res) {
-    var userid = req.session.userid;
+    var userid = req.session.passport.user;
     if (userid) {
         ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
             if (!err) {
@@ -72,8 +102,8 @@ exports.getProfile = function(req, res) {
 };
 
 exports.setProfile = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
+    var userid = req.session.passport.user;
+    if (!userid)
         return res.send(401);
 };
 
@@ -96,14 +126,34 @@ exports.signup = function(req, res) {
     });
     newProfile.save(function(err, profile) { 
         if (!err) {
-            req.session.userid = newProfile._id;
-            return exports.getProfile(req, res);
+            //req.session.passport.user = newProfile._id;
+            return req.send(200);
         } else {
+            //todo: check this line
+            CoursesModel.findById(newCourses._id).remove();
             return res.send(500);
         }
     });
 };
 
+exports.login = function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.send(401);
+        }
+        req.logIn(user, function(err) {
+            if (err) {
+                return next(err);
+            }
+            return res.send(200);
+        });
+    })(req, res, next);
+};
+
+/*
 exports.login = function(req, res) {
     if (!req.body.email || !req.body.passwd)
         return res.send(400);
@@ -118,6 +168,7 @@ exports.login = function(req, res) {
         }
     });
 };
+*/
 
 exports.logout = function(req, res) {
     if (req.session) {
@@ -132,14 +183,13 @@ exports.logout = function(req, res) {
  */
 
 exports.getCourses = function(req, res) {
-    var userid = req.session.userid;
+    var userid = req.session.passport.user;
     if (!userid)
         return res.send(401);
 
     ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
         if (!err) {
-            req.session.courses = profile.courses.numbers;
-            return res.json(req.session.courses);
+            return res.json(profile.courses.numbers);
         } else {
             return res.send(500);
         }
@@ -147,7 +197,7 @@ exports.getCourses = function(req, res) {
 };
 
 exports.setCourses = function(req, res) {
-    var userid = req.session.userid;
+    var userid = req.session.passport.user;
     if (!userid)
         return res.send(401);
 

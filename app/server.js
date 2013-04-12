@@ -4,9 +4,12 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(express);
+//var everyauth = require('everyauth');
+var passport = require('passport');
+
 var routes = require('./routes');
 var api = require('./routes/api');
-var MongoStore = require('connect-mongo')(express);
 
 var app = module.exports = express.createServer();
 
@@ -24,7 +27,7 @@ app.configure(function() {
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
-
+    
     /*
     app.use(express.session({
         cookie: { path: '/', httpOnly: true, maxAge: null }, 
@@ -60,6 +63,10 @@ app.configure(function() {
 
     app.use(express.logger('dev'));
     app.use(express.static(__dirname + '/public'));
+    
+    app.use(passport.initialize());
+    app.use(passport.session());
+    
     app.use(app.router);
 });
 
@@ -81,6 +88,9 @@ app.configure('production', function() {
 /**
  * JSON API
  */
+
+app.get('/login', api.auth);
+app.post('/login', api.auth);
 
 app.get('/api/profiles', api.profiles);
 

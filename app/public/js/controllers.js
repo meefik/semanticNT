@@ -12,13 +12,12 @@ function HomeCtrl($scope, Catalog) {
 }
 
 function AppCtrl($rootScope, $scope, $location, $http) {
-    if (!$rootScope.profile) {
+    $rootScope.getProfile = function() {
         $http.get('api/profile').
                 success(function(data, status) {
             $rootScope.profile = data;
-            //console.log(status + ": " + data);
         });
-    }
+    };
     
     $rootScope.isAuth = function() {
         if ($rootScope.profile)
@@ -41,6 +40,10 @@ function AppCtrl($rootScope, $scope, $location, $http) {
             return '';
         else
             return 'tpl/auth.html';
+    };
+    
+    if (!$rootScope.profile) {
+        $rootScope.getProfile();
     };
 }
 
@@ -66,7 +69,7 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
                 success(function(data, status) {
             $scope.error = "";
             $scope.user = {};
-            $rootScope.profile = data;
+            $rootScope.getProfile();
             $('#login').modal('hide');
         }).
                 error(function(data, status) {
@@ -109,7 +112,7 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
                 success(function(data, status) {
             $scope.error = "";
             $scope.user = {};
-            $rootScope.profile = data;
+            $rootScope.getProfile();
             $('#signup').modal('hide');
         }).
                 error(function(data, status) {
