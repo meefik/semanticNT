@@ -103,7 +103,7 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
             email: $scope.user.email,
             passwd: $scope.user.passwd,
             nickname: $scope.user.nickname,
-            fullname: $scope.user.fullname,
+            fullname: $scope.user.fullname
         };
         $http.post('api/signup', profile).
                 success(function(data, status) {
@@ -139,7 +139,7 @@ function MyCoursesCtrl($rootScope, $scope, $cookieStore, $http, Catalog) {
                 break;
             }
         }
-        $http.post('api/courses', {courses: $rootScope.profile.courses}).
+        $http.post('api/courses', {courses: courses}).
                 success(function(data, status) {
             $rootScope.profile.courses = courses;
         });
@@ -172,7 +172,7 @@ function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, $http, Course)
             // clone courses variable
             var courses = $rootScope.profile.courses.slice(0);
             courses.push(courseid);
-            $http.post('api/courses', {courses: $rootScope.profile.courses}).
+            $http.post('api/courses', {courses: courses}).
                     success(function(data, status) {
                 $rootScope.profile.courses = courses;
             });

@@ -33,9 +33,9 @@ CoursesModel = mongoose.model('Courses', Courses);
  */
 
 exports.profiles = function(req, res) {
-    ProfileModel.findOne({}).populate('courses').run(function(err, courses) { 
+    ProfileModel.find().populate('courses').exec(function(err, profiles) { 
         if (!err) {
-            return res.json(courses);
+            return res.json(profiles);
         } else {
             return res.send(404);
         }
@@ -52,14 +52,19 @@ exports.profiles = function(req, res) {
 };
 
 exports.getProfile = function(req, res) {
-    var profile = req.session.profile;
-    if (profile) {
-        var courses = req.session.courses || [];
-        return res.json({
-            email: profile.email,
-            nickname: profile.nickname,
-            fullname: profile.fullname,
-            courses: courses
+    var userid = req.session.userid;
+    if (userid) {
+        ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
+            if (!err) {
+                return res.json({
+                    email: profile.email,
+                    nickname: profile.nickname,
+                    fullname: profile.fullname,
+                    courses: profile.courses.numbers
+                });
+            } else {
+                return res.send(500);
+            }
         });
     } else {
         return res.send(401);
@@ -91,7 +96,7 @@ exports.signup = function(req, res) {
     });
     newProfile.save(function(err, profile) { 
         if (!err) {
-            req.session.profile = newProfile;
+            req.session.userid = newProfile._id;
             return exports.getProfile(req, res);
         } else {
             return res.send(500);
@@ -103,15 +108,13 @@ exports.login = function(req, res) {
     if (!req.body.email || !req.body.passwd)
         return res.send(400);
     
-    var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
-    ProfileModel.findOne({email: req.body.email}).populate('courses').exec(function(err, profile) {
+    ProfileModel.findOne({email: req.body.email}, function(err, profile) {
+        var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
         if (!err && profile && profile.passwd === passwd) {
-            req.session.profile = profile;
+            req.session.userid = profile._id;
             return exports.getProfile(req, res);
-            //console.log("auth: ok");
         } else {
             return res.send(403);
-            //console.log("auth: error");
         }
     });
 };
@@ -129,35 +132,29 @@ exports.logout = function(req, res) {
  */
 
 exports.getCourses = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
+    var userid = req.session.userid;
+    if (!userid)
         return res.send(401);
 
-    var courses = req.session.courses;
-    if (!courses) {
-        ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
-            if (!err) {
-                req.session.courses = profile.courses.numbers;
-                return res.json(req.session.courses);
-            } else {
-                return res.send(500);
-            }
-        });
-    } else {
-        return res.json(courses);
-    }
+    ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
+        if (!err) {
+            req.session.courses = profile.courses.numbers;
+            return res.json(req.session.courses);
+        } else {
+            return res.send(500);
+        }
+    });
 };
 
 exports.setCourses = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
+    var userid = req.session.userid;
+    if (!userid)
         return res.send(401);
 
-    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
+    ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
         if (!err) {
             CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: req.body.courses}, function(err) {
                 if (!err) {
-                    req.session.courses = req.body.courses;
                     return res.send(200);
                 } else {
                     return res.send(500);
@@ -169,7 +166,7 @@ exports.setCourses = function(req, res) {
     });
 };
 
-// fixme: add req.session.courses
+// fixme: old code
 exports.addCourse = function(req, res) {
     var profile = req.session.profile;
     if (!profile)
@@ -191,7 +188,7 @@ exports.addCourse = function(req, res) {
     });
 };
 
-// fixme: add req.session.courses
+// fixme: old code
 exports.delCourse = function(req, res) {
     var profile = req.session.profile;
     if (!profile)
