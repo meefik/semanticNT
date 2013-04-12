@@ -123,11 +123,11 @@ exports.logout = function(req, res) {
  */
 
 exports.addCourse = function(req, res) {
-    //var profile = req.session.profile;
-    //if (!profile)
-    //    return res.send(401);
+    var profile = req.session.profile;
+    if (!profile)
+        return res.send(401);
 
-    ProfileModel.findById(/*profile._id*/'5167e259e30a06ad15000002').populate('courses').exec(function(err, profile) { 
+    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) { 
         if (!err) {
             var courseid = req.params.id;
             profile.courses.numbers.push(courseid);
@@ -144,11 +144,11 @@ exports.addCourse = function(req, res) {
 };
 
 exports.delCourse = function(req, res) {
-    //var profile = req.session.profile;
-    //if (!profile)
-    //    return res.send(401);
+    var profile = req.session.profile;
+    if (!profile)
+        return res.send(401);
 
-    ProfileModel.findById(/*profile._id*/'5167e259e30a06ad15000002').populate('courses').exec(function(err, profile) {
+    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
         if (!err) {
             var courseid = req.params.id;
             var arr = profile.courses.numbers;
