@@ -104,7 +104,6 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
             passwd: $scope.user.passwd,
             nickname: $scope.user.nickname,
             fullname: $scope.user.fullname,
-            courses: []
         };
         $http.post('api/signup', profile).
                 success(function(data, status) {

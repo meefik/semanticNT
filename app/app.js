@@ -101,6 +101,10 @@ app.post('/api/signup', api.signup);
 app.post('/api/login', api.login);
 app.get('/api/logout', api.logout);
 
+app.get('/api/courses', api.getCourses);
+app.put('/api/course/:id', api.addCourse);
+app.del('/api/course/:id', api.delCourse);
+
 /**
  * Return 404 error
  */
