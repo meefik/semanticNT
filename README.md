@@ -1,1 +1,7 @@
-Licensed under the [GPL version 3](http://www.gnu.org/licenses/) or later.
+openITMO
+========
+
+Сетевой проект разработки системы открытого онлайн-обучения НИУ ИТМО.
+Опубликован под лицензией [GPL версии 3](http://www.gnu.org/licenses/) или выше.
+
+Адрес в Интернете: http://open.ifmo.ru/
