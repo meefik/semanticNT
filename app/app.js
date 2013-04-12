@@ -95,13 +95,15 @@ db.once('open', function callback() {
 
 app.get('/api/profiles', api.profiles);
 
-app.get('/api/profile', api.getProfile);
-app.post('/api/profile', api.setProfile);
 app.post('/api/signup', api.signup);
 app.post('/api/login', api.login);
 app.get('/api/logout', api.logout);
 
+app.get('/api/profile', api.getProfile);
+app.post('/api/profile', api.setProfile);
+
 app.get('/api/courses', api.getCourses);
+app.post('/api/courses', api.setCourses);
 app.put('/api/course/:id', api.addCourse);
 app.del('/api/course/:id', api.delCourse);
 

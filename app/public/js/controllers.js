@@ -36,7 +36,7 @@ function AppCtrl($rootScope, $scope, $location, $http) {
         });
     };
     
-    $scope.getAuthWindow = function() {
+    $scope.getAuthTpl = function() {
         if ($rootScope.isAuth())
             return '';
         else
@@ -71,7 +71,7 @@ function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
         }).
                 error(function(data, status) {
             $scope.error = "Доступ запрещен! Проверьте правильность введенных данных.";
-            console.log(status + ": " + data);
+            //console.log(status + ": " + data);
         });
             /*
             $scope.error = "";
@@ -114,7 +114,7 @@ function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
         }).
                 error(function(data, status) {
             $scope.error = "Ошибка регистрации! Повторите попытку позже.";
-            console.log(status + ": " + data);
+            //console.log(status + ": " + data);
         });
     };
 }
@@ -124,21 +124,25 @@ function CoursesCtrl($scope, Catalog) {
     $scope.orderProp = 'age';
 }
 
-function MyCoursesCtrl($rootScope, $scope, $cookieStore, Catalog) {
+function MyCoursesCtrl($rootScope, $scope, $cookieStore, $http, Catalog) {
     $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
-    
+
     $scope.unReg = function(courseid) {
         if (!$rootScope.profile)
             return false;
-        var arr = $rootScope.profile.courses;
-        for (var i in arr) {
-            if (arr[i] === courseid) {
-                $rootScope.profile.courses.splice(i,1);
+        // clone courses variable
+        var courses = $rootScope.profile.courses.slice(0);
+        for (var i in courses) {
+            if (courses[i] === courseid) {
+                courses.splice(i, 1);
                 break;
             }
         }
-        $cookieStore.put('profile', $rootScope.profile);
+        $http.post('api/courses', {courses: $rootScope.profile.courses}).
+                success(function(data, status) {
+            $rootScope.profile.courses = courses;
+        });
     };
 }
 
@@ -146,7 +150,7 @@ function ProfileCtrl() {
     
 }
 
-function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
+function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, $http, Course) {
     $scope.course = Course.get({courseId: $routeParams.courseId, 
         partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
@@ -162,10 +166,16 @@ function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, Course) {
     };
     
     $scope.setReg = function(courseid) {
-        if (!$rootScope.profile) return false;
+        if (!$rootScope.profile)
+            return false;
         if (!$scope.isReg(courseid)) {
-            $rootScope.profile.courses.push(courseid);
-            $cookieStore.put('profile', $rootScope.profile);
+            // clone courses variable
+            var courses = $rootScope.profile.courses.slice(0);
+            courses.push(courseid);
+            $http.post('api/courses', {courses: $rootScope.profile.courses}).
+                    success(function(data, status) {
+                $rootScope.profile.courses = courses;
+            });
         }
     };
 }

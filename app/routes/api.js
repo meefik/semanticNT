@@ -38,7 +38,7 @@ exports.profiles = function(req, res) {
             return res.json(courses);
         } else {
             return res.send(404);
-        };
+        }
     });
     /*
     ProfileModel.find(function(err, profiles) {
@@ -54,10 +54,16 @@ exports.profiles = function(req, res) {
 exports.getProfile = function(req, res) {
     var profile = req.session.profile;
     if (profile) {
-        return res.json(profile);
+        var courses = req.session.courses || [];
+        return res.json({
+            email: profile.email,
+            nickname: profile.nickname,
+            fullname: profile.fullname,
+            courses: courses
+        });
     } else {
         return res.send(401);
-    };
+    }
 };
 
 exports.setProfile = function(req, res) {
@@ -86,10 +92,10 @@ exports.signup = function(req, res) {
     newProfile.save(function(err, profile) { 
         if (!err) {
             req.session.profile = newProfile;
-            return res.json(profile);
+            return exports.getProfile(req, res);
         } else {
             return res.send(500);
-        };
+        }
     });
 };
 
@@ -98,15 +104,15 @@ exports.login = function(req, res) {
         return res.send(400);
     
     var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
-    ProfileModel.findOne({email: req.body.email}, function(err, profile) {
+    ProfileModel.findOne({email: req.body.email}).populate('courses').exec(function(err, profile) {
         if (!err && profile && profile.passwd === passwd) {
             req.session.profile = profile;
-            return res.json(profile);
+            return exports.getProfile(req, res);
             //console.log("auth: ok");
         } else {
             return res.send(403);
             //console.log("auth: error");
-        };
+        }
     });
 };
 
@@ -115,13 +121,55 @@ exports.logout = function(req, res) {
         req.session.destroy(function() {
             return res.send(200);
         });
-    };
+    }
 };
 
 /**
  * My Courses
  */
 
+exports.getCourses = function(req, res) {
+    var profile = req.session.profile;
+    if (!profile)
+        return res.send(401);
+
+    var courses = req.session.courses;
+    if (!courses) {
+        ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
+            if (!err) {
+                req.session.courses = profile.courses.numbers;
+                return res.json(req.session.courses);
+            } else {
+                return res.send(500);
+            }
+        });
+    } else {
+        return res.json(courses);
+    }
+};
+
+exports.setCourses = function(req, res) {
+    var profile = req.session.profile;
+    if (!profile)
+        return res.send(401);
+
+    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
+        if (!err) {
+            CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: req.body.courses}, function(err) {
+                if (!err) {
+                    req.session.courses = req.body.courses;
+                    return res.send(200);
+                } else {
+                    return res.send(500);
+                }
+            });
+        } else {
+            return res.send(500);
+        }
+    });
+};
+
+// fixme: add req.session.courses
 exports.addCourse = function(req, res) {
     var profile = req.session.profile;
     if (!profile)
@@ -139,10 +187,11 @@ exports.addCourse = function(req, res) {
             });
         } else {
             return res.send(500);
-        };
+        }
     });
 };
 
+// fixme: add req.session.courses
 exports.delCourse = function(req, res) {
     var profile = req.session.profile;
     if (!profile)
@@ -167,20 +216,5 @@ exports.delCourse = function(req, res) {
         } else {
             return res.send(500);
         }
-        ;
-    });
-};
-
-exports.getCourses = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
-        return res.send(401);
-
-    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) { 
-        if (!err) {
-            return res.json(profile.courses.numbers);
-        } else {
-            return res.send(500);
-        };
     });
 };
