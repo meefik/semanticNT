@@ -74,6 +74,26 @@ function(username, password, done) {
 }
 ));
 
+/**
+ * Schedule
+ */
+
+var cronJob = require('cron').CronJob;
+var job = new cronJob({
+    cronTime: '00 00 * * * *', // every hour
+    onTick: function() {
+        // Delete records that are older one hour
+        var d = new Date();
+        d.setHours(d.getHours()-1);
+        ActivationModel.remove({date: {"$lt": d}}, function(err, data) {
+            console.log(data);
+        });
+    },
+    start: false
+    //timeZone: "Europe/Moscow"
+});
+job.start();
+
 /*
  * Serve JSON to our AngularJS client
  */
@@ -86,16 +106,6 @@ exports.profiles = function(req, res) {
             return res.send(404);
         }
     });
-
-    /*
-    ProfileModel.find(function(err, profiles) {
-        if (!err) {
-            return res.json(profiles);
-        } else {
-            errorHandler(err);
-        };
-    });
-    */
 };
 
 // Get profile variables
@@ -108,7 +118,6 @@ exports.getProfile = function(req, res) {
                     email: data.email,
                     nickname: data.nickname,
                     fullname: data.fullname
-                    //courses: data.courses.numbers
                 });
             } else {
                 console.log(err);
@@ -131,13 +140,6 @@ exports.setProfile = function(req, res) {
 exports.register = function(req, res) {
     if (!req.body.email || !req.body.passwd)
         return res.send(400);
-
-    /*
-    var newCourses = new MyCoursesModel({
-        numbers: []
-    });
-    newCourses.save();
-    */
     
     var newProfile = new ProfileModel({
         email: req.body.email,
@@ -145,15 +147,14 @@ exports.register = function(req, res) {
         nickname: req.body.nickname,
         fullname: req.body.fullname,
         date: new Date
-        //courses: newCourses._id
     });
     newProfile.save(function(err, data) { 
         if (!err) {
             req.session.passport.user = data._id;
             return res.send(200);
         } else {
-            console.log(err);
-            //MyCoursesModel.findById(newCourses._id).remove();
+            //console.log(err);
+            // if user exists (dublicate)
             return res.send(403);
         }
     });
