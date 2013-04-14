@@ -2,23 +2,22 @@
 
 /* Filters */
 
-angular.module('CatalogFilter', []).
-        filter('checkmark', function() {
+angular.module('app.filters', [])
+        .filter('checkmark', function() {
     return function(input) {
         return input ? '\u2713' : '\u2718';
     };
-});
-
-angular.module('MyCoursesFilter', [])
-        .filter('isStatus', function($rootScope) {
-    return function(input) {
+})
+        .filter('isStatus', function() {
+    return function(input, courses) {
         var out = [];
-        var reg = $rootScope.profile.courses;
-        for (var i = 0; i < input.length; i++) {
-            for (var j = 0; j < reg.length; j++) {
-                if (input[i].id === reg[j]) {
-                    out.push(input[i]);
-                    break;
+        if (courses) {
+            for (var i = 0; i < input.length; i++) {
+                for (var j = 0; j < courses.length; j++) {
+                    if (input[i].id === courses[j]) {
+                        out.push(input[i]);
+                        break;
+                    }
                 }
             }
         }

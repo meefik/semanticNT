@@ -18,16 +18,17 @@ var Profile = new Schema({
     passwd: { type: String },
     nickname: { type: String },
     fullname: { type: String },
-    date: { type: Date },
-    courses: { type: Schema.ObjectId, ref: 'Courses' }
+    date: { type: Date }
+    //courses: { type: Schema.ObjectId, ref: 'Courses' }
 });
 
-var Courses = new Schema({
-    numbers: [String]
+var MyCourses = new Schema({
+    userid: { type: String, unique: true, required: true },
+    courses: [String]
 });
 
 ProfileModel = mongoose.model('Profile', Profile);
-CoursesModel = mongoose.model('Courses', Courses);
+MyCoursesModel = mongoose.model('MyCourses', MyCourses);
 
 /**
  * Auth
@@ -46,10 +47,10 @@ passport.use(new LocalStrategy({
     passwordField: 'passwd'
 },
 function(username, password, done) {
-    ProfileModel.findOne({email: username}, function(err, profile) {
+    ProfileModel.findOne({email: username}, function(err, data) {
         var passwd = crypto.createHash('sha1').update(password).digest('hex');
-        if (!err && profile && profile.passwd === passwd) {
-            return done(null, profile._id);
+        if (!err && data && data.passwd === passwd) {
+            return done(null, data._id);
         } else {
             return done(err);
         }
@@ -62,9 +63,9 @@ function(username, password, done) {
  */
 
 exports.profiles = function(req, res) {
-    ProfileModel.find().populate('courses').exec(function(err, profiles) { 
+    ProfileModel.find(function(err, data) { 
         if (!err) {
-            return res.json(profiles);
+            return res.json(data);
         } else {
             return res.send(404);
         }
@@ -81,61 +82,68 @@ exports.profiles = function(req, res) {
     */
 };
 
+// Get profile variables
 exports.getProfile = function(req, res) {
     var userid = req.session.passport.user;
     if (userid) {
-        ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
+        ProfileModel.findById(userid, function(err, data) {
             if (!err) {
                 return res.json({
-                    email: profile.email,
-                    nickname: profile.nickname,
-                    fullname: profile.fullname,
-                    courses: profile.courses.numbers
+                    email: data.email,
+                    nickname: data.nickname,
+                    fullname: data.fullname
+                    //courses: data.courses.numbers
                 });
             } else {
+                console.log(err);
                 return res.send(500);
             }
         });
     } else {
-        return res.send(401);
+        return res.json({});
     }
 };
 
+// Set profile variables
 exports.setProfile = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
         return res.send(401);
 };
 
-exports.signup = function(req, res) {
+// New user registration
+exports.register = function(req, res) {
     if (!req.body.email || !req.body.passwd)
         return res.send(400);
 
-    var newCourses = new CoursesModel({
+    /*
+    var newCourses = new MyCoursesModel({
         numbers: []
     });
     newCourses.save();
+    */
     
     var newProfile = new ProfileModel({
         email: req.body.email,
         passwd: crypto.createHash('sha1').update(req.body.passwd).digest('hex'),
         nickname: req.body.nickname,
         fullname: req.body.fullname,
-        date: new Date,
-        courses: newCourses._id
+        date: new Date
+        //courses: newCourses._id
     });
-    newProfile.save(function(err, profile) { 
+    newProfile.save(function(err, data) { 
         if (!err) {
-            //req.session.passport.user = newProfile._id;
-            return req.send(200);
+            req.session.passport.user = data._id;
+            return res.send(200);
         } else {
-            //todo: check this line
-            CoursesModel.findById(newCourses._id).remove();
+            console.log(err);
+            //MyCoursesModel.findById(newCourses._id).remove();
             return res.send(500);
         }
     });
 };
 
+// Sign In
 exports.login = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -170,6 +178,7 @@ exports.login = function(req, res) {
 };
 */
 
+// Logout
 exports.logout = function(req, res) {
     if (req.session) {
         req.session.destroy(function() {
@@ -182,35 +191,36 @@ exports.logout = function(req, res) {
  * My Courses
  */
 
+// Get list of registered courses
 exports.getCourses = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
         return res.send(401);
 
-    ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
+    MyCoursesModel.findOne({userid: userid}, function(err, data) {
         if (!err) {
-            return res.json(profile.courses.numbers);
+            var courses = [];
+            if (data)
+                courses = data.courses;
+            return res.json({courses: courses});
         } else {
+            console.log(err);
             return res.send(500);
         }
     });
 };
 
+// Set list of registered courses
 exports.setCourses = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
         return res.send(401);
 
-    ProfileModel.findById(userid).populate('courses').exec(function(err, profile) {
+    MyCoursesModel.findOneAndUpdate({userid: userid}, {courses: req.body.courses}, function(err) {
         if (!err) {
-            CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: req.body.courses}, function(err) {
-                if (!err) {
-                    return res.send(200);
-                } else {
-                    return res.send(500);
-                }
-            });
+            return res.send(200);
         } else {
+            console.log(err);
             return res.send(500);
         }
     });

@@ -34,9 +34,10 @@ app.configure(function() {
         secret:'dfe9df2b07fb476e6b28fc70a814173e'
     }));
     */
-   
+
     app.use(express.session({
         secret: 'dfe9df2b07fb476e6b28fc70a814173e',
+        cookie: {maxAge: 1000 * 60 * 60},
         store: new MongoStore({
             url: dbUrl
         })
@@ -44,7 +45,7 @@ app.configure(function() {
 
     /*
     app.use(express.session({
-        cookie: {maxAge: 1000 * 60 * 60}, // month
+        cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, // month
         secret: 'dfe9df2b07fb476e6b28fc70a814173e',
         store: new SessionStore({url: dbUrl, interval: 1000 * 60 * 60})
     }));
@@ -55,7 +56,7 @@ app.configure(function() {
      secret: 'dfe9df2b07fb476e6b28fc70a814173e',
      key: 'connect.sid',
      //httpOnly: false,
-     cookie: { maxAge: 1000 * 60 * 24 }
+     cookie: { maxAge: 1000 * 60 * 60 }
      }));
      */
     
@@ -89,22 +90,29 @@ app.configure('production', function() {
  * JSON API
  */
 
-app.get('/login', api.auth);
-app.post('/login', api.auth);
-
+// for developement
 app.get('/api/profiles', api.profiles);
 
-app.post('/api/signup', api.signup);
+// New user registration
+app.post('/api/register', api.register);
+// Sign In
 app.post('/api/login', api.login);
+// Logout
 app.get('/api/logout', api.logout);
 
+// Get profile variables
 app.get('/api/profile', api.getProfile);
+// Set profile variables
 app.post('/api/profile', api.setProfile);
 
-app.get('/api/courses', api.getCourses);
-app.post('/api/courses', api.setCourses);
-app.put('/api/course/:id', api.addCourse);
-app.del('/api/course/:id', api.delCourse);
+// Get list of registered courses
+app.get('/api/mycourses', api.getCourses);
+// Set list of registered courses
+app.post('/api/mycourses', api.setCourses);
+
+// other
+//app.put('/api/course/:id', api.addCourse);
+//app.del('/api/course/:id', api.delCourse);
 
 /**
  * Return 404 error

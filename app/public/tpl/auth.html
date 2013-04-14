@@ -9,25 +9,25 @@
             <div class="alert alert-error" ng-show="error">
                 {{error}}
             </div>
-            <div class="control-group">
+            <div class="control-group" ng-class="{error: loginForm.inputEmail.$invalid}">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
-                    <input ng-model="user.email" type="text" id="inputEmail" placeholder="yourname@domain.com">
+                    <input id="inputEmail" ng-model="user.email" type="email" name="inputEmail" placeholder="yourname@domain.com" required>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" ng-class="{error: loginForm.inputPassword.$invalid}">
                 <label class="control-label" for="inputPassword">Пароль:</label>
                 <div class="controls">
-                    <input ng-model="user.passwd" type="password" id="inputPassword" placeholder="******">
+                    <input id="inputPassword" ng-model="user.passwd" ng-minlength="4" ng-maxlength="32" type="password" name="inputPassword" placeholder="******" required>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <div style="float: left; text-align: left; margin-top: 4px">
-                <a href="#signup" data-toggle="modal" onclick="$('#login').modal('hide');">Нет учетной записи</a> или <a href="#forgot" data-toggle="modal">забыли пароль</a>?
+                <a href="#signup" data-toggle="modal" ng-click="reset()">Нет учетной записи</a> или <a href="#forgot" data-toggle="modal">забыли пароль</a>?
             </div>
             <div style="float: right">
-                <button type="submit" id="submit" class="btn btn-primary">Войти</button>
+                <button id="submit" ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary">Войти</button>
             </div>
         </div>
     </div>
@@ -44,50 +44,50 @@
             <div class="alert alert-error" ng-show="error">
                 {{error}}
             </div>
-            <div class="control-group">
+            <div class="control-group" ng-class="{error: signupForm.inputEmail.$invalid}">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
-                    <input ng-model="user.email" type="email" id="inputEmail" placeholder="yourname@domain.com">
+                    <input  id="inputEmail" ng-model="user.email" ng-minlength="4" ng-maxlength="32" type="email" name="inputEmail" placeholder="yourname@domain.com" required>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" ng-class="{error: signupForm.inputPassword.$invalid}">
                 <label class="control-label" for="inputPassword">Пароль:</label>
                 <div class="controls">
-                    <input ng-model="user.passwd" type="password" id="inputPassword" placeholder="******">
+                    <input id="inputPassword" ng-model="user.passwd" ng-minlength="4" ng-maxlength="32" type="password" name="inputPassword" placeholder="******" required>
                 </div>
             </div>
-            <div class="control-group">
+            <div class="control-group" ng-class="{error: signupForm.inputRePassword.$invalid}">
                 <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
                 <div class="controls">
-                    <input ng-model="user.repasswd" type="password" id="inputRePassword" placeholder="******">
+                    <input id="inputRePassword" ng-model="user.repasswd" type="password" name="inputRePassword" placeholder="******" repeat-password="inputPassword" required>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputNickname">Псевдоним:</label>
                 <div class="controls">
-                    <input ng-model="user.nickname" type="text" id="inputNickname" placeholder="виден остальным участникам">
+                    <input id="inputNickname" ng-model="user.nickname" type="text" name="inputNickname" placeholder="виден остальным участникам">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="inputFullname">Полное имя:</label>
                 <div class="controls">
-                    <input ng-model="user.fullname" type="text" id="inputFullname" placeholder="указывается в сертификате">
+                    <input id="inputFullname" ng-model="user.fullname" type="text" name="inputFullname" placeholder="указывается в сертификате">
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
                     <label class="checkbox">
-                        <input ng-model="user.terms" type="checkbox">Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
+                        <input ng-model="user.terms" type="checkbox" required>Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
                     </label>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <div style="float: left; text-align: left; margin-top: 4px">
-                Уже есть учетная запись? <a href="#login" data-toggle="modal" onclick="$('#signup').modal('hide');">Авторизоваться</a>.
+                Уже есть учетная запись? <a href="#login" data-toggle="modal" ng-click="reset()">Авторизоваться</a>.
             </div>
             <div style="float: right">
-                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                <button id="submit" ng-disabled="signupForm.$invalid" type="submit" class="btn btn-primary">Зарегистрироваться</button>
             </div>
         </div>
     </div>

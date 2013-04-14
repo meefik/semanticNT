@@ -2,25 +2,11 @@
 
 /* Controllers */
 
-function AboutCtrl($scope) {
-
-}
-
-function HomeCtrl($scope, Catalog) {
-    $scope.catalog = Catalog.query();
-    $scope.orderProp = 'age';
-}
-
-function AppCtrl($rootScope, $scope, $location, $http) {
-    $rootScope.getProfile = function() {
-        $http.get('api/profile').
-                success(function(data, status) {
-            $rootScope.profile = data;
-        });
-    };
+function AppCtrl($rootScope, $scope, $location, $http, Profile) {
+    $rootScope.profile = Profile.query();
     
     $rootScope.isAuth = function() {
-        if ($rootScope.profile)
+        if ($rootScope.profile.email)
             return true;
         else
             return false;
@@ -30,7 +16,6 @@ function AppCtrl($rootScope, $scope, $location, $http) {
         $http.get('api/logout').
                 success(function(data, status) {
             $rootScope.profile = '';
-            //$cookieStore.remove('profile');
             $location.path("/");
         });
     };
@@ -41,85 +26,65 @@ function AppCtrl($rootScope, $scope, $location, $http) {
         else
             return 'tpl/auth.html';
     };
-    
-    if (!$rootScope.profile) {
-        $rootScope.getProfile();
-    };
 }
 
-function LoginFormCtrl($rootScope, $scope, $cookieStore, $http) {
+function LoginFormCtrl($rootScope, $scope, $http, Profile) {
+    $scope.reset = function() {
+        $scope.error = "";
+        $scope.user = {};
+        $('#login').modal('hide');
+    };
     $scope.submitLoginForm = function() {
-        /*
-        if ((!user) || ((user.email.length === 0) || (user.password.length === 0))) {
-            $scope.error = "Не заполнены все обязательные поля!";
-            return false;
-        };
-        var re = /\S+@\S+\.\S+/;
-        if (!re.test(user.email)) {
-            $scope.error = "Адрес электронной почты не соответствует формату!";
-            return false;
-        }
-        if (user.password.length < 4) {
-            $scope.error = "Длина пароля меньше четырех символов!";
-            return false;
-        }
-        if ((user.email === "teach@cde.ifmo.ru") && (user.password === "teach")) {
-        */    
         $http.post('api/login', $scope.user).
                 success(function(data, status) {
-            $scope.error = "";
-            $scope.user = {};
-            $rootScope.getProfile();
-            $('#login').modal('hide');
+            $rootScope.profile = Profile.query();
+            $scope.reset();
         }).
                 error(function(data, status) {
+            $scope.user.passwd = "";
             $scope.error = "Доступ запрещен! Проверьте правильность введенных данных.";
-            //console.log(status + ": " + data);
         });
-            /*
-            $scope.error = "";
-            // get profile from DB
-            $rootScope.profile = {
-                "login": "teach",
-                "courses": [],
-                "email": user.email,
-                "fullname": "Ivanov S."
-            };
-            $cookieStore.put('profile', $rootScope.profile);
-            $('#login').modal('hide');
-            $scope.user = {};
-            */
-        /*} else {
-            $scope.error = "Введен неправильный адрес электронной почты или пароль!";
-            return false;
-        }*/
-        //console.log('signin');
     };
 }
 
-function SignupFormCtrl($rootScope, $scope, $cookieStore, $http) {
+function SignupFormCtrl($rootScope, $scope, $http, Profile) {
+    $scope.reset = function() {
+        $scope.error = "";
+        $scope.user = {};
+        $('#signup').modal('hide');
+    };
+    $scope.checkPassword = function() {
+        //$scope.signupForm.inputRePassword.$error.dontMatch = $scope.user.passwd !== $scope.user.repasswd;
+        $scope.signupForm.inputRePassword.$invalid = $scope.user.passwd !== $scope.user.repasswd;
+    };
     $scope.submitSignupForm = function() {
         //$scope.error = "Регистрация временно приостановлена.";
-        if (!$scope.user)
-            return $scope.error = "Ошибка ввода данных!";
         var profile = {
             email: $scope.user.email,
             passwd: $scope.user.passwd,
             nickname: $scope.user.nickname,
             fullname: $scope.user.fullname
         };
-        $http.post('api/signup', profile).
+        $http.post('api/register', profile).
                 success(function(data, status) {
-            $scope.error = "";
-            $scope.user = {};
-            $rootScope.getProfile();
-            $('#signup').modal('hide');
+            $rootScope.profile = Profile.query();
+            $scope.reset();
         }).
                 error(function(data, status) {
+            $scope.user.passwd = "";
+            $scope.user.repasswd = "";
             $scope.error = "Ошибка регистрации! Повторите попытку позже.";
-            //console.log(status + ": " + data);
         });
     };
+}
+
+function AboutCtrl($scope) {
+
+}
+
+function HomeCtrl($scope, Catalog) {
+    $scope.catalog = Catalog.query();
+    $scope.orderProp = 'age';
 }
 
 function CoursesCtrl($scope, Catalog) {
@@ -127,25 +92,37 @@ function CoursesCtrl($scope, Catalog) {
     $scope.orderProp = 'age';
 }
 
-function MyCoursesCtrl($rootScope, $scope, $cookieStore, $http, Catalog) {
+function MyCoursesCtrl($scope, Catalog, MyCourses) {
     $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
-
+    
+    $scope.mycourses = MyCourses.query();
+    
     $scope.unReg = function(courseid) {
-        if (!$rootScope.profile)
+        if (!$scope.mycourses)
             return false;
         // clone courses variable
-        var courses = $rootScope.profile.courses.slice(0);
+        var courses = $scope.mycourses.courses.slice(0);
+        // remove courseid from courses array
         for (var i in courses) {
             if (courses[i] === courseid) {
                 courses.splice(i, 1);
                 break;
             }
         }
-        $http.post('api/courses', {courses: courses}).
-                success(function(data, status) {
-            $rootScope.profile.courses = courses;
+        // save courses array to server
+        var newMyCourses = new MyCourses({courses: courses});
+        newMyCourses.$save({},function(){
+            $scope.mycourses.courses = courses;
         });
+        
+        /*
+        $http.post('api/mycourses', {courses: courses}).
+                success(function(data, status) {
+            $rootScope.courses = courses;
+        });
+         */
+        
     };
 }
 
@@ -153,32 +130,40 @@ function ProfileCtrl() {
     
 }
 
-function InfoCtrl($rootScope, $scope, $cookieStore, $routeParams, $http, Course) {
+function InfoCtrl($scope, $routeParams, Course, MyCourses) {
     $scope.course = Course.get({courseId: $routeParams.courseId, 
         partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
     });
     
+    $scope.mycourses = MyCourses.query();
+    
     $scope.isReg = function(courseid) {
-        if (!$rootScope.profile) return false;
-        for (var i in $rootScope.profile.courses) {
-            if (courseid === $rootScope.profile.courses[i])
+        if (!$scope.mycourses) return false;
+        for (var i in $scope.mycourses.courses) {
+            if (courseid === $scope.mycourses.courses[i])
                 return true;
         }
         return false;
     };
     
     $scope.setReg = function(courseid) {
-        if (!$rootScope.profile)
-            return false;
         if (!$scope.isReg(courseid)) {
             // clone courses variable
-            var courses = $rootScope.profile.courses.slice(0);
+            var courses = $scope.mycourses.courses.slice(0);
+            // add current course number to courses array
             courses.push(courseid);
-            $http.post('api/courses', {courses: courses}).
-                    success(function(data, status) {
-                $rootScope.profile.courses = courses;
+            // save courses array to server
+            var newMyCourses = new MyCourses({courses: courses});
+            newMyCourses.$save({}, function() {
+                $scope.mycourses.courses = courses;
             });
+            /*
+            $http.post('api/mycourses', {courses: courses}).
+                    success(function(data, status) {
+                $scope.mycourses = courses;
+            });
+            */
         }
     };
 }

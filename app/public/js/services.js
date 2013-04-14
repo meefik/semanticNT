@@ -2,20 +2,30 @@
 
 /* Services */
 
-angular.module('CatalogService', ['ngResource']).
-        factory('Catalog', function($resource) {
+angular.module('app.services', ['ngResource'])
+        .factory('Catalog', function($resource) {
     var path = 'courses/catalog.json';
     return $resource(path, {}, {
         query: {method: 'GET', params: {}, isArray: true}
     });
-
-});
-
-angular.module('CourseService', ['ngResource']).
-        factory('Course', function($resource) {
+})
+        .factory('Course', function($resource) {
     var path = 'courses/:courseId/json/:partId.json';
     return $resource(path, {}, {
-        query: {method: 'GET', params: {courseId: 'unknown', partId: 'info'}, isArray: true}
+        query: {method: 'GET', params: {courseId: 'unknown', partId: 'info'}, isArray: false}
     });
+})
 
+        .factory('Profile', function($resource) {
+    var path = 'api/profile';
+    return $resource(path, {}, {
+        query: {method: 'GET', isArray: false}
+    });
+})
+
+        .factory('MyCourses', function($resource) {
+    var path = 'api/mycourses';
+    return $resource(path, {}, {
+        query: {method: 'GET', isArray: false}
+    });
 });

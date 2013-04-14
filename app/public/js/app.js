@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('openITMO', ['ngCookies', 'CatalogFilter', 'MyCoursesFilter', 'CatalogService', 'CourseService']).
+angular.module('openITMO', ['app.services', 'app.filters', 'app.directives']).
         config(['$routeProvider', '$locationProvider', function($routeProvider) {
         $routeProvider.
                 when('/', {templateUrl: 'tpl/home.html', controller: HomeCtrl}).
@@ -14,3 +14,4 @@ angular.module('openITMO', ['ngCookies', 'CatalogFilter', 'MyCoursesFilter', 'Ca
                 when('/courses/:courseId/:partId', {templateUrl: 'tpl/parts.html', controller: PartsCtrl}).
                 otherwise({redirectTo: '/'});
     }]);
+
