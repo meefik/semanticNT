@@ -4,6 +4,7 @@
 
 var mongoose = require('mongoose');
 var crypto = require('crypto');
+var nodemailer = require("nodemailer");
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -27,8 +28,24 @@ var MyCourses = new Schema({
     courses: [String]
 });
 
+var Activation = new Schema({
+    email: { type: String },
+    key: { type: String },
+    passwd: { type: String },
+    date: { type: Date }
+});
+
 ProfileModel = mongoose.model('Profile', Profile);
 MyCoursesModel = mongoose.model('MyCourses', MyCourses);
+ActivationModel = mongoose.model('Activation', Activation);
+
+/**
+ * Lib
+ */
+
+var toHash = function(str) {
+    return crypto.createHash('sha1').update(str).digest('hex');
+};
 
 /**
  * Auth
@@ -48,8 +65,7 @@ passport.use(new LocalStrategy({
 },
 function(username, password, done) {
     ProfileModel.findOne({email: username}, function(err, data) {
-        var passwd = crypto.createHash('sha1').update(password).digest('hex');
-        if (!err && data && data.passwd === passwd) {
+        if (!err && data && data.passwd === toHash(password)) {
             return done(null, data._id);
         } else {
             return done(err);
@@ -125,7 +141,7 @@ exports.register = function(req, res) {
     
     var newProfile = new ProfileModel({
         email: req.body.email,
-        passwd: crypto.createHash('sha1').update(req.body.passwd).digest('hex'),
+        passwd: toHash(req.body.passwd),
         nickname: req.body.nickname,
         fullname: req.body.fullname,
         date: new Date
@@ -138,7 +154,7 @@ exports.register = function(req, res) {
         } else {
             console.log(err);
             //MyCoursesModel.findById(newCourses._id).remove();
-            return res.send(500);
+            return res.send(403);
         }
     });
 };
@@ -159,6 +175,95 @@ exports.login = function(req, res, next) {
             return res.send(200);
         });
     })(req, res, next);
+};
+
+// Reset password
+exports.resetPassword = function(req, res) {
+    var email = req.body.email;
+    var re = /\S+@\S+\.\S+/;
+    if (!re.test(email)) {
+        return res.send(400);
+    }
+
+    var sendMail = function(email, fullname, passwd, activation) {
+        // create reusable transport method (opens pool of SMTP connections)
+        var smtpTransport = nodemailer.createTransport("SMTP", {
+            host: "192.168.0.12",
+            auth: {
+                user: "robot@cde.ifmo.ru",
+                pass: "d3Hkws87"
+            }
+        });
+        // setup e-mail data with unicode symbols
+        var mailOptions = {
+            from: "openITMO <robot@cde.ifmo.ru>",
+            to: email,
+            subject: "reset password",
+            text: "Hello, " + fullname + // plaintext body
+                "!\n\nYour new password: " + passwd +
+                "\nActivation number: " + activation
+            //html: "<b>Hello world ✔</b>" // html body
+        };
+        // send mail with defined transport object
+        smtpTransport.sendMail(mailOptions, function(err, response) {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log("Message sent: " + response.message);
+            }
+            smtpTransport.close(); // shut down the connection pool, no more messages
+        });
+    };
+    
+    var key = req.body.key;
+    if (!key) {
+        // Generate password and activation key
+        ProfileModel.findOne({email: email}, function(err, data) {
+            if (!err) {
+                if (!data)
+                    return res.send(404);
+                // Generate random password
+                var passwd = Math.random().toString(36).slice(-8);
+                var activation = Math.floor(Math.random() * 900000) + 100000;
+                var newActivation = new ActivationModel({
+                    email: data.email,
+                    key: activation,
+                    passwd: toHash(passwd),
+                    date: new Date
+                });
+                newActivation.save(function(err) {
+                    if (!err) {
+                        sendMail(data.email, data.fullname, passwd, activation);
+                    } else {
+                        console.log(err);
+                    }
+                });
+                return res.send(200);
+            } else {
+                console.log(err);
+                return res.send(500);
+            }
+        });
+    } else {
+        ActivationModel.find({email: email, key: key}, null, {sort: {date: -1}}, function(err, data) {
+            if (!err) {
+                if (data.length <= 0)
+                    return res.send(404);
+                // Update user password
+                ProfileModel.findOneAndUpdate({email: email}, {passwd: data[0].passwd}, function(err) {
+                    if (!err) {
+                        return res.send(200);
+                    } else {
+                        console.log(err);
+                        return res.send(500);
+                    }
+                });
+            } else {
+                console.log(err);
+                return res.send(500);
+            }
+        });
+    }
 };
 
 /*

@@ -30,34 +30,34 @@ function AppCtrl($rootScope, $scope, $location, $http, Profile) {
 
 function LoginFormCtrl($rootScope, $scope, $http, Profile) {
     $scope.reset = function() {
-        $scope.error = "";
-        $scope.user = {};
+        delete $scope.result;
+        delete $scope.user;
         $('#login').modal('hide');
     };
-    $scope.submitLoginForm = function() {
+    $scope.submit = function() {
         $http.post('api/login', $scope.user).
                 success(function(data, status) {
             $rootScope.profile = Profile.query();
             $scope.reset();
         }).
                 error(function(data, status) {
-            $scope.user.passwd = "";
-            $scope.error = "Доступ запрещен! Проверьте правильность введенных данных.";
+            delete $scope.user.passwd;
+            $scope.result = false;
         });
     };
 }
 
 function SignupFormCtrl($rootScope, $scope, $http, Profile) {
     $scope.reset = function() {
-        $scope.error = "";
-        $scope.user = {};
+        delete $scope.result;
+        delete $scope.user;
         $('#signup').modal('hide');
     };
     $scope.checkPassword = function() {
         //$scope.signupForm.inputRePassword.$error.dontMatch = $scope.user.passwd !== $scope.user.repasswd;
         $scope.signupForm.inputRePassword.$invalid = $scope.user.passwd !== $scope.user.repasswd;
     };
-    $scope.submitSignupForm = function() {
+    $scope.submit = function() {
         //$scope.error = "Регистрация временно приостановлена.";
         var profile = {
             email: $scope.user.email,
@@ -71,9 +71,45 @@ function SignupFormCtrl($rootScope, $scope, $http, Profile) {
             $scope.reset();
         }).
                 error(function(data, status) {
-            $scope.user.passwd = "";
-            $scope.user.repasswd = "";
-            $scope.error = "Ошибка регистрации! Повторите попытку позже.";
+            delete $scope.user.passwd;
+            delete $scope.user.repasswd;
+            $scope.result = false;
+        });
+    };
+}
+
+function ForgotFormCtrl($scope, $http) {
+    $scope.reset = function() {
+        delete $scope.result;
+        delete $scope.user;
+        delete $scope.email;
+        $('#forgot').modal('hide');
+        $('#login').modal('show');
+    };
+    $scope.getStatus = function() {
+        if (typeof $scope.result === 'undefined')
+            return 0;
+        else
+            return $scope.result;
+    };
+    $scope.submit = function() {
+        //if ($scope.user.key)
+        //    $scope.user.email = $scope.email;
+        
+        $http.post('api/reset', $scope.user).
+                success(function(data, status) {
+            $scope.email = $scope.user.email;
+            $scope.result = 2;
+            //delete $scope.user;
+            if ($scope.user.key)
+                $scope.reset();
+        }).
+                error(function(data, status) {
+            $scope.result = 1;
+            $scope.email = $scope.user.email;
+            //delete $scope.user;
+            if ($scope.user.key)
+                $scope.result = 3;
         });
     };
 }

@@ -37,10 +37,12 @@ app.configure(function() {
 
     app.use(express.session({
         secret: 'dfe9df2b07fb476e6b28fc70a814173e',
-        cookie: {maxAge: 1000 * 60 * 60},
+        cookie: {maxAge: 1000 * 60 * 60}
+        /*
         store: new MongoStore({
             url: dbUrl
         })
+        */
     }));
 
     /*
@@ -99,6 +101,8 @@ app.post('/api/register', api.register);
 app.post('/api/login', api.login);
 // Logout
 app.get('/api/logout', api.logout);
+// Reset password
+app.post('/api/reset', api.resetPassword);
 
 // Get profile variables
 app.get('/api/profile', api.getProfile);

@@ -10,5 +10,6 @@
     , "passport": ">= 0.0.1"
     , "passport-local": ">= 0.0.1"
     , "crypto": ">= 0.0.1"
+    , "nodemailer": ">= 0.0.1"
   }
 }
