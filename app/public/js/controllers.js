@@ -118,6 +118,10 @@ function AboutCtrl($scope) {
 
 }
 
+function TermsCtrl($scope) {
+
+}
+
 function HomeCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
     $scope.orderProp = 'age';
