@@ -191,7 +191,7 @@ exports.resetPassword = function(req, res) {
             host: "192.168.0.12",
             auth: {
                 user: "robot@cde.ifmo.ru",
-                pass: "d3Hkws87"
+                pass: ""
             }
         });
         // setup e-mail data with unicode symbols
