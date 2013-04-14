@@ -85,9 +85,7 @@ var job = new cronJob({
         // Delete records that are older one hour
         var d = new Date();
         d.setHours(d.getHours()-1);
-        ActivationModel.remove({date: {"$lt": d}}, function(err, data) {
-            console.log(data);
-        });
+        ActivationModel.remove({date: {"$lt": d}});
     },
     start: false
     //timeZone: "Europe/Moscow"
