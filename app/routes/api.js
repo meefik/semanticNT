@@ -189,9 +189,8 @@ exports.resetPassword = function(req, res) {
     if (!req.body.email)
         return res.send(400); // 400 Bad Request
     // Validating email
-    var email = req.body.email;
     var re = /\S+@\S+\.\S+/;
-    if (!re.test(email)) {
+    if (!re.test(req.body.email)) {
         return res.send(400); // 400 Bad Request
     }
     // Send mail function
@@ -225,6 +224,7 @@ exports.resetPassword = function(req, res) {
         });
     };
     
+    var email = req.body.email;
     var key = req.body.key;
     if (!key) {
         // Generate password and activation key
