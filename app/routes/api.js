@@ -119,7 +119,7 @@ exports.getProfile = function(req, res) {
                 });
             } else {
                 console.log(err);
-                return res.send(500);
+                return res.send(500); // 500 Internal Server Error
             }
         });
     } else {
@@ -131,13 +131,21 @@ exports.getProfile = function(req, res) {
 exports.setProfile = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
-        return res.send(401);
+        return res.send(401); // 401 Unauthorized
 };
 
 // New user registration
 exports.register = function(req, res) {
     if (!req.body.email || !req.body.passwd)
-        return res.send(400);
+        return res.send(400); // 400 Bad Request
+    // Validating email
+    var re = /\S+@\S+\.\S+/;
+    if (!re.test(req.body.email)) {
+        return res.send(400); // 400 Bad Request
+    }
+    // Checking password lenght
+    if (req.body.passwd.length < 4)
+        return res.send(400); // 400 Bad Request
     
     var newProfile = new ProfileModel({
         email: req.body.email,
@@ -149,11 +157,11 @@ exports.register = function(req, res) {
     newProfile.save(function(err, data) { 
         if (!err) {
             req.session.passport.user = data._id;
-            return res.send(200);
+            return res.send(200); // 200 OK
         } else {
             //console.log(err);
             // if user exists (dublicate)
-            return res.send(403);
+            return res.send(403); // 403 Forbidden
         }
     });
 };
@@ -165,25 +173,28 @@ exports.login = function(req, res, next) {
             return next(err);
         }
         if (!user) {
-            return res.send(401);
+            return res.send(401); // 401 Unauthorized
         }
         req.logIn(user, function(err) {
             if (err) {
                 return next(err);
             }
-            return res.send(200);
+            return res.send(200); // 200 OK
         });
     })(req, res, next);
 };
 
 // Reset password
 exports.resetPassword = function(req, res) {
+    if (!req.body.email)
+        return res.send(400); // 400 Bad Request
+    // Validating email
     var email = req.body.email;
     var re = /\S+@\S+\.\S+/;
     if (!re.test(email)) {
-        return res.send(400);
+        return res.send(400); // 400 Bad Request
     }
-
+    // Send mail function
     var sendMail = function(email, fullname, passwd, activation) {
         // create reusable transport method (opens pool of SMTP connections)
         var smtpTransport = nodemailer.createTransport("SMTP", {
@@ -237,29 +248,29 @@ exports.resetPassword = function(req, res) {
                         console.log(err);
                     }
                 });
-                return res.send(200);
+                return res.send(200); // 200 OK
             } else {
                 console.log(err);
-                return res.send(500);
+                return res.send(500); // 500 Internal Server Error
             }
         });
     } else {
         ActivationModel.find({email: email, key: key}, null, {sort: {date: -1}}, function(err, data) {
             if (!err) {
                 if (data.length <= 0)
-                    return res.send(404);
+                    return res.send(404); // 404 Not Found
                 // Update user password
                 ProfileModel.findOneAndUpdate({email: email}, {passwd: data[0].passwd}, function(err) {
                     if (!err) {
-                        return res.send(200);
+                        return res.send(200); // 200 OK
                     } else {
                         console.log(err);
-                        return res.send(500);
+                        return res.send(500); // 500 Internal Server Error
                     }
                 });
             } else {
                 console.log(err);
-                return res.send(500);
+                return res.send(500); // 500 Internal Server Error
             }
         });
     }
@@ -286,7 +297,7 @@ exports.login = function(req, res) {
 exports.logout = function(req, res) {
     if (req.session) {
         req.session.destroy(function() {
-            return res.send(200);
+            return res.send(200); // 200 OK
         });
     }
 };
@@ -299,7 +310,7 @@ exports.logout = function(req, res) {
 exports.getCourses = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
-        return res.send(401);
+        return res.send(401); // 401 Unauthorized
 
     MyCoursesModel.findOne({userid: userid}, function(err, data) {
         if (!err) {
@@ -309,7 +320,7 @@ exports.getCourses = function(req, res) {
             return res.json({courses: courses});
         } else {
             console.log(err);
-            return res.send(500);
+            return res.send(500); // 500 Internal Server Error
         }
     });
 };
@@ -318,14 +329,14 @@ exports.getCourses = function(req, res) {
 exports.setCourses = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
-        return res.send(401);
+        return res.send(401); // 401 Unauthorized
 
     MyCoursesModel.findOneAndUpdate({userid: userid}, {courses: req.body.courses}, function(err) {
         if (!err) {
-            return res.send(200);
+            return res.send(200); // 200 OK
         } else {
             console.log(err);
-            return res.send(500);
+            return res.send(500); // 500 Internal Server Error
         }
     });
 };
@@ -342,7 +353,7 @@ exports.addCourse = function(req, res) {
             profile.courses.numbers.push(courseid);
             CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: profile.courses.numbers}, function(err, courses) {
                 if (!err)
-                    return res.send(200);
+                    return res.send(200); // 200 OK
                 else
                     return res.send(500);
             });
