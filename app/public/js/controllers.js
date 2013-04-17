@@ -14,10 +14,56 @@ function AppCtrl($rootScope, $scope, $location, $http, Profile) {
     
     $rootScope.logout = function() {
         $http.get('api/logout').
-                success(function(data, status) {
-            $rootScope.profile = '';
+                success(function() {
+            delete $rootScope.profile;
             $location.path("/");
         });
+    };
+    
+    $rootScope.DateDiff = {
+        inDays: function(d1, d2) {
+            var t2 = d2.getTime();
+            var t1 = d1.getTime();
+
+            return parseInt((t2 - t1) / (24 * 3600 * 1000));
+        },
+        inWeeks: function(d1, d2) {
+            var t2 = d2.getTime();
+            var t1 = d1.getTime();
+
+            return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+        },
+        inMonths: function(d1, d2) {
+            var d1Y = d1.getFullYear();
+            var d2Y = d2.getFullYear();
+            var d1M = d1.getMonth();
+            var d2M = d2.getMonth();
+
+            return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+        },
+        inYears: function(d1, d2) {
+            return d2.getFullYear() - d1.getFullYear();
+        }
+    };
+    
+    $rootScope.getDate = function(date) {
+        var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
+            'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        var d = new Date(date);
+        return d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" г.";
+    };
+    
+    $rootScope.getDiffInWeeks = function(d1, d2) {
+        var weeksNum = $rootScope.DateDiff.inWeeks(new Date(d1), new Date(d2)) + 1;
+        return weeksNum;
+    };
+    
+    $rootScope.getWeekName = function(num) {
+        var lastDigit = (num + "").slice(-1);
+        var weekStr = 'недель';
+        if (lastDigit === '1') weekStr = 'неделя';
+        if (lastDigit === '2' || lastDigit === '3' || lastDigit === '4') weekStr = 'недели';
+        return weekStr;
     };
     
     $scope.getAuthTpl = function() {
@@ -124,19 +170,33 @@ function TermsCtrl($scope) {
 
 function HomeCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
-    $scope.orderProp = 'age';
+    $scope.orderProp = 'beginDate';
 }
 
 function CoursesCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
-    $scope.orderProp = 'age';
+    $scope.orderProp = 'beginDate';
 }
 
-function MyCoursesCtrl($scope, Catalog, MyCourses) {
+function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
     $scope.catalog = Catalog.query();
-    $scope.orderProp = 'age';
+    $scope.orderProp = 'beginDate';
     
     $scope.mycourses = MyCourses.query();
+    
+    $scope.getProgress = function(d1, d2) {
+        var beginDate = new Date(d1).getTime();
+        var endDate = new Date(d2).getTime();
+        var currentDate = new Date().getTime();
+        if (currentDate <= beginDate) {
+            return 0;
+        }
+        if (currentDate >= endDate) {
+            return 100;
+        }
+        
+        return parseInt((currentDate - beginDate) * 100 / (endDate - beginDate));
+    };
     
     $scope.unReg = function(courseid) {
         if (!$scope.mycourses)

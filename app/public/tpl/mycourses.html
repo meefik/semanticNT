@@ -6,6 +6,9 @@
                 <li ng-repeat="course in catalog | isStatus:mycourses.courses | orderBy:orderProp" class="thumbnail" style="height: 150px; margin-bottom: 1em">
                     <a href="#/courses/{{course.id}}"><img ng-src="courses/{{course.id}}/img/logo.png" class="course-logo img-polaroid" style="margin: 1em"></a>
                     <h3><a href="#/courses/{{course.id}}">{{course.name}}</a></h3>
+                    <div class="progress" title="Пройдено {{getProgress(course.beginDate, course.endDate)}}%">
+                        <div class="bar" style="width: {{getProgress(course.beginDate, course.endDate)}}%"></div>
+                    </div>
                     <div style="margin-top: 1em">
                         <a class="btn btn-success" href="#/courses/{{course.id}}/news">
                             Перейти к курсу

@@ -1,29 +1,29 @@
 [
     {
-        "age": 0, 
         "id": "CS0001", 
         "name": "История вычислительной техники", 
-        "beginDate": "23 апреля 2013 г.",
-        "duration": "1 неделя",
-        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/RpwaMoF_A0A?rel=0' frameborder='0' allowfullscreen></iframe>",
-        "authors": ["Копылов Дмитрий", "Седнев Андрей", "Тихонов Дмитрий", "Чанчин Алексей"]
+        "beginDate": "2013-04-15",
+        "endDate": "2013-04-26",
+        "description": "Познавательный видеоролик \"История вычислительной техники\"",
+        "authors": ["Копылов Дмитрий", "Седнев Андрей", "Тихонов Дмитрий", "Чанчин Алексей"],
+        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/RpwaMoF_A0A?rel=0' frameborder='0' allowfullscreen></iframe>"
     },
     {
-        "age": 5, 
         "id": "CS0005",
         "name": "Криптография", 
-        "beginDate": "25 апреля 2013 г.",
-        "duration": "2 недели",
-        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/Xf8ST1YekCg?rel=0' frameborder='0' allowfullscreen></iframe>",
-        "authors": ["Федореева Маргарита", "Изгарева Светлана", "Соколова Наталья", "Головина Анна"]
+        "beginDate": "2013-05-13",
+        "endDate": "2013-05-19",
+        "description": "Познавательный видеоролик \"Криптография\"",
+        "authors": ["Федореева Маргарита", "Изгарева Светлана", "Соколова Наталья", "Головина Анна"],
+        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/Xf8ST1YekCg?rel=0' frameborder='0' allowfullscreen></iframe>"
     },
     {
-        "age": 7, 
         "id": "CS0007", 
         "name": "Компьютерные сети", 
-        "beginDate": "17 июля 2013 г.",
-        "duration": "3 недели",
-        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/yHrjYwNYT_0?rel=0' frameborder='0' allowfullscreen></iframe>",
-        "authors": ["Кузнецов Никита", "Суровцева Виктория", "Хоботова Анна"]
+        "beginDate": "2013-06-10",
+        "endDate": "2013-06-30",
+        "description": "Познавательный видеоролик \"Компьютерные сети\"",
+        "authors": ["Кузнецов Никита", "Суровцева Виктория", "Хоботова Анна"],
+        "video": "<iframe class='youtube-player' type='text/html' width='530' title=' YouTube проигрыватель видео ' height='370' src='//www.youtube.com/embed/yHrjYwNYT_0?rel=0' frameborder='0' allowfullscreen></iframe>"
     }
 ]

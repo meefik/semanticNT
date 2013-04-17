@@ -71,10 +71,12 @@
     <div class="row">
         <div class="span12">
             <h3>Курсы</h3>
-            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="carousel course-block">
+            <div ng-repeat="course in catalog | orderBy:orderProp" class="carousel course-block">
                 <a class="carousel-inner thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal">
                     <!--<img ng-src="courses/{{course.id}}/img/logo.png">-->
                     <div id="box1">
+                        Описание:
+                        <div>{{course.description}}</div>
                         Авторы курса: 
                         <div ng-repeat="author in course.authors">
                             - {{author}}
@@ -83,10 +85,10 @@
                     <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
                     <span class="course-caption">
                         <span style="float: left; text-align: left">
-                            {{course.beginDate}}
+                            {{getDate(course.beginDate)}}
                         </span>
                         <span style="float: right">
-                            {{course.duration}}
+                            {{getDiffInWeeks(course.beginDate,course.endDate)}} {{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}} 
                         </span>
                     </span>
                 </a>
