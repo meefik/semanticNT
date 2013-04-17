@@ -238,6 +238,10 @@ function InfoCtrl($scope, $routeParams, Course, MyCourses) {
     
     $scope.mycourses = MyCourses.query();
     
+    $scope.getContent = function() {
+        return 'courses/'+$scope.course.id+'/tpl/info.html';
+    };
+    
     $scope.isReg = function(courseid) {
         if (!$scope.mycourses) return false;
         for (var i in $scope.mycourses.courses) {
@@ -269,9 +273,11 @@ function InfoCtrl($scope, $routeParams, Course, MyCourses) {
 }
 
 function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
+    /*
     if (!$rootScope.isAuth()) {
         $location.path('/');
     }
+    */
     $scope.course = Course.get({courseId: $routeParams.courseId, 
         partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
@@ -292,5 +298,12 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
                     $routeParams.partId + '.html';
         };
     });
+    
+    $scope.getLogo = function() {
+        var path = '';
+        if ($scope.course.id)
+            path = 'courses/'+$scope.course.id+'/img/logo.png';
+        return path;
+    };
 
 }

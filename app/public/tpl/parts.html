@@ -1,15 +1,15 @@
 <div class="container">
     <div class="row">
         <div class="span3">
-            <a href="#/courses/{{course.id}}"><img ng-src="courses/{{course.id}}/img/logo.png" class="thumbnail course-logo"></a>
+            <a href="#/courses/{{course.id}}"><img ng-src="{{getLogo()}}" class="thumbnail course-logo"></a>
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs nav-parts">
-                    <li ng-repeat="tab in course.parts" class="{{tab.status}}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
+                    <li ng-repeat="tab in course.parts" ng-class="tab.status"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
                 </ul>
             </div>
         </div>
         <div class="span9">
-            <h2 class="page-header">{{course.name}}</h2>
+            <h2 class="page-header" style="margin-bottom: 0.5em">{{course.name}}</h2>
             <!--<h4>{{course.university}}</h4>-->
             <div class="tab-content">
                 <div ng-include src="getContent()"></div>

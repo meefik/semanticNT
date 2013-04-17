@@ -1,6 +1,19 @@
+<div class="pagination">
+  <ul>
+    <li class="disabled"><a href="">&laquo;</a></li>
+    <li class="active"><a href="">1</a></li>
+    <li class="active"><a href="">2</a></li>
+    <li class="active"><a href="">3</a></li>
+    <li class="active"><a href="">4</a></li>
+    <li class="disabled"><a href="">&raquo;</a></li>
+  </ul>
+</div>
+
 <div ng-repeat="test in part.content">
-    <h3>{{test.name}}</h3>
-    <p><i>Deadline: {{test.deadline}}</i></p>
+<div style="float: none">
+    <div style="float: left;"><h3>{{test.name}}</h3></div>
+    <div style="float: right;"><p><i>Deadline: {{test.deadline}}</i></p></div>
+</div>
     <div ng-repeat="question in test.questions" class="well">
         <h4>{{question.name}}</h4>
         <p>{{question.description}}</p>
@@ -11,7 +24,8 @@
             </label>
         </div>
     </div>
+
     <a class="btn btn-primary">
-        Send Results
+        Отправить на проверку
     </a>
 </div>

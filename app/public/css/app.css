@@ -67,11 +67,14 @@ img.course-logo {
   height: 110px;
   width: 210px;
 }
-img.staff-photo {
+div.author {
+  display: inline-block;
+}
+div.author > img {
   float: left;
   margin-right: 1em;
   height: 100px;
-  width: 75px;
+  width: 80px;
   padding: 1px;
   border: 1px solid #c0c0c0;
 }
@@ -106,9 +109,11 @@ p {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  margin: 0px auto -40px;
+  margin: -20px auto -20px;
 }
-#push,
+#push {
+  height: 60px;
+}
 #footer {
   height: 40px;
 }
