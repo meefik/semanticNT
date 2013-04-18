@@ -13,11 +13,11 @@
                 </tr>
                 <tr>
                     <td><i class="icon-calendar"></i> Начало</td>
-                    <td><b>{{getDate(course.beginDate)}}</b></td>
+                    <td><b>{{course.beginDate | dateToText}}</b></td>
                 </tr>
                 <tr>
                     <td><i class="icon-calendar"></i> Окончание</td>
-                    <td><b>{{getDate(course.endDate)}}</b></td>
+                    <td><b>{{course.endDate | dateToText}}</b></td>
                 </tr>
                 <tr>
                     <td><i class="icon-pencil"></i> Нагрузка</td>

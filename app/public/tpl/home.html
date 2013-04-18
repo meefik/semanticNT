@@ -85,7 +85,7 @@
                     <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
                     <span class="course-caption">
                         <span style="float: left; text-align: left">
-                            {{getDate(course.beginDate)}}
+                            {{course.beginDate | dateToText}}
                         </span>
                         <span style="float: right">
                             {{getDiffInWeeks(course.beginDate,course.endDate)}} {{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}} 

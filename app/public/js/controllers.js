@@ -4,14 +4,14 @@
 
 function AppCtrl($rootScope, $scope, $location, $http, Profile) {
     $rootScope.profile = Profile.query();
-    
+
     $rootScope.isAuth = function() {
         if ($rootScope.profile.email)
             return true;
         else
             return false;
     };
-    
+
     $rootScope.logout = function() {
         $http.get('api/logout').
                 success(function() {
@@ -19,7 +19,7 @@ function AppCtrl($rootScope, $scope, $location, $http, Profile) {
             $location.path("/");
         });
     };
-    
+
     $rootScope.DateDiff = {
         inDays: function(d1, d2) {
             var t2 = d2.getTime();
@@ -45,27 +45,22 @@ function AppCtrl($rootScope, $scope, $location, $http, Profile) {
             return d2.getFullYear() - d1.getFullYear();
         }
     };
-    
-    $rootScope.getDate = function(date) {
-        var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
-            'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
-        var d = new Date(date);
-        return d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" г.";
-    };
-    
+
     $rootScope.getDiffInWeeks = function(d1, d2) {
         var weeksNum = $rootScope.DateDiff.inWeeks(new Date(d1), new Date(d2)) + 1;
         return weeksNum;
     };
-    
+
     $rootScope.getWeekName = function(num) {
         var lastDigit = (num + "").slice(-1);
         var weekStr = 'недель';
-        if (lastDigit === '1') weekStr = 'неделя';
-        if (lastDigit === '2' || lastDigit === '3' || lastDigit === '4') weekStr = 'недели';
+        if (lastDigit === '1')
+            weekStr = 'неделя';
+        if (lastDigit === '2' || lastDigit === '3' || lastDigit === '4')
+            weekStr = 'недели';
         return weekStr;
     };
-    
+
     $scope.getAuthTpl = function() {
         if ($rootScope.isAuth())
             return '';
@@ -141,7 +136,7 @@ function ForgotFormCtrl($scope, $http) {
     $scope.submit = function() {
         //if ($scope.user.key)
         //    $scope.user.email = $scope.email;
-        
+
         $http.post('api/reset', $scope.user).
                 success(function(data, status) {
             $scope.email = $scope.user.email;
@@ -181,9 +176,9 @@ function CoursesCtrl($scope, Catalog) {
 function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
     $scope.catalog = Catalog.query();
     $scope.orderProp = 'beginDate';
-    
+
     $scope.mycourses = MyCourses.query();
-    
+
     $scope.getProgress = function(d1, d2) {
         var beginDate = new Date(d1).getTime();
         var endDate = new Date(d2).getTime();
@@ -194,10 +189,10 @@ function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
         if (currentDate >= endDate) {
             return 100;
         }
-        
+
         return parseInt((currentDate - beginDate) * 100 / (endDate - beginDate));
     };
-    
+
     $scope.unReg = function(courseid) {
         if (!$scope.mycourses)
             return false;
@@ -212,45 +207,46 @@ function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
         }
         // save courses array to server
         var newMyCourses = new MyCourses({courses: courses});
-        newMyCourses.$save({},function(){
+        newMyCourses.$save({}, function() {
             $scope.mycourses.courses = courses;
         });
-        
+
         /*
-        $http.post('api/mycourses', {courses: courses}).
-                success(function(data, status) {
-            $rootScope.courses = courses;
-        });
+         $http.post('api/mycourses', {courses: courses}).
+         success(function(data, status) {
+         $rootScope.courses = courses;
+         });
          */
-        
+
     };
 }
 
 function ProfileCtrl() {
-    
+
 }
 
 function InfoCtrl($scope, $routeParams, Course, MyCourses) {
-    $scope.course = Course.get({courseId: $routeParams.courseId, 
+    $scope.course = Course.get({courseId: $routeParams.courseId,
         partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
     });
-    
+
     $scope.mycourses = MyCourses.query();
-    
+
     $scope.getContent = function() {
-        return 'courses/'+$scope.course.id+'/tpl/info.html';
+        return 'courses/' + $scope.course.id + '/tpl/info.html';
     };
-    
+
     $scope.isReg = function(courseid) {
-        if (!$scope.mycourses) return false;
+        if (!$scope.mycourses)
+            return false;
         for (var i in $scope.mycourses.courses) {
             if (courseid === $scope.mycourses.courses[i])
                 return true;
         }
         return false;
     };
-    
+
     $scope.setReg = function(courseid) {
         if (!$scope.isReg(courseid)) {
             // clone courses variable
@@ -263,22 +259,22 @@ function InfoCtrl($scope, $routeParams, Course, MyCourses) {
                 $scope.mycourses.courses = courses;
             });
             /*
-            $http.post('api/mycourses', {courses: courses}).
-                    success(function(data, status) {
-                $scope.mycourses = courses;
-            });
-            */
+             $http.post('api/mycourses', {courses: courses}).
+             success(function(data, status) {
+             $scope.mycourses = courses;
+             });
+             */
         }
     };
 }
 
 function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
     /*
-    if (!$rootScope.isAuth()) {
-        $location.path('/');
-    }
-    */
-    $scope.course = Course.get({courseId: $routeParams.courseId, 
+     if (!$rootScope.isAuth()) {
+     $location.path('/');
+     }
+     */
+    $scope.course = Course.get({courseId: $routeParams.courseId,
         partId: 'info'}, function() {
         $scope.course.id = $routeParams.courseId;
         for (var i in $scope.course.parts) {
@@ -292,18 +288,59 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
     $scope.part = Course.get({courseId: $routeParams.courseId,
         partId: $routeParams.partId}, function() {
         $scope.part.id = $routeParams.partId;
-        $scope.part.template = 'courses/tpl/'+$scope.part.id+'.html';
+        $scope.part.template = 'courses/tpl/' + $scope.part.id + '.html';
         $scope.getContent = function() {
-            return 'courses/' + $routeParams.courseId + '/tpl/' + 
+            return 'courses/' + $routeParams.courseId + '/tpl/' +
                     $routeParams.partId + '.html';
         };
     });
-    
+
     $scope.getLogo = function() {
         var path = '';
         if ($scope.course.id)
-            path = 'courses/'+$scope.course.id+'/img/logo.png';
+            path = 'courses/' + $scope.course.id + '/img/logo.png';
         return path;
+    };
+}
+
+function NewsCtrl($scope) {
+    $scope.orderProp = 'date';
+    $scope.currentEdit = -1;
+
+    $scope.editorEnabled = function(id) {
+        if ($scope.currentEdit === id)
+            return true;
+        else
+            return false;
+    };
+
+    $scope.show = function(id) {
+        $scope.currentEdit = id;
+        if (id >= 0) {
+            $scope.curr = {
+                title: $scope.part.news[id].title,
+                description: $scope.part.news[id].description,
+                date: $scope.part.news[id].date
+            };
+        } else {
+            delete $scope.curr;
+        }
+    };
+
+    $scope.save = function(id) {
+        $scope.part.news[id] = $scope.curr;
+        $scope.show(-1);
+    };
+    
+    $scope.add = function() {
+        $scope.curr.date = new Date().toString();
+        $scope.part.news.push($scope.curr);
+        $scope.show(-1);
+    };
+    
+    $scope.del = function(id) {
+        $scope.part.news.splice(id, 1);
+        $scope.show(-1);
     };
 
 }

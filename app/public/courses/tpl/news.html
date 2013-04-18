@@ -1,5 +1,34 @@
-<div ng-repeat="news in part.content">
-    <h3>{{news.name}}</h3>
-    <p><i>{{news.date}}</i></p>
-    <div ng-bind-html-unsafe="news.description" style="margin-bottom: 2em"></div>
+<div ng-controller="NewsCtrl">
+    <div ng-repeat="news in part.news | orderBy:orderProp:true">
+        <div ng-hide="editorEnabled($index)">
+            <h3>{{news.title}}</h3>
+            <p><i>{{news.date | dateToText:'time'}}</i></p>
+            <div style="white-space:pre-wrap; margin-bottom: 2em">{{news.description}}</div>
+            <button class="btn" ng-click="show($index)">Править</button>
+            <button class="btn" ng-click="del($index)">Удалить</button>
+        </div>
+        <div ng-show="editorEnabled($index)">
+            <div>Заголовок:</div>
+            <div><input type="text" ng-model="curr.title" style="width: 600px"></div>
+            <div>Текст:</div>
+            <div>
+                <textarea ng-model="curr.description" style="height: 200px; width: 600px"></textarea>
+            </div>
+            <button class="btn" ng-click="save($index)">Cохранить</button>
+            <button class="btn" ng-click="show(-1)">Отмена</button>
+        </div>
+    </div>
+    <div ng-show="currentEdit == -1" style="padding-top: 2em">
+        <div>Заголовок:</div>
+        <div>
+            <input type="text" ng-model="curr.title" style="width: 600px">
+        </div>
+        <div>Текст:</div>
+        <div>
+            <textarea ng-model="curr.description" style="height: 200px; width: 600px"></textarea>
+        </div>
+        <div>
+            <button class="btn" ng-click="add()">Добавить</button>
+        </div>
+    </div>
 </div>
