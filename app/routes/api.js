@@ -16,10 +16,10 @@ var Schema = mongoose.Schema; //Schema.ObjectId
 
 var Profile = new Schema({
     email: { type: String, unique: true, required: true },
-    passwd: { type: String },
+    passwd: { type: String, required: true },
     nickname: { type: String },
     fullname: { type: String },
-    date: { type: Date }
+    date: { type: Date, required: true }
     //courses: { type: Schema.ObjectId, ref: 'Courses' }
 });
 
@@ -29,15 +29,23 @@ var MyCourses = new Schema({
 });
 
 var Activation = new Schema({
-    email: { type: String },
-    key: { type: String },
-    passwd: { type: String },
-    date: { type: Date }
+    email: { type: String, required: true },
+    key: { type: String, required: true },
+    passwd: { type: String, required: true },
+    date: { type: Date, required: true }
+});
+
+var News = new Schema({
+    courseid: { type: String, required: true },
+    date: { type: Date, unique: true, required: true },
+    title: { type: String, required: true },
+    description: { type: String, required: true }
 });
 
 ProfileModel = mongoose.model('Profile', Profile);
 MyCoursesModel = mongoose.model('MyCourses', MyCourses);
 ActivationModel = mongoose.model('Activation', Activation);
+NewsModel = mongoose.model('News', News);
 
 /**
  * Lib
@@ -387,6 +395,63 @@ exports.delCourse = function(req, res) {
             });
         } else {
             return res.send(500);
+        }
+    });
+};
+
+/**
+ * Course: news
+ */
+
+exports.getNews = function(req, res) {
+    NewsModel.find(function(err, data) {
+        if (!err) {
+            res.json(data);
+        } else {
+            res.send(500);
+            console.log(err);
+        }
+    });
+};
+
+exports.addNews = function(req, res) {
+    var newNews = new NewsModel({
+        courseid: req.params.courseId,
+        date: new Date,
+        title: req.body.title,
+        description: req.body.description
+    });
+    newNews.save(function(err, data) {
+        if (!err) {
+            res.json(data);
+        } else {
+            res.send(500);
+            console.log(err);
+        }
+    });
+};
+
+exports.deleteNews = function(req, res) {
+    NewsModel.remove({_id: req.params.newsId, courseid: req.params.courseId},
+    function(err) {
+        if (!err) {
+            res.send(200);
+        } else {
+            res.send(500);
+            console.log(err);
+        }
+    });
+};
+
+exports.updateNews = function(req, res) {
+    NewsModel.update({_id: req.params.newsId, courseid: req.params.courseId},
+    {title: req.body.title, description: req.body.description},
+    function(err) {
+        if (!err) {
+            res.send(200);
+        } else {
+            res.send(500);
+            console.log(err);
         }
     });
 };

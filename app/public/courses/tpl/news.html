@@ -1,9 +1,9 @@
 <div ng-controller="NewsCtrl">
-    <div ng-repeat="news in part.news | orderBy:orderProp:true">
+    <div ng-repeat="item in news | orderBy:orderProp:true">
         <div ng-hide="editorEnabled($index)">
-            <h3>{{news.title}}</h3>
-            <p><i>{{news.date | dateToText:'time'}}</i></p>
-            <div style="white-space:pre-wrap; margin-bottom: 2em">{{news.description}}</div>
+            <h3>{{item.title}}</h3>
+            <p><i>{{item.date | dateToText:'time'}}</i></p>
+            <div style="white-space:pre-wrap; margin-bottom: 2em">{{item.description}}</div>
             <button class="btn" ng-click="show($index)">Править</button>
             <button class="btn" ng-click="del($index)">Удалить</button>
         </div>
@@ -14,7 +14,7 @@
             <div>
                 <textarea ng-model="curr.description" style="height: 200px; width: 600px"></textarea>
             </div>
-            <button class="btn" ng-click="save($index)">Cохранить</button>
+            <button class="btn" ng-click="update($index)">Cохранить</button>
             <button class="btn" ng-click="show(-1)">Отмена</button>
         </div>
     </div>

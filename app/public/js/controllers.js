@@ -303,9 +303,11 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
     };
 }
 
-function NewsCtrl($scope) {
+function NewsCtrl($scope, $routeParams, News) {
     $scope.orderProp = 'date';
     $scope.currentEdit = -1;
+    
+    $scope.news = News.query({courseId: $routeParams.courseId});
 
     $scope.editorEnabled = function(id) {
         if ($scope.currentEdit === id)
@@ -318,29 +320,41 @@ function NewsCtrl($scope) {
         $scope.currentEdit = id;
         if (id >= 0) {
             $scope.curr = {
-                title: $scope.part.news[id].title,
-                description: $scope.part.news[id].description,
-                date: $scope.part.news[id].date
+                //id: $scope.news[id]._id,
+                title: $scope.news[id].title,
+                description: $scope.news[id].description,
+                date: $scope.news[id].date
             };
         } else {
             delete $scope.curr;
         }
     };
 
-    $scope.save = function(id) {
-        $scope.part.news[id] = $scope.curr;
-        $scope.show(-1);
+    $scope.update = function(id) {
+        var newNews = new News($scope.curr);
+        newNews.$update({courseId: $routeParams.courseId,
+            newsId: $scope.news[id]._id}, function() {
+            $scope.news[id].title = $scope.curr.title;
+            $scope.news[id].description = $scope.curr.description;
+            $scope.show(-1);
+        });
     };
-    
+
     $scope.add = function() {
-        $scope.curr.date = new Date().toString();
-        $scope.part.news.push($scope.curr);
-        $scope.show(-1);
+        var newNews = new News($scope.curr);
+        newNews.$save({courseId: $routeParams.courseId}, function(data) {
+            $scope.news.push(data);
+            $scope.show(-1);
+        });
     };
-    
+
+    // fixme: индексы неправильно работают после сортировки
     $scope.del = function(id) {
-        $scope.part.news.splice(id, 1);
-        $scope.show(-1);
+        News.remove({courseId: $routeParams.courseId,
+            newsId: $scope.news[id]._id}, function() {
+            $scope.news.splice(id, 1);
+            $scope.show(-1);
+        });
     };
 
 }

@@ -15,17 +15,21 @@ angular.module('app.services', ['ngResource'])
         query: {method: 'GET', params: {courseId: 'unknown', partId: 'info'}, isArray: false}
     });
 })
-
         .factory('Profile', function($resource) {
     var path = 'api/profile';
     return $resource(path, {}, {
         query: {method: 'GET', isArray: false}
     });
 })
-
         .factory('MyCourses', function($resource) {
     var path = 'api/mycourses';
     return $resource(path, {}, {
         query: {method: 'GET', isArray: false}
+    });
+})
+        .factory('News', function($resource) {
+    var path = 'api/:courseId/news/:newsId';
+    return $resource(path, {}, {
+        update: {method: 'PUT'}
     });
 });

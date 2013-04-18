@@ -114,9 +114,11 @@ app.get('/api/mycourses', api.getCourses);
 // Set list of registered courses
 app.post('/api/mycourses', api.setCourses);
 
-// other
-//app.put('/api/course/:id', api.addCourse);
-//app.del('/api/course/:id', api.delCourse);
+// Course news
+app.get('/api/:courseId/news', api.getNews);
+app.post('/api/:courseId/news', api.addNews);
+app.put('/api/:courseId/news/:newsId', api.updateNews);
+app.del('/api/:courseId/news/:newsId', api.deleteNews);
 
 /**
  * Return 404 error
