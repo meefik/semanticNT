@@ -158,6 +158,12 @@ li {
 .newsitem {
     padding-bottom: 0.5em;
 }
+.newsitem .popup-menu {
+    display: none;
+}
+.newsitem:hover .popup-menu {
+    display: block;
+}
 .newsitem .title {
     margin: 0;
     padding: 0;

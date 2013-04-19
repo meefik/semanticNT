@@ -1,9 +1,11 @@
 <div ng-controller="NewsCtrl">
     <div ng-repeat="item in news" class="newsitem">
         <div ng-hide="editorEnabled($index)">
+            <div class="popup-menu">
                 <a class="button" ng-click="del($index)" title="удалить"><i class="icon-remove"></i></a>
                 <a class="button" ng-click="show($index)" title="править"><i class="icon-pencil"></i></a>
                 <a href="#addnews" data-toggle="modal" class="button" ng-click="show(-1)" title="добавить"><i class="icon-plus"></i></a>
+            </div>
                 <h3 class="title">{{item.title}}</h3>
                 <p class="date">{{item.date | dateToText:'time'}}</p>
                 <p class="desc">{{item.description}}</p>
