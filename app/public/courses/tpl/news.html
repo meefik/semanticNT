@@ -1,34 +1,42 @@
 <div ng-controller="NewsCtrl">
-    <div ng-repeat="item in news">
+    <div ng-repeat="item in news" class="newsitem">
         <div ng-hide="editorEnabled($index)">
-            <h3>{{item.title}}</h3>
-            <p><i>{{item.date | dateToText:'time'}}</i></p>
-            <div style="white-space:pre-wrap; margin-bottom: 2em">{{item.description}}</div>
-            <button class="btn" ng-click="show($index)">Править</button>
-            <button class="btn" ng-click="del($index)">Удалить</button>
+                <a class="button" ng-click="del($index)" title="удалить"><i class="icon-remove"></i></a>
+                <a class="button" ng-click="show($index)" title="править"><i class="icon-pencil"></i></a>
+                <a href="#addnews" data-toggle="modal" class="button" ng-click="show(-1)" title="добавить"><i class="icon-plus"></i></a>
+                <h3 class="title">{{item.title}}</h3>
+                <p class="date">{{item.date | dateToText:'time'}}</p>
+                <p class="desc">{{item.description}}</p>
         </div>
         <div ng-show="editorEnabled($index)">
             <div>Заголовок:</div>
-            <div><input type="text" ng-model="curr.title" style="width: 600px"></div>
+            <input type="text" ng-model="curr.title" class="title-editor">
+            <p class="date-editor">{{item.date | dateToText:'time'}}</p>
             <div>Текст:</div>
-            <div>
-                <textarea ng-model="curr.description" style="height: 200px; width: 600px"></textarea>
-            </div>
+            <textarea ng-model="curr.description" class="desc-editor"></textarea>
             <button class="btn" ng-click="update($index)">Cохранить</button>
             <button class="btn" ng-click="show(-1)">Отмена</button>
         </div>
     </div>
-    <div ng-show="currentEdit == -1" style="padding-top: 2em">
-        <div>Заголовок:</div>
-        <div>
-            <input type="text" ng-model="curr.title" style="width: 600px">
+
+    <div id="addnews" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Добавить новость</h3>
         </div>
-        <div>Текст:</div>
-        <div>
-            <textarea ng-model="curr.description" style="height: 200px; width: 600px"></textarea>
+        <div class="modal-body newsitem">
+        <p>Заголовок:</p>
+        <div style="padding-right: 1em">
+            <input type="text" ng-model="curr.title" class="title-new">
         </div>
-        <div>
-            <button class="btn" ng-click="add()">Добавить</button>
+        <p>Текст:</p>
+        <div style="padding-right: 1em">
+            <textarea ng-model="curr.description" class="desc-new"></textarea>
+        </div>
+        </div>
+        <div class="modal-footer">
+                <button class="btn" ng-click="add()">Добавить</button>
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
         </div>
     </div>
 </div>

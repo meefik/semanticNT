@@ -345,6 +345,7 @@ function NewsCtrl($scope, $routeParams, News) {
             //$scope.news.push(data); // insert to last
             $scope.news.splice(0, 0, data); // insert to first
             $scope.show(-1);
+            $('#addnews').modal('hide');
         });
     };
 
