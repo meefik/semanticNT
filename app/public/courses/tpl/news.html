@@ -1,3 +1,11 @@
+<script>
+$(document).ready(function() {
+var wbbOpt = {
+  buttons: "bold,italic,underline,|,img,link,|,code,quote"
+}
+$("#editor").wysibb(wbbOpt);
+});
+</script>
 <div ng-controller="NewsCtrl">
     <div ng-repeat="item in news" class="newsitem">
         <div ng-hide="editorEnabled($index)">
@@ -27,13 +35,11 @@
             <h3 id="myModalLabel">Добавить новость</h3>
         </div>
         <div class="modal-body newsitem">
-        <p>Заголовок:</p>
         <div style="padding-right: 1em">
-            <input type="text" ng-model="curr.title" class="title-new">
+            <input type="text" ng-model="curr.title" class="title-new" placeholder="Заголовок">
         </div>
-        <p>Текст:</p>
-        <div style="padding-right: 1em">
-            <textarea ng-model="curr.description" class="desc-new"></textarea>
+        <div>
+            <textarea ng-model="curr.description" id="editor" class="desc-new"></textarea>
         </div>
         </div>
         <div class="modal-footer">
