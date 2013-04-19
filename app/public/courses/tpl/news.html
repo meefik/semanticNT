@@ -1,5 +1,5 @@
 <div ng-controller="NewsCtrl">
-    <div ng-repeat="item in news | orderBy:orderProp:true">
+    <div ng-repeat="item in news">
         <div ng-hide="editorEnabled($index)">
             <h3>{{item.title}}</h3>
             <p><i>{{item.date | dateToText:'time'}}</i></p>

@@ -304,7 +304,6 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
 }
 
 function NewsCtrl($scope, $routeParams, News) {
-    $scope.orderProp = 'date';
     $scope.currentEdit = -1;
     
     $scope.news = News.query({courseId: $routeParams.courseId});
@@ -343,12 +342,12 @@ function NewsCtrl($scope, $routeParams, News) {
     $scope.add = function() {
         var newNews = new News($scope.curr);
         newNews.$save({courseId: $routeParams.courseId}, function(data) {
-            $scope.news.push(data);
+            //$scope.news.push(data); // insert to last
+            $scope.news.splice(0, 0, data); // insert to first
             $scope.show(-1);
         });
     };
 
-    // fixme: индексы неправильно работают после сортировки
     $scope.del = function(id) {
         News.remove({courseId: $routeParams.courseId,
             newsId: $scope.news[id]._id}, function() {

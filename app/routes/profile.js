@@ -23,11 +23,6 @@ var Profile = new Schema({
     //courses: { type: Schema.ObjectId, ref: 'Courses' }
 });
 
-var MyCourses = new Schema({
-    userid: { type: String, unique: true, required: true },
-    courses: [String]
-});
-
 var Activation = new Schema({
     email: { type: String, required: true },
     key: { type: String, required: true },
@@ -35,17 +30,8 @@ var Activation = new Schema({
     date: { type: Date, required: true }
 });
 
-var News = new Schema({
-    courseid: { type: String, required: true },
-    date: { type: Date, unique: true, required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true }
-});
-
 ProfileModel = mongoose.model('Profile', Profile);
-MyCoursesModel = mongoose.model('MyCourses', MyCourses);
 ActivationModel = mongoose.model('Activation', Activation);
-NewsModel = mongoose.model('News', News);
 
 /**
  * Lib
@@ -104,6 +90,8 @@ job.start();
  * Serve JSON to our AngularJS client
  */
 
+/*
+// List all profiles
 exports.profiles = function(req, res) {
     ProfileModel.find(function(err, data) { 
         if (!err) {
@@ -113,6 +101,7 @@ exports.profiles = function(req, res) {
         }
     });
 };
+*/
 
 // Get profile variables
 exports.getProfile = function(req, res) {
@@ -191,6 +180,24 @@ exports.login = function(req, res, next) {
         });
     })(req, res, next);
 };
+
+/*
+// Simple sign in method
+exports.login = function(req, res) {
+    if (!req.body.email || !req.body.passwd)
+        return res.send(400);
+    
+    ProfileModel.findOne({email: req.body.email}, function(err, profile) {
+        var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
+        if (!err && profile && profile.passwd === passwd) {
+            req.session.userid = profile._id;
+            return exports.getProfile(req, res);
+        } else {
+            return res.send(403);
+        }
+    });
+};
+*/
 
 // Reset password
 exports.resetPassword = function(req, res) {
@@ -284,23 +291,6 @@ exports.resetPassword = function(req, res) {
     }
 };
 
-/*
-exports.login = function(req, res) {
-    if (!req.body.email || !req.body.passwd)
-        return res.send(400);
-    
-    ProfileModel.findOne({email: req.body.email}, function(err, profile) {
-        var passwd = crypto.createHash('sha1').update(req.body.passwd).digest('hex');
-        if (!err && profile && profile.passwd === passwd) {
-            req.session.userid = profile._id;
-            return exports.getProfile(req, res);
-        } else {
-            return res.send(403);
-        }
-    });
-};
-*/
-
 // Logout
 exports.logout = function(req, res) {
     if (req.session) {
@@ -308,150 +298,4 @@ exports.logout = function(req, res) {
             return res.send(200); // 200 OK
         });
     }
-};
-
-/**
- * My Courses
- */
-
-// Get list of registered courses
-exports.getCourses = function(req, res) {
-    var userid = req.session.passport.user;
-    if (!userid)
-        return res.send(401); // 401 Unauthorized
-
-    MyCoursesModel.findOne({userid: userid}, function(err, data) {
-        if (!err) {
-            var courses = [];
-            if (data)
-                courses = data.courses;
-            return res.json({courses: courses});
-        } else {
-            console.log(err);
-            return res.send(500); // 500 Internal Server Error
-        }
-    });
-};
-
-// Set list of registered courses
-exports.setCourses = function(req, res) {
-    var userid = req.session.passport.user;
-    if (!userid)
-        return res.send(401); // 401 Unauthorized
-
-    MyCoursesModel.findOneAndUpdate({userid: userid}, {courses: req.body.courses}, function(err) {
-        if (!err) {
-            return res.send(200); // 200 OK
-        } else {
-            console.log(err);
-            return res.send(500); // 500 Internal Server Error
-        }
-    });
-};
-
-// fixme: old code
-exports.addCourse = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
-        return res.send(401);
-
-    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) { 
-        if (!err) {
-            var courseid = req.params.id;
-            profile.courses.numbers.push(courseid);
-            CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: profile.courses.numbers}, function(err, courses) {
-                if (!err)
-                    return res.send(200); // 200 OK
-                else
-                    return res.send(500);
-            });
-        } else {
-            return res.send(500);
-        }
-    });
-};
-
-// fixme: old code
-exports.delCourse = function(req, res) {
-    var profile = req.session.profile;
-    if (!profile)
-        return res.send(401);
-
-    ProfileModel.findById(profile._id).populate('courses').exec(function(err, profile) {
-        if (!err) {
-            var courseid = req.params.id;
-            var arr = profile.courses.numbers;
-            for (var i in arr) {
-                if (arr[i] === courseid) {
-                    profile.courses.numbers.splice(i, 1);
-                    break;
-                }
-            }
-            CoursesModel.findByIdAndUpdate(profile.courses._id, {numbers: profile.courses.numbers}, function(err, courses) {
-                if (!err)
-                    return res.send(200);
-                else
-                    return res.send(500);
-            });
-        } else {
-            return res.send(500);
-        }
-    });
-};
-
-/**
- * Course: news
- */
-
-exports.getNews = function(req, res) {
-    NewsModel.find(function(err, data) {
-        if (!err) {
-            res.json(data);
-        } else {
-            res.send(500);
-            console.log(err);
-        }
-    });
-};
-
-exports.addNews = function(req, res) {
-    var newNews = new NewsModel({
-        courseid: req.params.courseId,
-        date: new Date,
-        title: req.body.title,
-        description: req.body.description
-    });
-    newNews.save(function(err, data) {
-        if (!err) {
-            res.json(data);
-        } else {
-            res.send(500);
-            console.log(err);
-        }
-    });
-};
-
-exports.deleteNews = function(req, res) {
-    NewsModel.remove({_id: req.params.newsId, courseid: req.params.courseId},
-    function(err) {
-        if (!err) {
-            res.send(200);
-        } else {
-            res.send(500);
-            console.log(err);
-        }
-    });
-};
-
-exports.updateNews = function(req, res) {
-    NewsModel.update({_id: req.params.newsId, courseid: req.params.courseId},
-    {title: req.body.title, description: req.body.description},
-    function(err) {
-        if (!err) {
-            res.send(200);
-        } else {
-            res.send(500);
-            console.log(err);
-        }
-    });
 };

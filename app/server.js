@@ -9,7 +9,9 @@ var MongoStore = require('connect-mongo')(express);
 var passport = require('passport');
 
 var routes = require('./routes');
-var api = require('./routes/api');
+var profile = require('./routes/profile');
+var mycourses = require('./routes/mycourses');
+var news = require('./routes/news');
 
 var app = module.exports = express.createServer();
 
@@ -93,32 +95,32 @@ app.configure('production', function() {
  */
 
 // for developement
-app.get('/api/profiles', api.profiles);
+//app.get('/api/profiles', profile.profiles);
 
 // New user registration
-app.post('/api/register', api.register);
+app.post('/api/register', profile.register);
 // Sign In
-app.post('/api/login', api.login);
+app.post('/api/login', profile.login);
 // Logout
-app.get('/api/logout', api.logout);
+app.get('/api/logout', profile.logout);
 // Reset password
-app.post('/api/reset', api.resetPassword);
+app.post('/api/reset', profile.resetPassword);
 
 // Get profile variables
-app.get('/api/profile', api.getProfile);
+app.get('/api/profile', profile.getProfile);
 // Set profile variables
-app.post('/api/profile', api.setProfile);
+app.post('/api/profile', profile.setProfile);
 
 // Get list of registered courses
-app.get('/api/mycourses', api.getCourses);
+app.get('/api/mycourses', mycourses.getMyCourses);
 // Set list of registered courses
-app.post('/api/mycourses', api.setCourses);
+app.post('/api/mycourses', mycourses.setMyCourses);
 
 // Course news
-app.get('/api/:courseId/news', api.getNews);
-app.post('/api/:courseId/news', api.addNews);
-app.put('/api/:courseId/news/:newsId', api.updateNews);
-app.del('/api/:courseId/news/:newsId', api.deleteNews);
+app.get('/api/:courseId/news', news.getNews);
+app.post('/api/:courseId/news', news.addNews);
+app.put('/api/:courseId/news/:newsId', news.updateNews);
+app.del('/api/:courseId/news/:newsId', news.deleteNews);
 
 /**
  * Return 404 error
