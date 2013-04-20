@@ -157,6 +157,12 @@ li {
 /* News */
 .newsitem {
     padding-bottom: 0.5em;
+    padding: 5px;
+}
+.newsitem:hover {
+    border: 1px dashed lightgrey;
+    border-radius: 5px;
+    padding: 4px;
 }
 .newsitem .popup-menu {
     display: none;
@@ -167,42 +173,33 @@ li {
 .newsitem .title {
     margin: 0;
     padding: 0;
-    float: left;
     color: #5080a0;
     font-family: 'Jura', sans-serif;
     font-size: x-large;
 }
 .newsitem .date {
-    clear:left;
     font-style: italic;
 }
 .newsitem .button {
     float: right;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-right: 10px;
     font-size: small;
 }
 .newsitem .desc {
-    clear: both;
     white-space: pre-wrap;
     margin-bottom: 2em;
 }
 .newsitem .title-editor {
-    width: 450px;
+    width: 400px;
+    float: left;
+    margin-right: 1em;
 }
 .newsitem .date-editor {
     font-style: italic;
     padding: 5px 40px 0 0;
-    float: right;
 }
 .newsitem .desc-editor {
     width: 660px;
-    height: 200px;
-}
-.newsitem .title-new {
-    width: 100%;
-}
-.newsitem .desc-new {
-    width: 100%;
     height: 200px;
 }

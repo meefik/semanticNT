@@ -1,31 +1,23 @@
-<script>
-$(document).ready(function() {
-var wbbOpt = {
-  buttons: "bold,italic,underline,|,img,link,|,code,quote"
-}
-$("#editor").wysibb(wbbOpt);
-});
-</script>
 <div ng-controller="NewsCtrl">
     <div ng-repeat="item in news" class="newsitem">
-        <div ng-hide="editorEnabled($index)">
+        <div class="ng-hide: editorEnabled($index)">
             <div class="popup-menu">
-                <a class="button" ng-click="del($index)" title="удалить"><i class="icon-remove"></i></a>
+                <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
                 <a class="button" ng-click="show($index)" title="править"><i class="icon-pencil"></i></a>
-                <a href="#addnews" data-toggle="modal" class="button" ng-click="show(-1)" title="добавить"><i class="icon-plus"></i></a>
+                <a class="button" href="#addnews" data-toggle="modal" ng-click="show(-1)" title="добавить"><i class="icon-plus"></i></a>
             </div>
                 <h3 class="title">{{item.title}}</h3>
                 <p class="date">{{item.date | dateToText:'time'}}</p>
-                <p class="desc">{{item.description}}</p>
+                <div class="desc" ng-bind-html-unsafe="item.description"></div>
         </div>
-        <div ng-show="editorEnabled($index)">
-            <div>Заголовок:</div>
-            <input type="text" ng-model="curr.title" class="title-editor">
-            <p class="date-editor">{{item.date | dateToText:'time'}}</p>
-            <div>Текст:</div>
-            <textarea ng-model="curr.description" class="desc-editor"></textarea>
-            <button class="btn" ng-click="update($index)">Cохранить</button>
-            <button class="btn" ng-click="show(-1)">Отмена</button>
+        <div class="ng-show: editorEnabled($index)">
+            <div class="popup-menu">
+                <a class="button" ng-click="show(-1)" title="закрыть"><i class="icon-remove"></i></a>
+                <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+            </div>
+            <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
+            <p class="date-editor">{{curr.date | dateToText:'time'}}</p>
+            <textarea id="editor-{{$index}}" class="desc-editor" ng-model="curr.description"></textarea>
         </div>
     </div>
 
@@ -34,12 +26,13 @@ $("#editor").wysibb(wbbOpt);
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h3 id="myModalLabel">Добавить новость</h3>
         </div>
-        <div class="modal-body newsitem">
-        <div style="padding-right: 1em">
-            <input type="text" ng-model="curr.title" class="title-new" placeholder="Заголовок">
+        <div class="modal-body">
+        <div style="padding-right: 1em;">
+            <input type="text" ng-model="curr.title" placeholder="Заголовок" style="width: 100%;">
         </div>
-        <div>
-            <textarea ng-model="curr.description" id="editor" class="desc-new"></textarea>
+        <div style="padding-right: 1em">
+            <textarea ng-model="curr.description"  style="width: 100%; height: 200px;"></textarea>
+            <!--<textarea class="desc-new"></textarea>-->
         </div>
         </div>
         <div class="modal-footer">

@@ -314,7 +314,7 @@ function NewsCtrl($scope, $routeParams, News) {
         else
             return false;
     };
-
+    
     $scope.show = function(id) {
         $scope.currentEdit = id;
         if (id >= 0) {
@@ -330,6 +330,7 @@ function NewsCtrl($scope, $routeParams, News) {
     };
 
     $scope.update = function(id) {
+        console.log($scope.curr.description);
         var newNews = new News($scope.curr);
         newNews.$update({courseId: $routeParams.courseId,
             newsId: $scope.news[id]._id}, function() {
