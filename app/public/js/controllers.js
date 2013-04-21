@@ -181,7 +181,6 @@ function TermsCtrl($scope) {
 
 function HomeCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
-    $scope.orderProp = 'begin';
 }
 
 function CoursesCtrl($scope, Courses) {
@@ -191,9 +190,6 @@ function CoursesCtrl($scope, Courses) {
 
 function MyCoursesCtrl($rootScope, $scope, Courses, Profile) {
     $scope.catalog = Courses.query();
-    $scope.orderProp = 'begin';
-
-    //$scope.mycourses = MyCourses.query();
 
     $scope.getProgress = function(d1, d2) {
         var beginDate = new Date(d1).getTime();
