@@ -393,6 +393,8 @@ function StructCtrl($scope, $routeParams, Courses) {
         update: $scope.dragEnd
     });
     
-    
+    $scope.add = function() {
+        $scope.posts.push('Item '+$scope.posts.length);
+    };
 
 }
