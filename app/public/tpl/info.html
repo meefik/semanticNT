@@ -13,20 +13,22 @@
                 </tr>
                 <tr>
                     <td><i class="icon-calendar"></i> Начало</td>
-                    <td><b>{{course.beginDate | dateToText}}</b></td>
+                    <td><b>{{course.begin | dateToText}}</b></td>
                 </tr>
                 <tr>
                     <td><i class="icon-calendar"></i> Окончание</td>
-                    <td><b>{{course.endDate | dateToText}}</b></td>
+                    <td><b>{{course.end | dateToText}}</b></td>
                 </tr>
                 <tr>
                     <td><i class="icon-pencil"></i> Нагрузка</td>
-                    <td><b>{{course.effort}}</b></td>
+                    <td><b>{{course.effort}} ч / неделю</b></td>
                 </tr>
+                <!--
                 <tr>
                     <td><i class="icon-book"></i> Требования</td>
                     <td><b>{{course.prerequisites | checkmark}}</b></td>
                 </tr>
+                -->
             </table>
             <div style="margin-top: 20px; margin-bottom: 30px; text-align: center">
                 <div ng-show="isAuth() == true">

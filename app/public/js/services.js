@@ -9,27 +9,19 @@ angular.module('app.services', ['ngResource'])
         query: {method: 'GET', params: {}, isArray: true}
     });
 })
-        .factory('Course', function($resource) {
-    var path = 'courses/:courseId/json/:partId.json';
-    return $resource(path, {}, {
-        query: {method: 'GET', params: {courseId: 'unknown', partId: 'info'}, isArray: false}
-    });
-})
         .factory('Profile', function($resource) {
     var path = 'api/profile';
     return $resource(path, {}, {
-        query: {method: 'GET', isArray: false}
+        update: {method: 'PUT'}
     });
 })
-        .factory('MyCourses', function($resource) {
-    var path = 'api/mycourses';
-    return $resource(path, {}, {
-        query: {method: 'GET', isArray: false}
-    });
-})
-        .factory('News', function($resource) {
-    var path = 'api/:courseId/news/:newsId';
+        .factory('Courses', function($resource) {
+    var path = 'api/courses/:courseId/:partId/:itemId';
     return $resource(path, {}, {
         update: {method: 'PUT'}
     });
+})
+        .factory('Parts', function($resource) {
+    var path = 'courses/:courseId/modules.json';
+    return $resource(path);
 });

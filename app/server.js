@@ -10,8 +10,9 @@ var passport = require('passport');
 
 var routes = require('./routes');
 var profile = require('./routes/profile');
-var mycourses = require('./routes/mycourses');
+var courses = require('./routes/courses');
 var news = require('./routes/news');
+var struct = require('./routes/struct');
 
 var app = module.exports = express.createServer();
 
@@ -94,33 +95,34 @@ app.configure('production', function() {
  * JSON API
  */
 
-// for developement
-//app.get('/api/profiles', profile.profiles);
-
-// New user registration
+// Profiles
 app.post('/api/register', profile.register);
-// Sign In
 app.post('/api/login', profile.login);
-// Logout
 app.get('/api/logout', profile.logout);
-// Reset password
-app.post('/api/reset', profile.resetPassword);
+app.post('/api/reset', profile.reset);
+app.get('/api/profile', profile.get);
+app.put('/api/profile', profile.update);
+app.del('/api/profile', profile.remove);
+app.get('/api/profile/:login', profile.check);
 
-// Get profile variables
-app.get('/api/profile', profile.getProfile);
-// Set profile variables
-app.post('/api/profile', profile.setProfile);
-
-// Get list of registered courses
-app.get('/api/mycourses', mycourses.getMyCourses);
-// Set list of registered courses
-app.post('/api/mycourses', mycourses.setMyCourses);
+// Courses
+app.get('/api/courses', courses.list);
+app.post('/api/courses', courses.add);
+app.get('/api/courses/:courseId', courses.get);
+app.put('/api/courses/:courseId', courses.update);
+app.del('/api/courses/:courseId', courses.remove);
 
 // Course news
-app.get('/api/:courseId/news', news.getNews);
-app.post('/api/:courseId/news', news.addNews);
-app.put('/api/:courseId/news/:newsId', news.updateNews);
-app.del('/api/:courseId/news/:newsId', news.deleteNews);
+app.get('/api/courses/:courseId/news', news.get);
+app.post('/api/courses/:courseId/news', news.add);
+app.put('/api/courses/:courseId/news/:itemId', news.update);
+app.del('/api/courses/:courseId/news/:itemId', news.remove);
+
+// Course struct
+app.get('/api/courses/:courseId/struct', struct.get);
+app.post('/api/courses/:courseId/struct', struct.add);
+app.put('/api/courses/:courseId/struct/:itemId', struct.update);
+app.del('/api/courses/:courseId/struct/:itemId', struct.remove);
 
 /**
  * Return 404 error

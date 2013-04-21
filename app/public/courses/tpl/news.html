@@ -1,43 +1,44 @@
 <div ng-controller="NewsCtrl">
-    <div ng-repeat="item in news" class="newsitem">
-        <div class="ng-hide: editorEnabled($index)">
-            <div class="popup-menu">
+    
+    <div ng-repeat="item in news" class="post-item">
+        <div ng-hide="isEditor($index)" class="box">
+            <div class="toolbar">
+                <a class="button" href="#addpost" data-toggle="modal" ng-click="edit(-1)" title="добавить"><i class="icon-plus"></i></a>
+                <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
                 <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
-                <a class="button" ng-click="show($index)" title="править"><i class="icon-pencil"></i></a>
-                <a class="button" href="#addnews" data-toggle="modal" ng-click="show(-1)" title="добавить"><i class="icon-plus"></i></a>
             </div>
-                <h3 class="title">{{item.title}}</h3>
-                <p class="date">{{item.date | dateToText:'time'}}</p>
-                <div class="desc" ng-bind-html-unsafe="item.description"></div>
+            <h3 class="title">{{item.title}}</h3>
+            <p class="date">{{item.date | dateToText:'time'}}</p>
+            <div class="desc" ng-bind-html-unsafe="item.description"></div>
         </div>
-        <div class="ng-show: editorEnabled($index)">
-            <div class="popup-menu">
-                <a class="button" ng-click="show(-1)" title="закрыть"><i class="icon-remove"></i></a>
+        <div ng-show="isEditor($index)" class="box">
+            <div class="toolbar">
                 <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
             </div>
             <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
             <p class="date-editor">{{curr.date | dateToText:'time'}}</p>
-            <textarea id="editor-{{$index}}" class="desc-editor" ng-model="curr.description"></textarea>
+            <textarea class="desc-editor" ng-model="curr.description"></textarea>
         </div>
     </div>
 
-    <div id="addnews" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div id="addpost" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="myModalLabel">Добавить новость</h3>
+            <h3 id="myModalLabel">Добавить объявление</h3>
         </div>
         <div class="modal-body">
-        <div style="padding-right: 1em;">
-            <input type="text" ng-model="curr.title" placeholder="Заголовок" style="width: 100%;">
-        </div>
-        <div style="padding-right: 1em">
-            <textarea ng-model="curr.description"  style="width: 100%; height: 200px;"></textarea>
-            <!--<textarea class="desc-new"></textarea>-->
-        </div>
+            <div style="padding-right: 1em;">
+                <input type="text" ng-model="curr.title" placeholder="Заголовок" style="width: 100%;">
+            </div>
+            <div style="padding-right: 1em">
+                <textarea ng-model="curr.description"  style="width: 100%; height: 200px;"></textarea>
+            </div>
         </div>
         <div class="modal-footer">
-                <button class="btn" ng-click="add()">Добавить</button>
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
+            <button class="btn" ng-click="add()">Добавить</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
         </div>
     </div>
+    
 </div>

@@ -23,4 +23,20 @@ angular.module('app.directives', [])
             });
         }
     };
+})
+.directive("login", function() {
+    var isValid = function(s) {
+        return s && /^[a-zA-Z0-9]+$/.test(s);
+    };
+    return {
+        require: "ngModel",
+        link: function(scope, elm, attrs, ctrl) {
+
+            ctrl.$parsers.push(function(value) {
+                ctrl.$setValidity("login", isValid(value));
+                return value;
+            });
+
+        }
+    };
 });

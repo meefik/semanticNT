@@ -1,2 +1,18 @@
-<!-- Include default template -->
-<div ng-include src="part.struct"></div>
+<script>
+    $(function() {
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
+    });
+</script>
+<div ng-controller="StructCtrl">
+
+    <div id="sortable">
+        <div ng-repeat="item in posts">
+            <div class="well well-small">{{$index}} {{item}}</div>
+        </div>
+    </div>
+
+    <button ng-click="add()">Add</button>
+    <hr>
+    <pre ng-bind="posts|json"></pre>
+</div>

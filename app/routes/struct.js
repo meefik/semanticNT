@@ -10,21 +10,21 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema; //Schema.ObjectId
 
-var News = new Schema({
-    courseid: { type: String, required: true },
-    date: { type: Date, unique: true, required: true },
-    title: { type: String, required: true },
-    description: { type: String, required: true }
+var Struct = new Schema({
+    courseid: {type: String, required: true},
+    index: { type: Number, unique: true },
+    date: { type: Date, required: true },
+    context: {type: String, required: true}
 });
 
-NewsModel = mongoose.model('News', News);
+StructModel = mongoose.model('Struct', Struct);
 
 /*
  * Serve JSON to our AngularJS client
  */
 
 exports.get = function(req, res) {
-    NewsModel.find().sort({ date: -1 }).exec(function(err, data) {
+    StructModel.find(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -35,13 +35,15 @@ exports.get = function(req, res) {
 };
 
 exports.add = function(req, res) {
-    var newNews = new NewsModel({
+    var userid = req.session.passport.user;
+    
+    var newStruct = new StructModel({
         courseid: req.params.courseId,
-        date: new Date,
-        title: req.body.title,
-        description: req.body.description
+        userid: userid,
+        date: new Date(),
+        context: req.body.context
     });
-    newNews.save(function(err, data) {
+    newStruct.save(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -52,7 +54,7 @@ exports.add = function(req, res) {
 };
 
 exports.remove = function(req, res) {
-    NewsModel.remove({_id: req.params.itemId, courseid: req.params.courseId},
+    StructModel.remove({_id: req.params.itemId, courseid: req.params.courseId},
     function(err) {
         if (!err) {
             res.send(200); // 200 OK
@@ -64,8 +66,8 @@ exports.remove = function(req, res) {
 };
 
 exports.update = function(req, res) {
-    NewsModel.update({_id: req.params.itemId, courseid: req.params.courseId},
-    {title: req.body.title, description: req.body.description},
+    StructModel.update({_id: req.params.itemId, courseid: req.params.courseId},
+    {date: new Date(), context: req.body.context},
     function(err) {
         if (!err) {
             res.send(200); // 200 OK

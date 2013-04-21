@@ -4,7 +4,7 @@
             <a href="#/courses/{{course.id}}"><img ng-src="{{getLogo()}}" class="thumbnail course-logo"></a>
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs nav-parts">
-                    <li ng-repeat="tab in course.parts" ng-class="tab.status"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
+                    <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
                 </ul>
             </div>
         </div>

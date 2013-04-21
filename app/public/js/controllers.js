@@ -2,20 +2,40 @@
 
 /* Controllers */
 
-function AppCtrl($rootScope, $scope, $location, $http, Profile) {
-    $rootScope.profile = Profile.query();
-
+function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
+    
+    $rootScope.getProfile = function(userid) {
+        if (userid) {
+            $rootScope.profile = Profile.get({}, function() {
+                $cookieStore.put('userid', userid);
+            });
+        } else {
+            userid = $cookieStore.get('userid');
+            if (userid)
+                $rootScope.profile = Profile.get();
+        }
+    };
+    
+    $rootScope.delProfile = function() {
+        $cookieStore.remove('userid');
+        delete $rootScope.profile;
+    };
+    
     $rootScope.isAuth = function() {
-        if ($rootScope.profile.email)
+        if ($rootScope.profile && $rootScope.profile.login)
             return true;
         else
             return false;
     };
+    
+    if (!$rootScope.isAuth()) {
+        $rootScope.getProfile();
+    }
 
     $rootScope.logout = function() {
         $http.get('api/logout').
                 success(function() {
-            delete $rootScope.profile;
+            $rootScope.delProfile();
             $location.path("/");
         });
     };
@@ -69,7 +89,7 @@ function AppCtrl($rootScope, $scope, $location, $http, Profile) {
     };
 }
 
-function LoginFormCtrl($rootScope, $scope, $http, Profile) {
+function LoginFormCtrl($rootScope, $scope, $http) {
     $scope.reset = function() {
         delete $scope.result;
         delete $scope.user;
@@ -78,7 +98,7 @@ function LoginFormCtrl($rootScope, $scope, $http, Profile) {
     $scope.submit = function() {
         $http.post('api/login', $scope.user).
                 success(function(data, status) {
-            $rootScope.profile = Profile.query();
+            $rootScope.getProfile($scope.user.login);
             $scope.reset();
         }).
                 error(function(data, status) {
@@ -88,27 +108,23 @@ function LoginFormCtrl($rootScope, $scope, $http, Profile) {
     };
 }
 
-function SignupFormCtrl($rootScope, $scope, $http, Profile) {
+function SignupFormCtrl($rootScope, $scope, $http) {
     $scope.reset = function() {
         delete $scope.result;
         delete $scope.user;
         $('#signup').modal('hide');
     };
-    $scope.checkPassword = function() {
-        //$scope.signupForm.inputRePassword.$error.dontMatch = $scope.user.passwd !== $scope.user.repasswd;
-        $scope.signupForm.inputRePassword.$invalid = $scope.user.passwd !== $scope.user.repasswd;
-    };
     $scope.submit = function() {
         //$scope.error = "Регистрация временно приостановлена.";
         var profile = {
+            login: $scope.user.login,
             email: $scope.user.email,
             passwd: $scope.user.passwd,
-            nickname: $scope.user.nickname,
             fullname: $scope.user.fullname
         };
         $http.post('api/register', profile).
                 success(function(data, status) {
-            $rootScope.profile = Profile.query();
+            $rootScope.getProfile(profile.login);
             $scope.reset();
         }).
                 error(function(data, status) {
@@ -165,19 +181,19 @@ function TermsCtrl($scope) {
 
 function HomeCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
-    $scope.orderProp = 'beginDate';
+    $scope.orderProp = 'begin';
 }
 
-function CoursesCtrl($scope, Catalog) {
-    $scope.catalog = Catalog.query();
-    $scope.orderProp = 'beginDate';
+function CoursesCtrl($scope, Courses) {
+    $scope.catalog = Courses.query();
+    $scope.orderProp = 'begin';
 }
 
-function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
-    $scope.catalog = Catalog.query();
-    $scope.orderProp = 'beginDate';
+function MyCoursesCtrl($rootScope, $scope, Courses, Profile) {
+    $scope.catalog = Courses.query();
+    $scope.orderProp = 'begin';
 
-    $scope.mycourses = MyCourses.query();
+    //$scope.mycourses = MyCourses.query();
 
     $scope.getProgress = function(d1, d2) {
         var beginDate = new Date(d1).getTime();
@@ -194,10 +210,11 @@ function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
     };
 
     $scope.unReg = function(courseid) {
-        if (!$scope.mycourses)
+        if (!$rootScope.isAuth())
             return false;
+
         // clone courses variable
-        var courses = $scope.mycourses.courses.slice(0);
+        var courses = $rootScope.profile.courses.slice(0);
         // remove courseid from courses array
         for (var i in courses) {
             if (courses[i] === courseid) {
@@ -206,18 +223,10 @@ function MyCoursesCtrl($rootScope, $scope, Catalog, MyCourses) {
             }
         }
         // save courses array to server
-        var newMyCourses = new MyCourses({courses: courses});
-        newMyCourses.$save({}, function() {
-            $scope.mycourses.courses = courses;
+        var newProfile = new Profile({courses: courses});
+        newProfile.$update({}, function() {
+            $rootScope.profile.courses = courses;
         });
-
-        /*
-         $http.post('api/mycourses', {courses: courses}).
-         success(function(data, status) {
-         $rootScope.courses = courses;
-         });
-         */
-
     };
 }
 
@@ -225,67 +234,72 @@ function ProfileCtrl() {
 
 }
 
-function InfoCtrl($scope, $routeParams, Course, MyCourses) {
-    $scope.course = Course.get({courseId: $routeParams.courseId,
-        partId: 'info'}, function() {
-        $scope.course.id = $routeParams.courseId;
+function InfoCtrl($rootScope, $scope, $routeParams, Courses, Profile) {
+    $scope.course = Courses.get({courseId: $routeParams.courseId}, function() {
+        //$scope.course.id = $routeParams.courseId;
     });
 
-    $scope.mycourses = MyCourses.query();
+    //$scope.mycourses = MyCourses.query();
 
     $scope.getContent = function() {
         return 'courses/' + $scope.course.id + '/tpl/info.html';
     };
 
     $scope.isReg = function(courseid) {
-        if (!$scope.mycourses)
+        if (!$rootScope.isAuth())
             return false;
-        for (var i in $scope.mycourses.courses) {
-            if (courseid === $scope.mycourses.courses[i])
+        for (var i in $rootScope.profile.courses) {
+            if (courseid === $rootScope.profile.courses[i])
                 return true;
         }
         return false;
     };
 
     $scope.setReg = function(courseid) {
-        if (!$scope.isReg(courseid)) {
-            // clone courses variable
-            var courses = $scope.mycourses.courses.slice(0);
-            // add current course number to courses array
-            courses.push(courseid);
-            // save courses array to server
-            var newMyCourses = new MyCourses({courses: courses});
-            newMyCourses.$save({}, function() {
-                $scope.mycourses.courses = courses;
-            });
-            /*
-             $http.post('api/mycourses', {courses: courses}).
-             success(function(data, status) {
-             $scope.mycourses = courses;
-             });
-             */
-        }
+        if (!$rootScope.isAuth())
+            return false;
+
+        // clone courses variable
+        var courses = $rootScope.profile.courses.slice(0);
+        // add current course number to courses array
+        courses.push(courseid);
+        // save courses array to server
+        var newProfile = new Profile({courses: courses});
+        newProfile.$update({}, function() {
+            $rootScope.profile.courses = courses;
+        });
     };
 }
 
-function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
+function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) {
     /*
      if (!$rootScope.isAuth()) {
      $location.path('/');
      }
      */
-    $scope.course = Course.get({courseId: $routeParams.courseId,
-        partId: 'info'}, function() {
-        $scope.course.id = $routeParams.courseId;
-        for (var i in $scope.course.parts) {
-            if ($scope.course.parts[i].id === $routeParams.partId) {
-                $scope.course.parts[i].status = "active";
+    
+    $scope.template = 'courses/tpl/' + $routeParams.partId + '.html';
+    $scope.getContent = function() {
+        return 'courses/' + $routeParams.courseId + '/tpl/' +
+                $routeParams.partId + '.html';
+    };
+    $scope.getLogo = function() {
+        return 'courses/' + $routeParams.courseId + '/img/logo.png';
+    };
+    
+    $scope.modules = Parts.query({courseId: $routeParams.courseId}, function() {
+        for (var i in $scope.modules) {
+            if ($scope.modules[i].id === $routeParams.partId) {
+                $scope.modules[i].active = true;
                 break;
             }
         }
     });
-
-    $scope.part = Course.get({courseId: $routeParams.courseId,
+    
+    $scope.course = Courses.get({courseId: $routeParams.courseId});
+    
+/*
+    $scope.part = Courses.get({courseId: $routeParams.courseId,
         partId: $routeParams.partId}, function() {
         $scope.part.id = $routeParams.partId;
         $scope.part.template = 'courses/tpl/' + $scope.part.id + '.html';
@@ -294,28 +308,26 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Course) {
                     $routeParams.partId + '.html';
         };
     });
+*/
 
-    $scope.getLogo = function() {
-        var path = '';
-        if ($scope.course.id)
-            path = 'courses/' + $scope.course.id + '/img/logo.png';
-        return path;
-    };
 }
 
-function NewsCtrl($scope, $routeParams, News) {
+function NewsCtrl($scope, $routeParams, Courses) {
     $scope.currentEdit = -1;
-    
-    $scope.news = News.query({courseId: $routeParams.courseId});
 
-    $scope.editorEnabled = function(id) {
+    $scope.news = Courses.query({
+        courseId: $routeParams.courseId,
+        partId: $routeParams.partId
+    });
+
+    $scope.isEditor = function(id) {
         if ($scope.currentEdit === id)
             return true;
         else
             return false;
     };
-    
-    $scope.show = function(id) {
+
+    $scope.edit = function(id) {
         $scope.currentEdit = id;
         if (id >= 0) {
             $scope.curr = {
@@ -330,32 +342,61 @@ function NewsCtrl($scope, $routeParams, News) {
     };
 
     $scope.update = function(id) {
-        console.log($scope.curr.description);
-        var newNews = new News($scope.curr);
+        var newNews = new Courses($scope.curr);
         newNews.$update({courseId: $routeParams.courseId,
-            newsId: $scope.news[id]._id}, function() {
+            partId: $routeParams.partId,
+            itemId: $scope.news[id]._id}, function() {
             $scope.news[id].title = $scope.curr.title;
             $scope.news[id].description = $scope.curr.description;
-            $scope.show(-1);
+            $scope.edit(-1);
         });
     };
 
     $scope.add = function() {
-        var newNews = new News($scope.curr);
-        newNews.$save({courseId: $routeParams.courseId}, function(data) {
+        var newNews = new Courses($scope.curr);
+        newNews.$save({courseId: $routeParams.courseId,
+            partId: $routeParams.partId}, function(data) {
             //$scope.news.push(data); // insert to last
             $scope.news.splice(0, 0, data); // insert to first
-            $scope.show(-1);
-            $('#addnews').modal('hide');
+            $scope.edit(-1);
+            $('#addpost').modal('hide');
         });
     };
 
     $scope.del = function(id) {
-        News.remove({courseId: $routeParams.courseId,
-            newsId: $scope.news[id]._id}, function() {
+        Courses.remove({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.news[id]._id}, function() {
             $scope.news.splice(id, 1);
-            $scope.show(-1);
+            $scope.edit(-1);
         });
     };
+
+}
+
+function StructCtrl($scope, $routeParams, Courses) {
+
+    $scope.posts = Courses.query({courseId: $routeParams.courseId,
+        partId: $routeParams.partId});
+
+    // jQuery UI Sortable
+    $scope.dragStart = function(e, ui) {
+        ui.item.data('start', ui.item.index());
+    };
+    $scope.dragEnd = function(e, ui) {
+        var start = ui.item.data('start'),
+                end = ui.item.index();
+
+        $scope.posts.splice(end, 0,
+                $scope.posts.splice(start, 1)[0]);
+
+        $scope.$apply();
+    };
+    $('#sortable').sortable({
+        start: $scope.dragStart,
+        update: $scope.dragEnd
+    });
+    
+    
 
 }

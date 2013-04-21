@@ -2,7 +2,7 @@
 
 /* App Module */
 
-angular.module('openITMO', ['app.services', 'app.filters', 'app.directives']).
+angular.module('openITMO', ['ngCookies', 'app.services', 'app.filters', 'app.directives']).
         config(['$routeProvider', '$locationProvider', function($routeProvider) {
         $routeProvider.
                 when('/', {templateUrl: 'tpl/home.html', controller: HomeCtrl}).

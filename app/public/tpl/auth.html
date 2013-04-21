@@ -9,10 +9,10 @@
             <div class="alert alert-error" ng-show="result == false">
                 Доступ запрещен! Проверьте правильность введенных данных.
             </div>
-            <div class="control-group" ng-class="{error: loginForm.inputEmail.$invalid}">
-                <label class="control-label" for="inputEmail">Электронная почта:</label>
+            <div class="control-group" ng-class="{error: loginForm.inputLogin.$invalid}">
+                <label class="control-label" for="inputLogin">Логин:</label>
                 <div class="controls">
-                    <input id="inputEmail" ng-model="user.email" type="email" name="inputEmail" placeholder="yourname@domain.com" required>
+                    <input id="inputLogin" ng-model="user.login" type="text" name="inputLogin" placeholder="уникальный идентификатор" login required>
                 </div>
             </div>
             <div class="control-group" ng-class="{error: loginForm.inputPassword.$invalid}">
@@ -44,6 +44,12 @@
             <div class="alert alert-error" ng-show="result == false">
                 Регистрация временно недоступна. Повторите попытку позже.
             </div>
+            <div class="control-group" ng-class="{error: signupForm.inputLogin.$invalid}">
+                <label class="control-label" for="inputLogin">Логин:</label>
+                <div class="controls">
+                    <input id="inputLogin" ng-model="user.login" type="text" name="inputLogin" placeholder="уникальный идентификатор" login required>
+                </div>
+            </div>
             <div class="control-group" ng-class="{error: signupForm.inputEmail.$invalid}">
                 <label class="control-label" for="inputEmail">Электронная почта:</label>
                 <div class="controls">
@@ -60,12 +66,6 @@
                 <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
                 <div class="controls">
                     <input id="inputRePassword" ng-model="user.repasswd" type="password" name="inputRePassword" placeholder="******" repeat-password="inputPassword" required>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="inputNickname">Псевдоним:</label>
-                <div class="controls">
-                    <input id="inputNickname" ng-model="user.nickname" type="text" name="inputNickname" placeholder="виден остальным участникам">
                 </div>
             </div>
             <div class="control-group">

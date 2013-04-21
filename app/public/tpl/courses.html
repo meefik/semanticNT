@@ -14,7 +14,7 @@
                             Сортировать по:<br>
                             <select ng-model="orderProp">
                                 <option value="name">названию</option>
-                                <option value="age">дате</option>
+                                <option value="begin">дате</option>
                             </select>                       
                         </td>
                     </tr>
@@ -30,6 +30,8 @@
                         </div>
                     </div>
                 </a>
+                <div>{{course.begin | dateToText}}</div>
+                <div>{{course.description}}</div>
             </div>
             
         </div>

@@ -15,12 +15,12 @@ var LocalStrategy = require('passport-local').Strategy;
 var Schema = mongoose.Schema; //Schema.ObjectId
 
 var Profile = new Schema({
-    email: { type: String, unique: true, required: true },
+    login: { type: String, unique: true, required: true },
+    email: { type: String, required: true },
     passwd: { type: String, required: true },
-    nickname: { type: String },
     fullname: { type: String },
-    date: { type: Date, required: true }
-    //courses: { type: Schema.ObjectId, ref: 'Courses' }
+    date: { type: Date, required: true },
+    courses: [ String ]
 });
 
 var Activation = new Schema({
@@ -54,11 +54,11 @@ passport.deserializeUser(function(userid, done) {
 });
 
 passport.use(new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'login',
     passwordField: 'passwd'
 },
 function(username, password, done) {
-    ProfileModel.findOne({email: username}, function(err, data) {
+    ProfileModel.findOne({login: username}, function(err, data) {
         if (!err && data && data.passwd === toHash(password)) {
             return done(null, data._id);
         } else {
@@ -90,75 +90,116 @@ job.start();
  * Serve JSON to our AngularJS client
  */
 
-/*
-// List all profiles
-exports.profiles = function(req, res) {
-    ProfileModel.find(function(err, data) { 
+// Get profile variables
+exports.check = function(req, res) {
+    ProfileModel.find({login: req.params.login}, function(err, data) {
         if (!err) {
-            return res.json(data);
+            if (data)
+                res.send(200); // 200 OK
+            else
+                res.send(404); // 404 Not Found
         } else {
-            return res.send(404);
+            res.send(500); // 500 Internal Server Error
+            console.log(err);
         }
     });
 };
-*/
 
 // Get profile variables
-exports.getProfile = function(req, res) {
-    var userid = req.session.passport.user;
-    if (userid) {
-        ProfileModel.findById(userid, function(err, data) {
-            if (!err) {
-                return res.json({
-                    email: data.email,
-                    nickname: data.nickname,
-                    fullname: data.fullname
-                });
-            } else {
-                console.log(err);
-                return res.send(500); // 500 Internal Server Error
-            }
-        });
-    } else {
-        return res.json({});
-    }
-};
-
-// Set profile variables
-exports.setProfile = function(req, res) {
+exports.get = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
         return res.send(401); // 401 Unauthorized
+
+    ProfileModel.findById(userid, function(err, data) {
+        if (!err) {
+            data.passwd = '';
+            res.json(data); // 200 OK + data
+        } else {
+            res.send(500); // 500 Internal Server Error
+            console.log(err);
+        }
+    });
+};
+
+// Update profile variables
+exports.update = function(req, res) {
+    var userid = req.session.passport.user;
+    if (!userid)
+        return res.send(401); // 401 Unauthorized
+    
+    var profile = {};
+    if (req.body.login) {
+        profile.login = req.body.login;
+    }
+    if (req.body.email) {
+        profile.email = req.body.email;
+    }
+    if (req.body.passwd) {
+        profile.passwd = req.body.passwd;
+    }
+    if (req.body.fullname) {
+        profile.fullname = req.body.fullname;
+    }
+    if (req.body.courses) {
+        profile.courses = req.body.courses;
+    }
+
+    ProfileModel.findByIdAndUpdate(userid, profile, function(err) {
+        if (!err) {
+            res.send(200); // 200 OK
+        } else {
+            res.send(500); // 500 Internal Server Error
+            console.log(err);
+        }
+    });
+};
+
+// Remove profile variables
+exports.remove = function(req, res) {
+    var userid = req.session.passport.user;
+    if (!userid)
+        return res.send(401); // 401 Unauthorized
+    
+    ProfileModel.remove({userid: userid}, function(err) {
+        if (!err) {
+            res.send(200); // 200 OK
+        } else {
+            res.send(500); // 500 Internal Server Error
+            console.log(err);
+        }
+    });
 };
 
 // New user registration
 exports.register = function(req, res) {
-    if (!req.body.email || !req.body.passwd)
+    if (!req.body.login || !req.body.email || !req.body.passwd)
+        return res.send(400); // 400 Bad Request
+    // Validating login
+    if (!/^[a-zA-Z0-9]+$/.test(req.body.login))
         return res.send(400); // 400 Bad Request
     // Validating email
-    var re = /\S+@\S+\.\S+/;
-    if (!re.test(req.body.email)) {
+    if (!/\S+@\S+\.\S+/.test(req.body.email))
         return res.send(400); // 400 Bad Request
-    }
     // Checking password lenght
     if (req.body.passwd.length < 4)
         return res.send(400); // 400 Bad Request
     
     var newProfile = new ProfileModel({
+        login: req.body.login,
         email: req.body.email,
         passwd: toHash(req.body.passwd),
-        nickname: req.body.nickname,
         fullname: req.body.fullname,
-        date: new Date
+        date: new Date(),
+        courses: []
     });
     newProfile.save(function(err, data) { 
         if (!err) {
             req.session.passport.user = data._id;
-            return res.send(200); // 200 OK
+            res.send(200); // 200 OK
         } else {
-            //console.log(err);
             // if user exists (dublicate)
-            return res.send(403); // 403 Forbidden
+            res.send(403); // 403 Forbidden
         }
     });
 };
@@ -200,7 +241,7 @@ exports.login = function(req, res) {
 */
 
 // Reset password
-exports.resetPassword = function(req, res) {
+exports.reset = function(req, res) {
     if (!req.body.email)
         return res.send(400); // 400 Bad Request
     // Validating email
