@@ -21,17 +21,13 @@
                 </table>
             </div>
 
-            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="carousel course-block">
-                <a class="carousel-inner thumbnail" href="#/courses/{{course.id}}">
+            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="course-block">
+                <a class="thumbnail" href="#/courses/{{course.id}}">
                     <img ng-src="courses/{{course.id}}/img/logo.png">
-                    <div class="course-caption" style="padding-bottom: 0.5em; padding-top: 0.5em">
-                        <div style="color: white">
-                            <b>{{course.name}}</b><!--<br>{{course.beginDate}}-->
-                        </div>
-                    </div>
                 </a>
-                <div>{{course.begin | dateToText}}</div>
-                <div>{{course.description}}</div>
+                <div><b>{{course.name}}</b></div>
+                <p>{{course.begin | dateToText}}, {{getDiffInWeeks(course.begin,course.end)}} {{getWeekName(getDiffInWeeks(course.begin,course.end))}}</p>
+                <p>{{course.description}}</p>
             </div>
             
         </div>
