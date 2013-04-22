@@ -12,7 +12,7 @@ var Schema = mongoose.Schema; //Schema.ObjectId
 
 var Struct = new Schema({
     courseid: {type: String, required: true},
-    index: { type: Number, unique: true },
+    index: { type: Number, required: true },
     date: { type: Date, required: true },
     context: {type: String, required: true}
 });

@@ -371,6 +371,8 @@ function NewsCtrl($scope, $routeParams, Courses) {
 }
 
 function StructCtrl($scope, $routeParams, Courses) {
+    
+    var index = 0;
 
     $scope.posts = Courses.query({courseId: $routeParams.courseId,
         partId: $routeParams.partId});
@@ -385,6 +387,12 @@ function StructCtrl($scope, $routeParams, Courses) {
 
         $scope.posts.splice(end, 0,
                 $scope.posts.splice(start, 1)[0]);
+                
+        console.log($scope.posts[start].index);
+        console.log($scope.posts[end].index);
+        
+        $scope.posts[end].index = ($scope.posts[end-1].index+$scope.posts[end+1].index)/2;
+        
 
         $scope.$apply();
     };
@@ -394,7 +402,8 @@ function StructCtrl($scope, $routeParams, Courses) {
     });
     
     $scope.add = function() {
-        $scope.posts.push('Item '+$scope.posts.length);
+        $scope.posts.push({text: 'Item '+$scope.posts.length, index: index});
+        index = index + 100;
     };
 
 }
