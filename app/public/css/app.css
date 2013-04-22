@@ -171,10 +171,17 @@ li {
     position:absolute;
     top:0px;
     right:0px;
-    width:100px;
+    width:80px;
     text-align: right;
     position: absolute;
     display: none;
+    
+    /*
+    padding: 5px;
+    border: 1px solid #aaa;
+    background: #eee;
+    margin: 5px;
+    */
 }
 .post-item:hover .toolbar {
     display: block;

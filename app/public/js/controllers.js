@@ -370,12 +370,17 @@ function NewsCtrl($scope, $routeParams, Courses) {
 
 }
 
-function ShelfCtrl($scope, $routeParams, Courses) {
+function ShelfCtrl($scope, $routeParams, $location, Courses, $anchorScroll) {
     
     var index = 0;
+    var change = false;
 
     $scope.posts = Courses.query({courseId: $routeParams.courseId,
-        partId: $routeParams.partId});
+        partId: $routeParams.partId},function(){
+            $scope.updateToc();
+        });
+        
+    //$scope.posts = ["Заголовок 1", "Заголовок длинный 2", "Заголовок очень длинный 3", "Заголовок 4", "Заголовок 5", "Заголовок 6", "Заголовок 7", "Заголовок 8", "Заголовок 9"];
 
     // jQuery UI Sortable
     $scope.dragStart = function(e, ui) {
@@ -388,22 +393,52 @@ function ShelfCtrl($scope, $routeParams, Courses) {
         $scope.posts.splice(end, 0,
                 $scope.posts.splice(start, 1)[0]);
                 
-        console.log($scope.posts[start].index);
-        console.log($scope.posts[end].index);
+        //console.log($scope.posts[start].index);
+        //console.log($scope.posts[end].index);
         
-        $scope.posts[end].index = ($scope.posts[end-1].index+$scope.posts[end+1].index)/2;
-        
+        //$scope.posts[end].index = ($scope.posts[end-1].index+$scope.posts[end+1].index)/2;
 
-        $scope.$apply();
+        //$scope.$apply();
+        
+        $scope.updateToc();
     };
     $('#sortable').sortable({
         start: $scope.dragStart,
         update: $scope.dragEnd
     });
     
-    $scope.add = function() {
-        $scope.posts.push({text: 'Item '+$scope.posts.length, index: index});
+    $scope.add = function(id) {
+        $scope.posts.splice(id+1,0,{
+            title: "Заголовок "+$scope.posts.length,
+            text: "Содержание... ",
+            index: index,
+            date: new Date(),
+            author: "anton"
+        });
         index = index + 100;
+        $scope.updateToc();
     };
-
+    
+    $scope.del = function(id) {
+        this.destroy(function() {
+            $scope.posts.splice(id, 1);
+            $scope.updateToc();
+        });
+    };
+    
+    $scope.updateToc = function() {
+        //$scope.$apply();
+        
+        $("#tocbox").attr("class", "show");
+        $("#toc").html('');
+        $("#sortable").find("h1, h2, h3").each(function(i) {
+            var current = $(this);
+            current.attr("id", "post" + i);
+            $("#toc").append('<p><a href="" id="link' + i + '" title="' + current.attr("tagName") + '">' + current.html() + '</a></p>');
+            $("#link" + i).click(function(){
+                $("body").scrollTop($('#post'+i).offset().top);
+                return false;
+            });
+        });
+    };
 }

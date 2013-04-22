@@ -12,7 +12,7 @@ var routes = require('./routes');
 var profile = require('./routes/profile');
 var courses = require('./routes/courses');
 var news = require('./routes/news');
-var struct = require('./routes/struct');
+var shelf = require('./routes/shelf');
 
 var app = module.exports = express.createServer();
 

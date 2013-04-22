@@ -1,14 +1,43 @@
-<script>
+<script type="text/javascript">
     $(function() {
         $("#sortable").sortable();
         $("#sortable").disableSelection();
     });
 </script>
 <div ng-controller="ShelfCtrl">
+    
+    <div id="tocbox" class="hide" style="width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
+        <h4>Содержание:</h4>
+        <div id="toc"></div>
+    </div>
+    
 
     <div id="sortable">
-        <div ng-repeat="item in posts">
-            <div class="well well-small">{{$index}} {{item}}</div>
+        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500" repeat-done="updateToc()">
+        <div ng-hide="isEditor($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
+                <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
+                <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
+            </div>
+            <h3 class="title">{{item.title}}</h3>
+            <div class="desc" ng-bind-html-unsafe="item.text"></div>
+            <div style="font-size: small; text-align: right">
+                <span class="date">{{item.author}}</span>,
+                <span class="date">{{item.date | dateToText:'time'}}</span>
+            </div>
+        </div>
+        <div ng-show="isEditor($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+            </div>
+            <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
+            <p class="date-editor">{{curr.date | dateToText:'time'}}</p>
+            <textarea class="desc-editor" ng-model="curr.text"></textarea>
+        </div>
+          
+
         </div>
     </div>
 
