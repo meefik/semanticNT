@@ -118,11 +118,11 @@ app.post('/api/courses/:courseId/news', news.add);
 app.put('/api/courses/:courseId/news/:itemId', news.update);
 app.del('/api/courses/:courseId/news/:itemId', news.remove);
 
-// Course struct
-app.get('/api/courses/:courseId/struct', struct.get);
-app.post('/api/courses/:courseId/struct', struct.add);
-app.put('/api/courses/:courseId/struct/:itemId', struct.update);
-app.del('/api/courses/:courseId/struct/:itemId', struct.remove);
+// Course shelf
+app.get('/api/courses/:courseId/shelf', shelf.get);
+app.post('/api/courses/:courseId/shelf', shelf.add);
+app.put('/api/courses/:courseId/shelf/:itemId', shelf.update);
+app.del('/api/courses/:courseId/shelf/:itemId', shelf.remove);
 
 /**
  * Return 404 error

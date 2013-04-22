@@ -10,21 +10,21 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema; //Schema.ObjectId
 
-var Struct = new Schema({
+var Shelf = new Schema({
     courseid: {type: String, required: true},
     index: { type: Number, required: true },
     date: { type: Date, required: true },
     context: {type: String, required: true}
 });
 
-StructModel = mongoose.model('Struct', Struct);
+ShelfModel = mongoose.model('Shelf', Shelf);
 
 /*
  * Serve JSON to our AngularJS client
  */
 
 exports.get = function(req, res) {
-    StructModel.find(function(err, data) {
+    ShelfModel.find(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -37,13 +37,13 @@ exports.get = function(req, res) {
 exports.add = function(req, res) {
     var userid = req.session.passport.user;
     
-    var newStruct = new StructModel({
+    var newShelf = new ShelfModel({
         courseid: req.params.courseId,
         userid: userid,
         date: new Date(),
         context: req.body.context
     });
-    newStruct.save(function(err, data) {
+    newShelf.save(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -54,7 +54,7 @@ exports.add = function(req, res) {
 };
 
 exports.remove = function(req, res) {
-    StructModel.remove({_id: req.params.itemId, courseid: req.params.courseId},
+    newShelf.remove({_id: req.params.itemId, courseid: req.params.courseId},
     function(err) {
         if (!err) {
             res.send(200); // 200 OK
@@ -66,7 +66,7 @@ exports.remove = function(req, res) {
 };
 
 exports.update = function(req, res) {
-    StructModel.update({_id: req.params.itemId, courseid: req.params.courseId},
+    newShelf.update({_id: req.params.itemId, courseid: req.params.courseId},
     {date: new Date(), context: req.body.context},
     function(err) {
         if (!err) {

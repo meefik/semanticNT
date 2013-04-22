@@ -370,7 +370,7 @@ function NewsCtrl($scope, $routeParams, Courses) {
 
 }
 
-function StructCtrl($scope, $routeParams, Courses) {
+function ShelfCtrl($scope, $routeParams, Courses) {
     
     var index = 0;
 
