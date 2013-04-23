@@ -53,6 +53,9 @@ angular.module('app.filters', [])
             }
             return hh + ":" + mm + ":" + ss;
         };
+        var date = function(d) {
+            return day(d) + " " + month(d) + " " + year(d) + " г. ";
+        };
         switch (format) {
             case 'day':
                 return day(d);
@@ -62,8 +65,10 @@ angular.module('app.filters', [])
                 return year(d);
             case 'time':
                 return time(d);
+            case 'date':
+                return date(d);
             default:
-                return day(d) + " " + month(d) + " " + year(d) + " г. " + time(d);
+                return date(d) + " " + time(d);
         }
     };
 });

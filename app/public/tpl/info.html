@@ -1,11 +1,30 @@
-<div class="container">
-    <div class="row">
-        <div class="span8">
+<style type="text/css">
+    img.course-logo {
+        height: 160px;
+        width: 290px;
+        margin: 2em 0 2em 0;
+    }
+    .main-block {
+        display: table;
+    }
+    .left-block {
+        display: table-cell;
+        vertical-align: top;
+    }
+    .right-block {
+        display: table-cell;
+        vertical-align: top;
+        width: 300px;
+        padding-left: 20px;
+    }
+</style>
+<div class="container main-block">
+        <div class="left-block">
             <h2 class="page-header">{{course.name}}</h2>
             <div ng-include src="getContent()"></div>
         </div>
-        <div class="span4">
-            <img ng-src="courses/{{course.id}}/img/logo.png" class="thumbnail course-logo-large">
+        <div class="right-block">
+            <img ng-src="courses/{{course.id}}/img/logo.png" class="thumbnail course-logo">
             <table class="table">
                 <tr>
                     <td><i class="icon-info-sign"></i> Номер курса</td>
@@ -44,6 +63,5 @@
                     </div>
                 </div>
             </div>
-        </div>    
-    </div>
+        </div>
 </div>

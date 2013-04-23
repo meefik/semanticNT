@@ -1,35 +1,50 @@
+<style type="text/css">
+    .main-block {
+        display: table;
+    }
+    .left-block {
+        display: table-cell;
+        vertical-align: top;
+        width: 220px;
+        padding-right: 20px;
+    }
+    .right-block {
+        display: table-cell;
+        vertical-align: top;
+    }
+    img.course-logo {
+        float: left;
+        margin: 1em;
+        height: 110px;
+        width: 210px;
+    }
+</style>
 <div class="container">
-    <div class="row">
-        <div class="span12">
-            <div style="padding-bottom: 1em">
-                <h2 class="page-header">Каталог курсов</h2>
-
-                <table>
-                    <tr>
-                        <td style="padding-right: 2em">
-                            Поиск:<br>
-                            <input ng-model="query" type="text" placeholder="название курса">
-                        </td>
-                        <td>
-                            Сортировать по:<br>
-                            <select ng-model="orderProp">
-                                <option value="name">названию</option>
-                                <option value="begin">дате</option>
-                            </select>                       
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--
-            <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="course-block">
-                <a class="thumbnail" href="#/courses/{{course.id}}">
-                    <img ng-src="courses/{{course.id}}/img/logo.png">
-                </a>
-                <div><b>{{course.name}}</b></div>
-                <p>{{course.begin | dateToText}}, {{getDiffInWeeks(course.begin,course.end)}} {{getWeekName(getDiffInWeeks(course.begin,course.end))}}</p>
-                <p>{{course.description}}</p>
-            </div>
-            -->
+    <h2 class="page-header">Каталог курсов</h2>
+    <div class="main-block">
+    <div class="left-block">
+        <div>
+            Поиск:<br>
+            <input ng-model="query" type="text" placeholder="название курса">
         </div>
+        <div>
+            Сортировать по:<br>
+            <select ng-model="orderProp">
+                <option value="name">названию</option>
+                <option value="begin">дате</option>
+            </select>                       
+
+        </div>
+    </div>
+    <div class="right-block">
+        <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="thumbnail">
+            <a href="#/courses/{{course.id}}">
+                <img ng-src="courses/{{course.id}}/img/logo.png" class="img-polaroid course-logo">
+            </a>
+            <h3>{{course.name}}</h3>
+            <p>{{course.begin | dateToText:'date'}}, {{getDiffInWeeks(course.begin,course.end)}} {{getWeekName(getDiffInWeeks(course.begin,course.end))}}</p>
+            <p>{{course.description}}</p>
+        </div>
+    </div>
     </div>
 </div>

@@ -1,20 +1,43 @@
+<script src="js/lib/jquery-ui.min.js"></script>
+<style type="text/css">
+    img.course-logo {
+        float: left;
+        margin: 2em 0 2em 0;
+        height: 110px;
+        width: 210px;
+    }
+    .nav-parts {
+        width: 100%;
+        font-family: 'Jura', sans-serif;
+        font-size: 110%;
+    }
+    .main-block {
+        display: table;
+    }
+    .left-block {
+        display: table-cell;
+        vertical-align: top;
+        width: 220px;
+        padding-right: 20px;
+    }
+    .right-block {
+        display: table-cell;
+        vertical-align: top;
+    }
+</style>
 <div class="container">
-    <div class="row">
-        <div class="span3">
-            <a href="#/courses/{{course.id}}"><img ng-src="{{getLogo()}}" class="thumbnail course-logo"></a>
-            <div class="tabbable tabs-left">
-                <ul class="nav nav-tabs nav-parts">
-                    <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
-                </ul>
-            </div>
+    <div class="left-block">
+        <a href="#/courses/{{course.id}}"><img ng-src="{{getLogo()}}" class="thumbnail course-logo"></a>
+        <div class="tabbable tabs-left">
+            <ul class="nav nav-tabs nav-parts">
+                <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
+            </ul>
         </div>
-        <div class="span9">
-            <h2 class="page-header" style="margin-bottom: 0.5em">{{course.name}}</h2>
-            <!--<h4>{{course.university}}</h4>-->
-            <div class="tab-content">
-                <div ng-include src="getContent()"></div>
-            </div>
+    </div>
+    <div class="right-block">
+        <div class="tab-content">
+            <h2 class="page-header">{{course.name}}</h2>
+            <div ng-include src="getContent()"></div>
         </div>
-
     </div>
 </div>

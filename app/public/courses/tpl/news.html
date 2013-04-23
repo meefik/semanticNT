@@ -1,3 +1,66 @@
+<style type="text/css">
+    .post-item {
+        padding: 5px;
+    }
+    .post-item:hover {
+        border: 1px dashed lightgrey;
+        border-radius: 5px;
+        padding: 4px;
+    }
+    .post-item .box {
+        position:relative;
+        width: 100%;
+    }
+    .post-item .toolbar {
+        position:absolute;
+        top:0px;
+        right:0px;
+        width:80px;
+        text-align: right;
+        position: absolute;
+        display: none;
+
+        /*
+        padding: 5px;
+        border: 1px solid #aaa;
+        background: #eee;
+        margin: 5px;
+        */
+    }
+    .post-item:hover .toolbar {
+        display: block;
+    }
+    .post-item .title {
+        margin: 0;
+        padding: 0;
+        color: #5080a0;
+        font-family: 'Jura', sans-serif;
+        font-size: x-large;
+    }
+    .post-item .date {
+        font-style: italic;
+    }
+    .post-item .button {
+        margin-right: 5px;
+        font-size: small;
+    }
+    .post-item .desc {
+        white-space: pre-wrap;
+    }
+    .post-item .title-editor {
+        width: 400px;
+        float: left;
+        margin-right: 1em;
+    }
+    .post-item .date-editor {
+        font-style: italic;
+        padding: 5px 40px 0 0;
+    }
+    .post-item .desc-editor {
+        width: 670px;
+        height: 200px;
+    }
+</style>
 <div ng-controller="NewsCtrl">
     
     <div ng-repeat="item in news" class="post-item">
