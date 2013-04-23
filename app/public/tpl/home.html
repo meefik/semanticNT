@@ -1,104 +1,114 @@
-<div style="background-image: url('img/itmo_panorama_1680.png'); position: absolute; width: 1680px; height: 305px; margin-left: auto; margin-right: auto; top: 0; left:0; right:0; z-index:-1"></div>
+<style type="text/css">
+    .top-block {
+        background: url('img/itmo_panorama_1680.png') no-repeat center;
+        /*position: absolute;*/
+        height: 305px;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        z-index:-10;
+        border-bottom: 2px solid #042750;
+        margin-bottom: 30px;
+    }
+    .top-block .text-area {
+        margin: 60px 4px 0 4px;
+        background: #04357a;
+        background: rgba(4,53,122,0.85);
+        border-radius: 25px;
+        border-top-right-radius: 80px;
+        border-bottom-right-radius: 80px;
+        border: 1px solid #042750;
+        box-shadow: 1px 1px 20px #042750;
+    }
+    .top-block .logo-image {
+        float: right;
+        width: 164px;
+        height: 163px;
+        background: url('img/itmo.png') no-repeat center;
+    }
+    .top-block .slogan {
+        overflow:hidden;
+        height: 163px;
+    }
+    .top-block .slogan .text {
+        padding: 30px;
+    }
+    .top-block .slogan .header {
+        color: whitesmoke;
+        font-size: xx-large;
+        font-family: 'Jura';
+        font-weight: bold;
+        text-decoration: underline;
+        padding-bottom: 10px;
+    }
+    .top-block .slogan .text > p {
+        color: whitesmoke;
+    }
+    
+    .circle {
+        -webkit-border-radius: 999px;
+        -moz-border-radius: 999px;
+        border-radius: 999px;
+        display: inline-block;
+        text-align: center;
+    }
+    .type1 {
+        width: 20px;
+        height: 20px;
+        background-color: orange;
+        color: white;
+        font-weight: bold;
+        font-size: large;
+        padding: 8px;
+    }
+    .type2 {
+        width: 20px;
+        height: 20px;
+        background-color: #0f88cc;
+        color: white;
+        font-weight: bold;
+        padding: 4px;
+    }
+</style>
+
+<div class="top-block">
+    <div class="container">
+            <div class="text-area">
+                <div class="logo-image"></div>
+                <div class="slogan">
+                    <div class="text">
+                        <p class="header">Коротко о главном</p>
+                        <p>Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО.</p>
+                        <p>Познавайте новое в компактной форме в любой точке мира в удобное для себя время!</p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
 
 <div class="container">
-
-    <!--
-    <div class="hero-unit">
-        <h1>openITMO</h1>
-        <p>Open learning managment system</p>
-        <p>
-            <a class="btn btn-primary btn-normal" href="#/about">
-                Learn more
-            </a>
-        </p>
-    </div>
-    -->
-    <div class="row">
-        <div class="span9">
-            <div>
-                <!--<img src="img/itmo.png" style="float: left; margin: 1em;">-->
-                <h1 class="page-header">Коротко о главном</h1>
-                <p style="margin-top: 2em; text-align: left">
-                    Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО. Курсы содержат видеолекции, электронные презентации к ним, текстовые материалы, вопросы для самоконтроля, экзаменационные задания.
-                </p>
-                <p>
-                    <!--
-                    <div style="margin-left: 15em">Познавайте новое </div>
-                    <div style="margin-left: 10em">в компактной форме</div>
-                    <div style="margin-left: 5em">в любой точке мира</div>
-                    <div style="margin-left: 0em">в удобное для себя время!</div>
-                    -->
-                    Познавайте новое в компактной форме в любой точке мира в удобное для себя время!
-                </p>
-                <p>
-                    Приглашаем всех желающих принять участие в проекте разработки системы открытого онлайн-обучения, размещенном в <a href="https://github.com/meefik/openITMO"><img src="img/github-icon.png"></a>.  
-                </p>
-            </div>
-        </div>
-        <div class="span3">
-            <!--
-            <div id="myCarousel" class="carousel slide img-polaroid">
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img src="http://www.ifmo.ru/images/slider/big/p34.jpg" alt="">
-                        <div class="carousel-caption">
-                            <h4>First Thumbnail label</h4>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="http://www.ifmo.ru/images/slider/big/p33.jpg" alt="">
-                        <div class="carousel-caption">
-                            <h4>Second Thumbnail label</h4>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img src="http://www.ifmo.ru/images/slider/big/p32.jpg" alt="">
-                        <div class="carousel-caption">
-                            <h4>Third Thumbnail label</h4>
-                        </div>
-                    </div>
-                </div>
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
-            </div>
-            -->
-            <div style="margin-top: 3em; margin-bottom: 1em; text-align: center"><img src="img/itmo.png"></div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="span12">
-            <h3>Курсы</h3>
-            <div ng-repeat="course in catalog | orderBy:'begin'" class="carousel course-block">
-                <a class="carousel-inner thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal">
-                    <!--<img ng-src="courses/{{course.id}}/img/logo.png">-->
-                    <div id="box1">
-                        Описание:
-                        <div>{{course.description}}</div>
-                        Авторы курса: 
-                        <div ng-repeat="author in course.authors">
-                            - {{author}}
-                        </div>
-                    </div>
-                    <div id="box2" style="background-image: url('courses/{{course.id}}/img/logo.png');"></div>
-                    <span class="course-caption">
-                        <span style="float: left; text-align: left">
-                            {{course.beginDate | dateToText}}
-                        </span>
-                        <span style="float: right">
-                            {{getDiffInWeeks(course.beginDate,course.endDate)}} {{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}} 
-                        </span>
-                    </span>
+            <!--<h3 style="color: #0f88cc; font-family: 'Jura'">Курсы</h3>-->
+            <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
+                <a class="thumbnail pull-left" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="margin-right: 20px;">
+                    <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 4px;">
                 </a>
-                <div class="crouse-title">
-                    {{course.name}}
+                
+                <div style="display: inline-block">
+                <h3 style="color: #0f88cc; font-family: 'Jura'">{{course.name}}</h3>
+                
+                <p>{{course.description}}</p>
+                <p>Авторы курса: 
+                    <span ng-repeat="author in course.authors">{{author}} </span>
+                </p>
+                
+                <div>
+                    <p><span class="circle type1">{{course.beginDate | dateToText:'day'}}</span> <span style="padding-right: 20px; font-weight: bold">{{course.beginDate | dateToText:'month'}} {{course.beginDate | dateToText:'year'}} г.</span>
+                        <span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
+                </div>
                 </div>
             </div>
-            
+
             <!-- Modal window -->
             <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-header">
@@ -114,6 +124,4 @@
                 </div>
                 -->
             </div>
-        </div>
-    </div>
 </div>

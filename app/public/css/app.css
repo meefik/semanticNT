@@ -1,8 +1,34 @@
 html,
 body {
   height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
   font-family: 'Ubuntu', sans-serif;
 }
+.footer {
+  margin-top: 40px;
+  width: 100%;
+  /*overflow: hidden;*/
+  border-top: 2px solid #0f88cc;
+  /*background: #f5f5f5;*/
+}
+.container .credit {
+  margin: 10px 0;
+  color: #04357a;
+}
+
+h1 {
+  border-bottom: 1px solid #0f88cc;
+  font-size: xx-large;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+  color: #0f88cc;
+  font-family: 'Jura', sans-serif;
+}
+
+/*
 .course-block {
   float: left;
   width: 290px;
@@ -109,31 +135,35 @@ p {
   min-height: 100%;
   height: auto !important;
   height: 100%;
-  margin: -20px auto -20px;
+  margin: -22px auto -20px;
 }
 #push {
   height: 60px;
 }
 #footer {
   height: 40px;
+  border-top: 2px solid #0f88cc;
 }
 #footer {
   background-color: #f5f5f5;
 }
 .container .credit {
   margin: 10px 0;
+  color: #04357a;
 }
 code {
   font-size: 80%;
 }
+
+
 .navbar-inner {
   font-family: 'Jura', sans-serif;
   font-size: 110%;
-  background-image: -moz-linear-gradient(top, #6080a0, #306080);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6080a0), to(#306080));
-  background-image: -webkit-linear-gradient(top, #6080a0, #306080);
-  background-image: -o-linear-gradient(top, #6080a0, #306080);
-  background-image: linear-gradient(to bottom, #6080a0, #306080);
+  background-image: -moz-linear-gradient(top, #306080, #042750);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#306080), to(#042750));
+  background-image: -webkit-linear-gradient(top, #306080, #042750);
+  background-image: -o-linear-gradient(top, #306080, #042750);
+  background-image: linear-gradient(to bottom, #306080, #042750);
   font-family: 'Jura', sans-serif;
 }
 .navbar .brand {
@@ -153,6 +183,7 @@ code {
 li {
   padding-bottom: 0.5em;
 }
+*/
 
 /* News */
 .post-item {

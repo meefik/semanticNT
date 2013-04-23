@@ -9,6 +9,7 @@
         <link href='http://fonts.googleapis.com/css?family=Comfortaa&subset=cyrillic' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:300&subset=cyrillic' rel='stylesheet' type='text/css'>
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="css/app.css" rel="stylesheet">
         <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/jquery-ui.min.js"></script>
@@ -22,10 +23,10 @@
         <script src="js/services.js"></script>
         <script src="js/directives.js"></script>
     </head>
-    <body ng-controller='AppCtrl'>
+    <body ng-controller='AppCtrl' style="">
 
         <!-- Navigation Bar -->
-        <div class="navbar navbar-fixed-top">
+        <div class="navbar navbar-static-top">
             <div class="navbar-inner">
                 <div class="container">
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -35,42 +36,37 @@
                     </a>
                     <a class="brand" href="#"><img src="img/logo.png" style="margin-top: -18px; margin-bottom: -15px"><span style="margin-left: 20px">Открытое онлайн-обучение</span></a>
                     <div class="nav-collapse collapse" ng-show="isAuth() == false">
-                        <ul class="nav pull-right" style="width: 320px">
+                        <ul class="nav pull-right">
                             <li><a href="#/about">О проекте</a></li>
                             <li><a href="#/courses">Каталог курсов</a></li>
                             <li><a href="#login" data-toggle="modal">Вход</a></li>
                         </ul>
                     </div>
                     <div class="nav-collapse collapse" ng-show="isAuth() == true">
-                        <ul class="nav pull-right" style="width: 520px">
+                        <ul class="nav pull-right">
                             <li><a href="#/about">О проекте</a></li>
                             <li><a href="#/courses">Каталог курсов</a></li>
                             <li><a href="#/mycourses">Мои курсы</a></li>
                             <li><a href="#/profile">Профиль</a></li>
-                            <li><a ng-click="logout()">Выход</a></li>
+                            <li><a href="#/" ng-click="logout()">Выход</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Content -->
-        <div id="wrap">
-            <div id="push"></div>
-            <div ng-view></div>
-            <div id="push"></div>
-        </div>
-        
+
+        <div ng-view></div>
+
         <!-- Footer -->
-        <div id="footer">
-            <div class="container">
-                <p class="muted credit">© Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики, 2013 <!--&nbsp&nbsp&nbsp<a href="https://github.com/meefik/openitmo"><img src="img/github-icon.png"></a>--></p>
+        <div class="container">
+            <div class="footer">
+                <p class="credit">© Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики, 2013 <!--&nbsp&nbsp&nbsp<a href="https://github.com/meefik/openitmo"><img src="img/github-icon.png"></a>--></p>
             </div>
         </div>
-        
+
         <!-- Auth Modal -->
         <div ng-include src="getAuthTpl()" style="position: absolute"></div>
-        
+
         <!-- Yandex.Metrika counter -->
         <!--
         <script type="text/javascript">

@@ -26,19 +26,44 @@ angular.module('app.filters', [])
 })
         .filter('dateToText', function() {
     return function(dateString, format) {
-        var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 
-            'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
         var d = new Date(dateString);
-        var str = d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+" г.";
-        if (format === 'time') {
+        var day = function(d) {
+            return d.getDate();
+        };
+        var month = function(d) {
+            var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+                'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            return months[d.getMonth()];
+        };
+        var year = function(d) {
+            return d.getFullYear();
+        };
+        var time = function(d) {
             var hh = d.getHours();
             var mm = d.getMinutes();
             var ss = d.getSeconds();
-            if (hh < 10) {hh = "0"+hh;}
-            if (mm < 10) {mm = "0"+mm;}
-            if (ss < 10) {ss = "0"+ss;}
-            str = str+" "+hh+":"+mm+":"+ss;
+            if (hh < 10) {
+                hh = "0" + hh;
+            }
+            if (mm < 10) {
+                mm = "0" + mm;
+            }
+            if (ss < 10) {
+                ss = "0" + ss;
+            }
+            return hh + ":" + mm + ":" + ss;
+        };
+        switch (format) {
+            case 'day':
+                return day(d);
+            case 'month':
+                return month(d);
+            case 'year':
+                return year(d);
+            case 'time':
+                return time(d);
+            default:
+                return day(d) + " " + month(d) + " " + year(d) + " г. " + time(d);
         }
-        return str;
     };
 });
