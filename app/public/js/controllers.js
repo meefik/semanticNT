@@ -370,14 +370,13 @@ function NewsCtrl($scope, $routeParams, Courses) {
 
 }
 
-function ShelfCtrl($scope, $routeParams, $location, Courses, $anchorScroll) {
+function ShelfCtrl($scope, $routeParams, $timeout, Courses) {
     
     var index = 0;
-    var change = false;
 
     $scope.posts = Courses.query({courseId: $routeParams.courseId,
         partId: $routeParams.partId},function(){
-            $scope.updateToc();
+            //$scope.updateToc();
         });
         
     //$scope.posts = ["Заголовок 1", "Заголовок длинный 2", "Заголовок очень длинный 3", "Заголовок 4", "Заголовок 5", "Заголовок 6", "Заголовок 7", "Заголовок 8", "Заголовок 9"];
@@ -398,9 +397,9 @@ function ShelfCtrl($scope, $routeParams, $location, Courses, $anchorScroll) {
         
         //$scope.posts[end].index = ($scope.posts[end-1].index+$scope.posts[end+1].index)/2;
 
-        //$scope.$apply();
+        $scope.$apply();
         
-        $scope.updateToc();
+        //$scope.updateToc();
     };
     $('#sortable').sortable({
         start: $scope.dragStart,
@@ -416,18 +415,20 @@ function ShelfCtrl($scope, $routeParams, $location, Courses, $anchorScroll) {
             author: "anton"
         });
         index = index + 100;
-        $scope.updateToc();
+        //$scope.updateToc();
     };
     
     $scope.del = function(id) {
         this.destroy(function() {
             $scope.posts.splice(id, 1);
-            $scope.updateToc();
+            //$scope.updateToc();
         });
     };
     
     $scope.updateToc = function() {
-        //$scope.$apply();
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
         
         $("#tocbox").attr("class", "show");
         $("#toc").html('');
@@ -436,9 +437,15 @@ function ShelfCtrl($scope, $routeParams, $location, Courses, $anchorScroll) {
             current.attr("id", "post" + i);
             $("#toc").append('<p><a href="" id="link' + i + '" title="' + current.attr("tagName") + '">' + current.html() + '</a></p>');
             $("#link" + i).click(function(){
+                // fixme: scroll wrong position
                 $("body").scrollTop($('#post'+i).offset().top);
                 return false;
             });
         });
     };
+    
+    // fixme: update wrong
+    $scope.$watch("posts", function() {
+        return $scope.updateToc();
+    }, true);
 }

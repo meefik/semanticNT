@@ -6,14 +6,14 @@
 </script>
 <div ng-controller="ShelfCtrl">
     
-    <div id="tocbox" class="hide" style="width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
+    <div id="tocbox" class="hide" style="position: absolute; right: 10px; width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
         <h4>Содержание:</h4>
         <div id="toc"></div>
     </div>
     
 
     <div id="sortable">
-        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500" repeat-done="updateToc()">
+        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500">
         <div ng-hide="isEditor($index)" class="box">
             <div class="toolbar">
                 <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
