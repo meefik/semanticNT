@@ -188,6 +188,17 @@ function TermsCtrl($scope) {
 
 function HomeCtrl($scope, Catalog) {
     $scope.catalog = Catalog.query();
+    
+    $scope.getAuthors = function(data) {
+        var authors = "";
+        for (var i in data) {
+            if ( i > 0) {
+                authors += ", ";
+            }
+            authors += data[i];
+        }
+        return authors;
+    };
 }
 
 function CoursesCtrl($scope, Courses) {

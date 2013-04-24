@@ -16,36 +16,47 @@
         background: #04357a;
         background: rgba(4,53,122,0.85);
         border-radius: 25px;
-        border-top-right-radius: 80px;
-        border-bottom-right-radius: 80px;
+        border-top-right-radius: 60px;
+        border-bottom-right-radius: 25px;
+        /*
         border: 1px solid #042750;
         box-shadow: 1px 1px 20px #042750;
+        */
     }
     .top-block .logo-image {
         float: right;
-        width: 164px;
-        height: 163px;
+        width: 121px;
+        height: 119px;
         background: url('img/itmo.png') no-repeat center;
     }
     .top-block .slogan {
+        /*
         overflow:hidden;
         height: 163px;
+        */
+        overflow:hidden;
+        max-height: 240px;
     }
     .top-block .slogan .text {
-        padding: 30px;
+        padding: 20px;
     }
     .top-block .slogan .header {
         color: whitesmoke;
         font-size: xx-large;
         font-family: 'Jura';
         font-weight: bold;
-        text-decoration: underline;
-        padding-bottom: 10px;
+        border-bottom-color: #eee;
+        /*text-decoration: underline;*/
+        padding: 0;
+        margin: 0 0 14px 0;
     }
     .top-block .slogan .text > p {
         color: whitesmoke;
+        font-size: large;
+        font-family: 'Jura';
+        font-weight: bold;
     }
-    
+
     .circle {
         -webkit-border-radius: 999px;
         -moz-border-radius: 999px;
@@ -56,7 +67,7 @@
     .type1 {
         width: 20px;
         height: 20px;
-        background-color: orange;
+        background-color: #ff7c2b;
         color: white;
         font-weight: bold;
         font-size: large;
@@ -69,59 +80,65 @@
         color: white;
         font-weight: bold;
         padding: 4px;
+        margin-left: 6px;
     }
 </style>
 
 <div class="top-block">
     <div class="container">
-            <div class="text-area">
-                <div class="logo-image"></div>
-                <div class="slogan">
-                    <div class="text">
-                        <p class="header">Коротко о главном</p>
-                        <p>Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО.</p>
-                        <p>Познавайте новое в компактной форме в любой точке мира в удобное для себя время!</p>
-                    </div>
+        <div class="text-area">
+            <div class="logo-image"></div>
+            <div class="slogan">
+                <div class="text">
+                    <h1 class="header">Коротко о главном</h1>
+                    <p>Образовательный проект "Открытое онлайн-обучение" предоставляет бесплатный доступ к учебным электронным курсам НИУ ИТМО.</p>
+                    <p>Познавайте новое в компактной форме в любой точке мира в удобное для себя время!</p>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 
 <div class="container">
-            <!--<h3 style="color: #0f88cc; font-family: 'Jura'">Курсы</h3>-->
-            <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
-                <a class="thumbnail pull-left" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="margin-right: 20px;">
-                    <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 4px;">
-                </a>
-                
-                <div style="display: inline-block">
-                <h3 style="color: #0f88cc; font-family: 'Jura'">{{course.name}}</h3>
-                
-                <p>{{course.description}}</p>
-                <p>Авторы курса: 
-                    <span ng-repeat="author in course.authors">{{author}} </span>
-                </p>
-                
-                <div>
-                    <p><span class="circle type1">{{course.beginDate | dateToText:'day'}}</span> <span style="padding-right: 20px; font-weight: bold">{{course.beginDate | dateToText:'month'}} {{course.beginDate | dateToText:'year'}} г.</span>
-                        <span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
-                </div>
-                </div>
-            </div>
+    <!--<h3 style="color: #0f88cc; font-family: 'Jura'">Курсы</h3>-->
+    <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
+        <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px">
+            <div>
+                <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">
 
-            <!-- Modal window -->
-            <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria>×</button>
-                    <h3 id="myModalLabel">{{catalog.name}}</h3>
+                <div style="white-space: nowrap; float: right; padding-top: 85px; text-align: right">
+                    <p><span class="circle type1">{{course.beginDate | dateToText:'day'}}</span> <span style="font-weight: bold">{{course.beginDate | dateToText:'month'}} {{course.beginDate | dateToText:'year'}} г.</span></p>
+                    <p><span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
                 </div>
-                <div class="modal-body text-center">
-                    <div ng-bind-html-unsafe="catalog.video"></div>
-                </div>
-                <!--
-                <div class="modal-footer">
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                </div>
-                -->
+
+                <p style="color: #0f88cc; font-family: 'Jura'; font-size: x-large; padding-bottom: 5px;">{{course.name}}</p>
+
+                <p>{{course.description}}</p>
+                <p>Авторы курса: {{getAuthors(course.authors)}}</p>
+
             </div>
+            <!--
+           <div style="display: table-cell; vertical-align: bottom; text-align: right;white-space: nowrap;">
+               <p><span class="circle type1">{{course.beginDate | dateToText:'day'}}</span> <span style="font-weight: bold">{{course.beginDate | dateToText:'month'}} {{course.beginDate | dateToText:'year'}} г.</span></p>
+               <p><span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
+           </div>
+            -->
+        </a>
+    </div>
+
+    <!-- Modal window -->
+    <div id="video" class="modal hide fade" tabindex="-1" role=labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria>×</button>
+            <h3 id="myModalLabel">{{catalog.name}}</h3>
+        </div>
+        <div class="modal-body text-center">
+            <div ng-bind-html-unsafe="catalog.video"></div>
+        </div>
+        <!--
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+        -->
+    </div>
 </div>
