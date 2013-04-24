@@ -5,10 +5,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Открытое онлайн-обучение</title>
         <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-        <link href='http://fonts.googleapis.com/css?family=Jura&subset=cyrillic' rel='stylesheet' type='text/css'>
+        <!--
         <link href='http://fonts.googleapis.com/css?family=Comfortaa&subset=cyrillic' rel='stylesheet' type='text/css'>
+        -->
+        <link href='http://fonts.googleapis.com/css?family=Jura&subset=cyrillic' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:300&subset=cyrillic' rel='stylesheet' type='text/css'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap.custom.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="css/app.css" rel="stylesheet">
         <script src="js/lib/jquery.min.js"></script>
@@ -34,20 +36,20 @@
                         <span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="#"><img src="img/logo.png" style="margin-top: -18px; margin-bottom: -15px"><span style="margin-left: 20px">Открытое онлайн-обучение</span></a>
-                    <div class="nav-collapse collapse" ng-show="isAuth() == false">
+                    <div class="nav-collapse collapse" ng-hide="isAuth()">
                         <ul class="nav pull-right">
-                            <li><a href="#/about">О проекте</a></li>
-                            <li><a href="#/courses">Каталог курсов</a></li>
+                            <li ng-class="{active: isActive('/about')}"><a href="#/about">О проекте</a></li>
+                            <li ng-class="{active: isActive('/courses')}"><a href="#/courses">Каталог курсов</a></li>
                             <li><a href="#login" data-toggle="modal">Вход</a></li>
                         </ul>
                     </div>
-                    <div class="nav-collapse collapse" ng-show="isAuth() == true">
+                    <div class="nav-collapse collapse" ng-show="isAuth()">
                         <ul class="nav pull-right">
-                            <li><a href="#/about">О проекте</a></li>
-                            <li><a href="#/courses">Каталог курсов</a></li>
-                            <li><a href="#/mycourses">Мои курсы</a></li>
-                            <li><a href="#/profile">Профиль</a></li>
-                            <li><a href="#/" ng-click="logout()">Выход</a></li>
+                            <li ng-class="{active: isActive('/about')}"><a href="#/about">О проекте</a></li>
+                            <li ng-class="{active: isActive('/courses')}"><a href="#/courses">Каталог курсов</a></li>
+                            <li ng-class="{active: isActive('/mycourses')}"><a href="#/mycourses">Мои курсы</a></li>
+                            <li ng-class="{active: isActive('/profile')}"><a href="#/profile">Профиль</a></li>
+                            <li><a href="/" ng-click="logout()">Выход</a></li>
                         </ul>
                     </div>
                 </div>
@@ -57,8 +59,8 @@
         <div ng-view></div>
 
         <!-- Footer -->
-        <div class="container">
-            <div class="footer">
+        <div class="footer">
+            <div class="container">
                 <p class="credit">© Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики, 2013</p>
             </div>
         </div>

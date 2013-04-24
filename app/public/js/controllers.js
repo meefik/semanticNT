@@ -87,6 +87,13 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
         else
             return 'tpl/auth.html';
     };
+    
+    $scope.isActive = function(id) {
+        if (id === $location.path())
+            return true;
+        else
+            return false;
+    };
 }
 
 function LoginFormCtrl($rootScope, $scope, $http) {

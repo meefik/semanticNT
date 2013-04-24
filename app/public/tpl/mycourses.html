@@ -22,8 +22,8 @@
             <div class="bar" style="width: {{getProgress(course.begin, course.end)}}%"></div>
         </div>
         <div style="margin-top: 1em">
-            <button class="btn btn-success" ng-href="#/courses/{{course.id}}/news">Перейти к курсу</button>
-            <button class="btn" ng-click="unReg(course.id)">Отказаться</button>
+            <a class="btn btn-success" ng-href="#/courses/{{course.id}}/news">Перейти к курсу</a>
+            <a class="btn" ng-click="unReg(course.id)">Отказаться</a>
         </div>
     </div>
 </div>
