@@ -388,17 +388,15 @@ function NewsCtrl($scope, $routeParams, Courses) {
 
 }
 
-function ShelfCtrl($scope, $routeParams, $timeout, Courses) {
-    
-    var index = 0;
+function ShelfCtrl($scope, $routeParams, Courses) {
+    $scope.currentEdit = -1;
 
-    $scope.posts = Courses.query({courseId: $routeParams.courseId,
+    $scope.posts = Courses.query({
+        courseId: $routeParams.courseId,
         partId: $routeParams.partId},function(){
             //$scope.updateToc();
         });
         
-    //$scope.posts = ["Заголовок 1", "Заголовок длинный 2", "Заголовок очень длинный 3", "Заголовок 4", "Заголовок 5", "Заголовок 6", "Заголовок 7", "Заголовок 8", "Заголовок 9"];
-
     // jQuery UI Sortable
     $scope.dragStart = function(e, ui) {
         ui.item.data('start', ui.item.index());
@@ -409,40 +407,76 @@ function ShelfCtrl($scope, $routeParams, $timeout, Courses) {
 
         $scope.posts.splice(end, 0,
                 $scope.posts.splice(start, 1)[0]);
-                
-        //console.log($scope.posts[start].index);
-        //console.log($scope.posts[end].index);
-        
-        //$scope.posts[end].index = ($scope.posts[end-1].index+$scope.posts[end+1].index)/2;
 
         $scope.$apply();
-        
-        //$scope.updateToc();
     };
     $('#sortable').sortable({
         start: $scope.dragStart,
         update: $scope.dragEnd
     });
     
+    $scope.isEditor = function(id) {
+        if ($scope.currentEdit === id)
+            return true;
+        else
+            return false;
+    };
+    
+    $scope.edit = function(id) {
+        $scope.currentEdit = id;
+        if (id >= 0) {
+            $scope.curr = {
+                //id: $scope.posts[id]._id,
+                title: $scope.posts[id].title,
+                text: $scope.posts[id].text,
+                date: $scope.posts[id].date,
+                author: $scope.posts[id].author
+            };
+            $('#sortable').sortable("disable");
+        } else {
+            delete $scope.curr;
+            $('#sortable').sortable("enable");
+        }
+    };
+    
     $scope.add = function(id) {
-        $scope.posts.splice(id+1,0,{
+        if (typeof id === 'undefined') {
+            id = $scope.posts.length-1;
+        };
+        var post = {
             title: "Заголовок "+$scope.posts.length,
-            text: "Содержание... ",
-            index: index,
-            date: new Date(),
-            author: "anton"
+            text: "Содержание... "
+        };
+        var newPost = new Courses(post);
+        newPost.$save({courseId: $routeParams.courseId,
+            partId: $routeParams.partId}, function(data) {
+            $scope.posts.splice(id+1,0,data);
         });
-        index = index + 100;
-        //$scope.updateToc();
     };
     
     $scope.del = function(id) {
-        this.destroy(function() {
-            $scope.posts.splice(id, 1);
-            //$scope.updateToc();
+        var scope = this;
+        Courses.remove({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.posts[id]._id}, function() {
+            scope.destroy(function() {
+                $scope.posts.splice(id, 1);
+            });
         });
     };
     
+    $scope.update = function(id) {
+        var newPost = new Courses($scope.curr);
+        newPost.$update({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.posts[id]._id}, function() {
+            $scope.posts[id].title = $scope.curr.title;
+            $scope.posts[id].text = $scope.curr.text;
+            $scope.edit(-1);
+        });
+    };
+    
+    // title of content
     $scope.updateToc = function() {
         if(!$scope.$$phase) {
             $scope.$apply();
@@ -461,9 +495,4 @@ function ShelfCtrl($scope, $routeParams, $timeout, Courses) {
             });
         });
     };
-    
-    // fixme: update wrong
-    $scope.$watch("posts", function() {
-        return $scope.updateToc();
-    }, true);
 }

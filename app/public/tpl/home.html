@@ -2,7 +2,7 @@
     .top-block {
         background: url('img/itmo_panorama_1680.png') no-repeat center;
         /*position: absolute;*/
-        height: 305px;
+        height: 264px;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -12,16 +12,16 @@
         margin-bottom: 30px;
     }
     .top-block .text-area {
-        margin: 60px 4px 0 4px;
+        margin: 45px 4px 0 4px;
         background: #04357a;
         background: rgba(4,53,122,0.85);
         border-radius: 25px;
         border-top-right-radius: 60px;
         border-bottom-right-radius: 25px;
-
+        /*
         border: 1px solid #042750;
         box-shadow: 1px 1px 20px #042750;
-
+        */
     }
     .top-block .logo-image {
         float: right;
@@ -102,7 +102,7 @@
 <div class="container">
     <!--<h3 style="color: #0f88cc; font-family: 'Jura'">Курсы</h3>-->
     <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
-        <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px">
+        <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px;">
             <div>
                 <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">
 
@@ -111,7 +111,7 @@
                     <p><span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
                 </div>
 
-                <p style="color: #0f88cc; font-family: 'Jura'; font-size: x-large; padding-bottom: 5px;">{{course.name}}</p>
+                <p style="color: #0f88cc; font-family: 'Jura'; font-size: x-large; padding-bottom: 5px; font-weight: bold">{{course.name}}</p>
 
                 <p>{{course.description}}</p>
                 <p>Авторы курса: {{getAuthors(course.authors)}}</p>

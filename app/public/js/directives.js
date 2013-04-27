@@ -51,13 +51,15 @@ angular.module('app.directives', [])
             elm = jQuery(elm);
             elm.hide();
             elm.fadeIn(duration, function() {
-                scope.$apply();
+                if(!scope.$$phase) {
+                    scope.$apply();
+                }
             });
 
-            scope.destroy = function(complete) {
+            scope.destroy = function() {
                 elm.fadeOut(duration, function() {
-                    if (complete) {
-                        complete.apply(scope);
+                    if(!scope.$$phase) {
+                        scope.$apply();
                     }
                 });
             };

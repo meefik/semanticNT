@@ -60,7 +60,7 @@ passport.use(new LocalStrategy({
 function(username, password, done) {
     ProfileModel.findOne({login: username}, function(err, data) {
         if (!err && data && data.passwd === toHash(password)) {
-            return done(null, data._id);
+            return done(null, data.login);
         } else {
             return done(err);
         }
@@ -111,7 +111,7 @@ exports.get = function(req, res) {
     if (!userid)
         return res.send(401); // 401 Unauthorized
 
-    ProfileModel.findById(userid, function(err, data) {
+    ProfileModel.findOne({login: userid}, function(err, data) {
         if (!err) {
             data.passwd = '';
             res.json(data); // 200 OK + data
@@ -129,9 +129,11 @@ exports.update = function(req, res) {
         return res.send(401); // 401 Unauthorized
     
     var profile = {};
+    /*
     if (req.body.login) {
         profile.login = req.body.login;
     }
+    */
     if (req.body.email) {
         profile.email = req.body.email;
     }
@@ -145,7 +147,7 @@ exports.update = function(req, res) {
         profile.courses = req.body.courses;
     }
 
-    ProfileModel.findByIdAndUpdate(userid, profile, function(err) {
+    ProfileModel.findOneAndUpdate({login: userid}, profile, function(err) {
         if (!err) {
             res.send(200); // 200 OK
         } else {
@@ -161,7 +163,7 @@ exports.remove = function(req, res) {
     if (!userid)
         return res.send(401); // 401 Unauthorized
     
-    ProfileModel.remove({userid: userid}, function(err) {
+    ProfileModel.remove({login: userid}, function(err) {
         if (!err) {
             res.send(200); // 200 OK
         } else {
@@ -195,7 +197,7 @@ exports.register = function(req, res) {
     });
     newProfile.save(function(err, data) { 
         if (!err) {
-            req.session.passport.user = data._id;
+            req.session.passport.user = data.login;
             res.send(200); // 200 OK
         } else {
             // if user exists (dublicate)
