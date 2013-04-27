@@ -1,2 +1,98 @@
-<h3>Структура</h3>
-<p>В разработке...</p>
+<style type="text/css">
+    .post-item {
+        padding: 5px;
+    }
+    .post-item:hover {
+        border: 1px dashed lightgrey;
+        border-radius: 5px;
+        padding: 4px;
+    }
+    .post-item .box {
+        position:relative;
+        width: 100%;
+    }
+    .post-item .toolbar {
+        position:absolute;
+        top:0px;
+        right:0px;
+        width:80px;
+        text-align: right;
+        position: absolute;
+        display: none;
+    }
+    .post-item:hover .toolbar {
+        display: block;
+    }
+    .post-item .title {
+        margin: 0;
+        padding: 0 0 10px 0;
+        color: #5080a0;
+        font-family: 'Jura', sans-serif;
+        font-size: x-large;
+    }
+    .post-item .date {
+        font-style: italic;
+    }
+    .post-item .button {
+        margin-right: 5px;
+        font-size: small;
+    }
+    .post-item .desc {
+        /*white-space: pre-wrap;*/
+    }
+    .post-item .title-editor {
+        width: 400px;
+        float: left;
+        margin-right: 1em;
+    }
+    .post-item .date-editor {
+        font-style: italic;
+        padding: 5px 40px 0 0;
+    }
+    .post-item .desc-editor {
+        width: 670px;
+        height: 200px;
+    }
+</style>
+<script type="text/javascript">
+    $(function() {
+        $("#sortable").sortable();
+        $("#sortable").disableSelection();
+    });
+</script>
+<div ng-controller="StructCtrl">
+    
+    <div id="tocbox" class="hide" style="position: absolute; right: 10px; width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
+        <h4>Содержание:</h4>
+        <div id="toc"></div>
+    </div>
+    
+
+    <div id="sortable">
+        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500">
+            <div ng-hide="isEditor($index)" class="box">
+                <div class="toolbar">
+                    <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
+                    <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
+                    <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
+                </div>
+                <h3 class="title">{{item.title}}</h3>
+                <div class="desc" ng-bind-html-unsafe="item.text"></div>
+            </div>
+            <div ng-show="isEditor($index)" class="box">
+                <div class="toolbar">
+                    <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+                    <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+                </div>
+                <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
+                <textarea class="desc-editor" ng-model="curr.text"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <button ng-show="posts.length == 0" ng-click="add()">Add</button>
+    <!--
+    <hr>
+    <pre ng-bind="posts|json"></pre>
+    -->
+</div>

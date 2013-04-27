@@ -71,7 +71,7 @@
                 <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
             </div>
             <h3 class="title">{{item.title}}</h3>
-            <p class="date">{{item.date | dateToText:'time'}}</p>
+            <p class="date">{{item.date | dateToText}}</p>
             <div class="desc" ng-bind-html-unsafe="item.description"></div>
         </div>
         <div ng-show="isEditor($index)" class="box">
@@ -80,7 +80,7 @@
                 <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
             </div>
             <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
-            <p class="date-editor">{{curr.date | dateToText:'time'}}</p>
+            <p class="date-editor">{{curr.date | dateToText}}</p>
             <textarea class="desc-editor" ng-model="curr.description"></textarea>
         </div>
     </div>

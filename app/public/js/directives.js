@@ -56,10 +56,10 @@ angular.module('app.directives', [])
                 }
             });
 
-            scope.destroy = function() {
+            scope.destroy = function(complete) {
                 elm.fadeOut(duration, function() {
-                    if(!scope.$$phase) {
-                        scope.$apply();
+                    if(complete) {
+                        scope.$apply(complete);
                     }
                 });
             };

@@ -10,15 +10,15 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema; //Schema.ObjectId
 
-var Shelf = new Schema({
+var Struct = new Schema({
     courseid: {type: String, required: true},
     author: {type: String, required: true},
-    date: { type: Date, required: true },
-    title: {type: String, required: true},
+    date: {type: Date, required: true},
+    title:  {type: String, required: true},
     text: {type: String, required: true}
 });
 
-ShelfModel = mongoose.model('Shelf', Shelf);
+StructModel = mongoose.model('Struct', Struct);
 
 /*
  * Serve JSON to our AngularJS client
@@ -29,7 +29,7 @@ exports.get = function(req, res) {
     if (!userid)
         return res.send(401); // 401 Unauthorized
     
-    ShelfModel.find(function(err, data) {
+    StructModel.find().sort({date: 1}).exec(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -44,14 +44,14 @@ exports.add = function(req, res) {
     if (!userid)
         return res.send(401); // 401 Unauthorized
     
-    var newShelf = new ShelfModel({
+    var newStruct = new StructModel({
         courseid: req.params.courseId,
         author: userid,
         date: new Date(),
         title: req.body.title,
         text: req.body.text
     });
-    newShelf.save(function(err, data) {
+    newStruct.save(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -66,7 +66,7 @@ exports.remove = function(req, res) {
     if (!userid)
         return res.send(401); // 401 Unauthorized
     
-    ShelfModel.remove({_id: req.params.itemId, courseid: req.params.courseId},
+    StructModel.remove({_id: req.params.itemId, courseid: req.params.courseId},
     function(err) {
         if (!err) {
             res.send(200); // 200 OK
@@ -81,9 +81,9 @@ exports.update = function(req, res) {
     var userid = req.session.passport.user;
     if (!userid)
         return res.send(401); // 401 Unauthorized
-    
-    ShelfModel.update({_id: req.params.itemId, courseid: req.params.courseId},
-    {date: new Date(), title: req.body.title, text: req.body.text},
+
+    StructModel.update({_id: req.params.itemId, courseid: req.params.courseId},
+    {title: req.body.title, text: req.body.text},
     function(err) {
         if (!err) {
             res.send(200); // 200 OK

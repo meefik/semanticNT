@@ -293,14 +293,10 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) 
      */
     
     $scope.template = 'courses/tpl/' + $routeParams.partId + '.html';
-    $scope.getContent = function() {
-        return 'courses/' + $routeParams.courseId + '/tpl/' +
-                $routeParams.partId + '.html';
-    };
-    $scope.getLogo = function() {
-        return 'courses/' + $routeParams.courseId + '/img/logo.png';
-    };
-    
+    $scope.content = 'courses/' + $routeParams.courseId + '/tpl/' +
+            $routeParams.partId + '.html';
+    $scope.logo = 'courses/' + $routeParams.courseId + '/img/logo.png';
+
     $scope.modules = Parts.query({courseId: $routeParams.courseId}, function() {
         for (var i in $scope.modules) {
             if ($scope.modules[i].id === $routeParams.partId) {
@@ -309,7 +305,7 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) 
             }
         }
     });
-    
+
     $scope.course = Courses.get({courseId: $routeParams.courseId});
     
 /*
@@ -441,8 +437,9 @@ function ShelfCtrl($scope, $routeParams, Courses) {
     
     $scope.add = function(id) {
         if (typeof id === 'undefined') {
-            id = $scope.posts.length-1;
-        };
+            id = $scope.posts.length - 1;
+        }
+
         var post = {
             title: "Заголовок "+$scope.posts.length,
             text: "Содержание... "
@@ -493,6 +490,94 @@ function ShelfCtrl($scope, $routeParams, Courses) {
                 $("body").scrollTop($('#post'+i).offset().top);
                 return false;
             });
+        });
+    };
+}
+
+function StructCtrl($scope, $routeParams, Courses) {
+    $scope.currentEdit = -1;
+    
+    $scope.posts = Courses.query({
+        courseId: $routeParams.courseId,
+        partId: $routeParams.partId});
+    
+    // jQuery UI Sortable
+    $scope.dragStart = function(e, ui) {
+        ui.item.data('start', ui.item.index());
+    };
+    $scope.dragEnd = function(e, ui) {
+        var start = ui.item.data('start'),
+                end = ui.item.index();
+
+        $scope.posts.splice(end, 0,
+                $scope.posts.splice(start, 1)[0]);
+
+        $scope.$apply();
+    };
+    $('#sortable').sortable({
+        start: $scope.dragStart,
+        update: $scope.dragEnd
+    });
+    
+    $scope.isEditor = function(id) {
+        if ($scope.currentEdit === id)
+            return true;
+        else
+            return false;
+    };
+    
+    $scope.edit = function(id) {
+        $scope.currentEdit = id;
+        if (id >= 0) {
+            $scope.curr = {
+                //id: $scope.posts[id]._id,
+                title: $scope.posts[id].title,
+                text: $scope.posts[id].text,
+                date: $scope.posts[id].date,
+                author: $scope.posts[id].author
+            };
+            $('#sortable').sortable("disable");
+        } else {
+            delete $scope.curr;
+            $('#sortable').sortable("enable");
+        }
+    };
+    
+    $scope.add = function(id) {
+        if (typeof id === 'undefined') {
+            id = $scope.posts.length - 1;
+        }
+
+        var post = {
+            title: "Заголовок "+$scope.posts.length,
+            text: "Содержание... "
+        };
+        var newPost = new Courses(post);
+        newPost.$save({courseId: $routeParams.courseId,
+            partId: $routeParams.partId}, function(data) {
+            $scope.posts.splice(id+1,0,data);
+        });
+    };
+    
+    $scope.del = function(id) {
+        var scope = this;
+        Courses.remove({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.posts[id]._id}, function() {
+            scope.destroy(function() {
+                $scope.posts.splice(id, 1);
+            });
+        });
+    };
+    
+    $scope.update = function(id) {
+        var newPost = new Courses($scope.curr);
+        newPost.$update({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.posts[id]._id}, function() {
+            $scope.posts[id].title = $scope.curr.title;
+            $scope.posts[id].text = $scope.curr.text;
+            $scope.edit(-1);
         });
     };
 }
