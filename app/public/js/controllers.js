@@ -307,18 +307,15 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) 
     });
 
     $scope.course = Courses.get({courseId: $routeParams.courseId});
-    
-/*
-    $scope.part = Courses.get({courseId: $routeParams.courseId,
-        partId: $routeParams.partId}, function() {
-        $scope.part.id = $routeParams.partId;
-        $scope.part.template = 'courses/tpl/' + $scope.part.id + '.html';
-        $scope.getContent = function() {
-            return 'courses/' + $routeParams.courseId + '/tpl/' +
-                    $routeParams.partId + '.html';
-        };
-    });
-*/
+
+    $scope.isModerator = function() {
+        if ($scope.course.moderators &&
+                $scope.course.moderators.indexOf($scope.profile.login) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
 }
 
@@ -329,7 +326,7 @@ function NewsCtrl($scope, $routeParams, Courses) {
         courseId: $routeParams.courseId,
         partId: $routeParams.partId
     });
-
+    
     $scope.isEditor = function(id) {
         if ($scope.currentEdit === id)
             return true;

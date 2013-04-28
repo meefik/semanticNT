@@ -1,11 +1,15 @@
 <style type="text/css">
-    .post-item {
-        padding: 5px;
+    .post-frame {
+        padding: 1px;
     }
-    .post-item:hover {
+    .post-frame:hover {
         border: 1px dashed lightgrey;
         border-radius: 5px;
-        padding: 4px;
+        padding: 0px;
+    }
+    .post-item {
+        padding: 5px;
+        background-color: #fff;
     }
     .post-item .box {
         position:relative;
@@ -26,7 +30,6 @@
     .post-item .title {
         margin: 0;
         padding: 0 0 10px 0;
-        color: #5080a0;
         font-family: 'Jura', sans-serif;
         font-size: x-large;
     }
@@ -53,6 +56,18 @@
         width: 670px;
         height: 200px;
     }
+
+    div.author {
+        display: inline-block;
+    }
+    div.author > img {
+        float: left;
+        margin-right: 1em;
+        height: 100px;
+        width: 80px;
+        padding: 1px;
+        border: 1px solid #c0c0c0;
+    }
 </style>
 <script type="text/javascript">
     $(function() {
@@ -62,14 +77,16 @@
 </script>
 <div ng-controller="StructCtrl">
     
-    <div id="tocbox" class="hide" style="position: absolute; right: 10px; width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
-        <h4>Содержание:</h4>
-        <div id="toc"></div>
+    <div ng-hide="isModerator()">
+        <div ng-repeat="item in posts" class="post-item">
+            <h3 class="title">{{item.title}}</h3>
+            <div class="desc" ng-bind-html-unsafe="item.text" compile></div>
+        </div>
     </div>
     
-
-    <div id="sortable">
-        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500">
+    <div ng-show="isModerator()" id="sortable">
+        <div ng-repeat="item in posts" class="post-item" fadey="500">
+            <div class="post-frame">
             <div ng-hide="isEditor($index)" class="box">
                 <div class="toolbar">
                     <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
@@ -77,7 +94,7 @@
                     <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
                 </div>
                 <h3 class="title">{{item.title}}</h3>
-                <div class="desc" ng-bind-html-unsafe="item.text"></div>
+                <div class="desc" ng-bind-html-unsafe="item.text" compile></div>
             </div>
             <div ng-show="isEditor($index)" class="box">
                 <div class="toolbar">
@@ -87,12 +104,12 @@
                 <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
                 <textarea class="desc-editor" ng-model="curr.text"></textarea>
             </div>
+            </div>
         </div>
+        <button ng-show="posts.length == 0" ng-click="add()">Add</button>
+        <!--
+        <hr>
+        <pre ng-bind="posts|json"></pre>
+        -->
     </div>
-
-    <button ng-show="posts.length == 0" ng-click="add()">Add</button>
-    <!--
-    <hr>
-    <pre ng-bind="posts|json"></pre>
-    -->
 </div>
