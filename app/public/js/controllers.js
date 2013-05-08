@@ -578,3 +578,42 @@ function StructCtrl($scope, $routeParams, Courses) {
         });
     };
 }
+
+function ExamCtrl($scope, $routeParams, Courses) {
+    $scope.currentPage = 0;
+    $scope.pagedItems = [1, 2, 3, 4, 5];
+    
+    $scope.isTest = function() {
+        return true;
+    };
+    
+    $scope.range = function (start, end) {
+        var ret = [];
+        if (!end) {
+            end = start;
+            start = 0;
+        }
+        for (var i = start; i < end; i++) {
+            ret.push(i);
+        }
+        return ret;
+    };
+    
+    $scope.prevPage = function () {
+        if ($scope.currentPage > 0) {
+            $scope.currentPage--;
+        }
+    };
+    
+    $scope.nextPage = function () {
+        if ($scope.currentPage < $scope.pagedItems.length - 1) {
+            $scope.currentPage++;
+        }
+    };
+    
+    $scope.setPage = function () {
+        $scope.currentPage = this.n;
+    };
+
+    
+}

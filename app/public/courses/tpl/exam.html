@@ -1,31 +1,59 @@
-<div class="pagination">
-  <ul>
-    <li class="disabled"><a href="">&laquo;</a></li>
-    <li class="active"><a href="">1</a></li>
-    <li class="active"><a href="">2</a></li>
-    <li class="active"><a href="">3</a></li>
-    <li class="active"><a href="">4</a></li>
-    <li class="disabled"><a href="">&raquo;</a></li>
-  </ul>
-</div>
+<div ng-controller="ExamCtrl">
 
-<div ng-repeat="test in part.content">
-<div style="float: none">
-    <div style="float: left;"><h3>{{test.name}}</h3></div>
-    <div style="float: right;"><p><i>Deadline: {{test.deadline}}</i></p></div>
-</div>
-    <div ng-repeat="question in test.questions" class="well">
-        <h4>{{question.name}}</h4>
-        <p>{{question.description}}</p>
-        <div ng-repeat="item in question.answers">
-            <label class="radio">
-                <input type="radio" name="{{question.name}}" id="{{item.id}}" value="{{item.text}}">
-                {{item.text}}
-            </label>
+    <div ng-hide="isTest()">
+        <div ng-repeat="test in exam">
+            <h3>{{test.name}}</h3>
+            <p><i>Крайний срок сдачи: {{test.deadline}}</i></p>
+            <p>{{test.description}}</p>
         </div>
+    </div>
+
+    <div ng-show="isTest()">
+
+        <div>
+            <h3>{{getQuestion.title}}</h3>
+            <p>{{getquestion.text}}</p>
+            <div ng-repeat="item in question.answers">
+                <label class="radio">
+                    <input type="radio" name="{{item.id}}" id="{{item.id}}" value="{{item.text}}">
+                    {{item.text}}
+                </label>
+            </div>
+        </div>
+
+        <div class="pagination">
+            <ul>
+                <li ng-class="{disabled: currentPage == 0}">
+                    <a href ng-click="prevPage()">« Prev</a>
+                </li>
+                <li ng-repeat="n in range(pagedItems.length)"
+                    ng-class="{active: n == currentPage}"
+                    ng-click="setPage()">
+                    <a href ng-bind="n + 1">1</a>
+                </li>
+                <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                    <a href ng-click="nextPage()">Next »</a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!--
+<div ng-repeat="question in exam.questions" ng-show="exam.current" class="well">
+
+    <h4>{{question.name}}</h4>
+    <p>{{question.description}}</p>
+    <div ng-repeat="item in question.answers">
+        <label class="radio">
+            <input type="radio" name="{{question.name}}" id="{{item.id}}" value="{{item.text}}">
+            {{item.text}}
+        </label>
     </div>
 
     <a class="btn btn-primary">
         Отправить на проверку
     </a>
+</div>
+    -->
 </div>
