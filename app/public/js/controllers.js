@@ -580,40 +580,85 @@ function StructCtrl($scope, $routeParams, Courses) {
 }
 
 function ExamCtrl($scope, $routeParams, Courses) {
-    $scope.currentPage = 0;
-    $scope.pagedItems = [1, 2, 3, 4, 5];
+
+$scope.exam = [
+    {
+        "name": "Контрольная работа 1",
+        "deadline": "2013-04-20",
+        "description": "Описание к контрольной работе 1",
+        "questions": [
+            {
+                "title": "Вопрос 1",
+                "description": "Выберите один из вариантов ответа. ",
+                "answers": [
+                    {
+                        "id": "1",
+                        "text": "A"
+                    },
+                    {
+                        "id": "2",
+                        "text": "B"
+                    },
+                    {
+                        "id": "3",
+                        "text": "C"
+                    },
+                    {
+                        "id": "4",
+                        "text": "D"
+                    }
+                ]
+            },
+            {
+                "title": "Вопрос 2",
+                "description": "Ответьте да или нет:",
+                "answers": [
+                    {
+                        "id": "1",
+                        "text": "Да"
+                    },
+                    {
+                        "id": "2",
+                        "text": "Нет"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Контрольная работа 2",
+        "deadline": "2013-04-20",
+        "description": "Описание к контрольной работе 2",
+        "questions": [
+              {
+                "title": "Вопрос 1",
+                "description": "Ответьте да или нет:",
+                "answers": [
+                    {
+                        "id": "1",
+                        "text": "Да"
+                    },
+                    {
+                        "id": "2",
+                        "text": "Нет"
+                    }]
+              }
+        ]
+    }
+];
+
+    $scope.currentPage = -1;
     
     $scope.isTest = function() {
-        return true;
+        return ($scope.currentPage >= 0);
     };
     
-    $scope.range = function (start, end) {
-        var ret = [];
-        if (!end) {
-            end = start;
-            start = 0;
+    $scope.showPage = function(id) {
+        if (typeof id === 'undefined') {
+            id = -1;
         }
-        for (var i = start; i < end; i++) {
-            ret.push(i);
-        }
-        return ret;
+        $scope.currentPage = id;
+        $scope.test = $scope.exam[id];
     };
-    
-    $scope.prevPage = function () {
-        if ($scope.currentPage > 0) {
-            $scope.currentPage--;
-        }
-    };
-    
-    $scope.nextPage = function () {
-        if ($scope.currentPage < $scope.pagedItems.length - 1) {
-            $scope.currentPage++;
-        }
-    };
-    
-    $scope.setPage = function () {
-        $scope.currentPage = this.n;
-    };
-
     
 }
