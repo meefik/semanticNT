@@ -661,4 +661,12 @@ $scope.exam = [
         $scope.test = $scope.exam[id];
     };
     
+    $scope.add = function() {
+        
+    };
+    
+    $scope.edit = function() {
+        
+    }
+    
 }
