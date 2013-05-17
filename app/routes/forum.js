@@ -14,6 +14,7 @@ var Schema = mongoose.Schema,
 var Topic = new Schema({
     title: { type: String, required: true },
     date: { type: Date, default: Date.now },
+    courseid: { type: String, required: true },
     author: { type: ObjectId, required: true }
 });
 
