@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
  * Schemas
  */
 
-var Schema = mongoose.Schema; //Schema.ObjectId
+var Schema = mongoose.Schema;
 
 var Shelf = new Schema({
     courseid: {type: String, required: true},

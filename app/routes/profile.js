@@ -12,7 +12,7 @@ var LocalStrategy = require('passport-local').Strategy;
  * Schemas
  */
 
-var Schema = mongoose.Schema; //Schema.ObjectId
+var Schema = mongoose.Schema;
 
 var Profile = new Schema({
     login: { type: String, unique: true, required: true },
