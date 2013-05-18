@@ -83,9 +83,15 @@ exports.updateTopic = function(req, res) {
 };
 
 exports.removeTopic = function(req, res) {
-    Topic.remove({ _id: req.params.postId }, function(err) {
+    var topicId = req.params.topicId;
+
+    Topic.remove({ _id: topicId }, function(err) {
         if (!err) {
-            res.send(200); // 200 OK
+            Post.remove({ topic: topicId }, function(err) {
+                if(!err) {
+                    res.send(200); // 200 OK
+                }
+            });
         } else {
             res.send(500); // 500 Internal Server Error
             console.log(err);
