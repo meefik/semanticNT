@@ -2,7 +2,8 @@
  * Module dependencies
  */
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    sanitize = require('validator').sanitize;
 
 /**
  * Schemas
@@ -17,6 +18,10 @@ var TopicSchema = new Schema({
     courseid: { type: String, required: true },
     author: {type: String, required: true}
 });
+TopicSchema.pre('save', function(next) {
+    this.title = sanitize(this.title).entityEncode();
+    next();
+});
 
 var PostSchema = new Schema({
     body: { type: String, required: true },
@@ -24,6 +29,10 @@ var PostSchema = new Schema({
     rating: { type: Number, min: 0, default: 0},
     author: {type: String, required: true},
     topic: { type: ObjectId, required: true }
+});
+PostSchema.pre('save', function(next) {
+    this.body = sanitize(this.body).entityEncode();
+    next();
 });
 
 var Topic = mongoose.model('Topic', TopicSchema),
