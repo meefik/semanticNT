@@ -15,19 +15,19 @@ var TopicSchema = new Schema({
     title: { type: String, required: true },
     date: { type: Date, default: Date.now },
     courseid: { type: String, required: true },
-    author: { type: ObjectId, required: true }
+    author: {type: String, required: true}
 });
 
 var PostSchema = new Schema({
     body: { type: String, required: true },
     date: { type: Date, default: Date.now },
     rating: { type: Number, min: 0, default: 0},
-    author: { type: ObjectId, required: true },
+    author: {type: String, required: true},
     topic: { type: ObjectId, required: true }
 });
 
-Topic = mongoose.model('Topic', TopicSchema);
-Post = mongoose.model('Post', PostSchema);
+var Topic = mongoose.model('Topic', TopicSchema),
+    Post = mongoose.model('Post', PostSchema);
 
 /*
  * Serve JSON to our AngularJS client
