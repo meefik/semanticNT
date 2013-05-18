@@ -83,7 +83,7 @@ exports.updateTopic = function(req, res) {
 };
 
 exports.removeTopic = function(req, res) {
-    Topic.remove(req.params.topicId, function(err) {
+    Topic.remove({ _id: req.params.postId }, function(err) {
         if (!err) {
             res.send(200); // 200 OK
         } else {
@@ -94,7 +94,7 @@ exports.removeTopic = function(req, res) {
 };
 
 exports.getPosts = function(req, res) {
-    Post.findById(req.params.topicId, function(err, posts) {
+    Post.find({ topic: req.params.topicId }, function(err, posts) {
         if (!err) {
             res.json(posts); // 200 OK + data
         } else {
@@ -110,7 +110,6 @@ exports.addPost = function(req, res) {
         topic: req.params.topicId,
         author: req.body.author //for testing
     });
-    post.topic = req.params.topicId;
 
     post.save(function(err, post) {
         if (!err) {
@@ -142,7 +141,7 @@ exports.updatePost = function(req, res) {
 };
 
 exports.removePost = function(req, res) {
-    Post.remove(req.params.postId, function(err) {
+    Post.remove({ _id: req.params.postId }, function(err) {
         if (!err) {
             res.send(200); // 200 OK
         } else {
