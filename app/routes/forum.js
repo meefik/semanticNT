@@ -64,7 +64,7 @@ exports.addTopic = function(req, res) {
 };
 
 exports.updateTopic = function(req, res) {
-    Post.findById(req.params.topicId, function(err, topic) {
+    Topic.findById(req.params.topicId, function(err, topic) {
         if(!err) {
             topic.set({ title: req.body.title });
             topic.save(function(err) {
