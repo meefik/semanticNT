@@ -2,18 +2,19 @@
  * Module dependencies
  */
 
-var express = require('express');
-var mongoose = require('mongoose');
-var MongoStore = require('connect-mongo')(express);
+var express = require('express'),
+    mongoose = require('mongoose'),
+    MongoStore = require('connect-mongo')(express),
+    passport = require('passport');
 //var everyauth = require('everyauth');
-var passport = require('passport');
 
-var routes = require('./routes');
-var profile = require('./routes/profile');
-var courses = require('./routes/courses');
-var news = require('./routes/news');
-var shelf = require('./routes/shelf');
-var struct = require('./routes/struct');
+var routes = require('./routes'),
+    profile = require('./routes/profile'),
+    courses = require('./routes/courses'),
+    news = require('./routes/news'),
+    shelf = require('./routes/shelf'),
+    struct = require('./routes/struct'),
+    forum = require('./routes/forum');
 
 var app = module.exports = express.createServer();
 
@@ -23,6 +24,7 @@ var app = module.exports = express.createServer();
 
 var SERVER_PORT = 3000;
 var dbUrl = 'mongodb://192.168.4.41:27017/openitmo';
+//var dbUrl = 'mongodb://localhost:27017/openitmo';
 
 app.configure(function() {
     app.set('views', __dirname + '/views');
@@ -130,6 +132,16 @@ app.get('/api/courses/:courseId/struct', struct.get);
 app.post('/api/courses/:courseId/struct', struct.add);
 app.put('/api/courses/:courseId/struct/:itemId', struct.update);
 app.del('/api/courses/:courseId/struct/:itemId', struct.remove);
+
+// Course forum
+app.get('/api/courses/:courseId/forum', forum.getTopics);
+app.post('/api/courses/:courseId/forum', forum.addTopic);
+app.put('/api/courses/:courseId/forum/:topicId', forum.updateTopic);
+app.del('/api/courses/:courseId/forum/:topicId', forum.removeTopic);
+app.get('/api/courses/:courseId/forum/:topicId', forum.getPosts);
+app.post('/api/courses/:courseId/forum/:topicId', forum.addPost);
+app.put('/api/courses/:courseId/forum/:topicId/:postId', forum.updatePost);
+app.del('/api/courses/:courseId/forum/:topicId/:postId', forum.removePost);
 
 /**
  * Return 404 error
