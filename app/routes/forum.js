@@ -106,7 +106,6 @@ exports.getPosts = function(req, res) {
 
 exports.addPost = function(req, res) {
     var post = new Post({
-        title: req.body.title,
         body: req.body.body,
         topic: req.params.topicId,
         author: req.body.author //for testing
@@ -126,7 +125,7 @@ exports.addPost = function(req, res) {
 exports.updatePost = function(req, res) {
     Post.findById(req.params.postId, function(err, post) {
         if(!err) {
-            post.set({ title: req.body.title, body: req.body.body });
+            post.set({ body: req.body.body });
             post.save(function(err) {
                 if (!err) {
                     res.json(post); // 200 OK + data
