@@ -668,5 +668,86 @@ $scope.exam = [
     $scope.edit = function() {
         
     }
-    
+}
+
+function ForumCtrl($scope, $routeParams, Courses) {
+    $scope.topics = Courses.query({
+        courseId: $routeParams.courseId,
+        partId: $routeParams.partId
+    });
+
+    $scope.topicCreationEnabled = false;
+
+    $scope.enableTopicCreation = function() {
+        $scope.topicCreationEnabled = true;
+    };
+
+    $scope.disableTopicCreation = function() {
+        $scope.topicTitle = "";
+        $scope.topicCreationEnabled = false;
+    };
+
+    $scope.addTopic = function() {
+        var topic = new Courses({ title: $scope.topicTitle, author: "test" });
+        topic.$save({courseId: $routeParams.courseId,
+            partId: $routeParams.partId}, function(data) {
+            $scope.topics.splice(0, 0, data);
+            $scope.disableTopicCreation();
+        });
+    };
+
+    $scope.isTopicEditorEnabled = function(id) {
+        if ($scope.editedTopic === id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.editTopic = function(id, event) {
+        if(event) {
+            event.stopPropagation();
+        }
+
+        $scope.editedTopic = id;
+        if (id >= 0) {
+            $scope.current = {
+                title: $scope.topics[id].title,
+                date: $scope.topics[id].date
+            };
+        } else {
+            $scope.current = {};
+        }
+    };
+
+    $scope.updateTopic = function(id, event) {
+        if(event) {
+            event.stopPropagation();
+        }
+
+        var topic = new Courses($scope.current);
+        topic.$update({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.topics[id]._id}, function() {
+            $scope.topics[id].title = $scope.current.title;
+            $scope.editTopic(-1);
+        });
+    };
+
+    $scope.deleteTopic = function(id, event) {
+        if(event) {
+            event.stopPropagation();
+        }
+
+        Courses.remove({courseId: $routeParams.courseId,
+            partId: $routeParams.partId,
+            itemId: $scope.topics[id]._id}, function() {
+            $scope.topics.splice(id, 1);
+            $scope.editTopic(-1);
+        });
+    };
+
+    $scope.viewTopic = function(id) {
+        alert(id);
+    }
 }

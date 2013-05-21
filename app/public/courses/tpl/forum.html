@@ -1,2 +1,95 @@
-<iframe id="forum_embed" src="//groups.google.com/forum/embed/?place=forum/course-builder-itmo&amp;showsearch=true&amp;showpopout=true&amp;showtabs=false&amp;parenturl=http%3A%2F%2F192.168.4.29%3A8080%2Fforum" scrolling="no" title="Forum" frameborder="0" width="690" height="700">
-</iframe>
+<style type="text/css">
+    .post-item {
+        padding: 5px;
+
+        cursor: pointer;
+    }
+    .post-item:hover {
+        border: 1px dashed lightgrey;
+        border-radius: 5px;
+        padding: 4px;
+    }
+    .post-item .box {
+        position:relative;
+        width: 100%;
+    }
+    .post-item .toolbar {
+        position:absolute;
+        top:0px;
+        right:0px;
+        width:80px;
+        text-align: right;
+        position: absolute;
+        display: none;
+    }
+    .post-item:hover .toolbar {
+        display: block;
+    }
+    .post-item .title {
+        margin: 0;
+        padding: 0;
+        color: #5080a0;
+        font-family: 'Jura', sans-serif;
+        font-size: x-large;
+    }
+    .post-item .date {
+        font-style: italic;
+    }
+    .post-item .button {
+        margin-right: 5px;
+        font-size: small;
+    }
+    .post-item .desc {
+        white-space: pre-wrap;
+    }
+    .post-item .title-editor {
+        width: 400px;
+        float: left;
+        margin-right: 1em;
+    }
+    .post-item .date-editor {
+        font-style: italic;
+        padding: 5px 40px 0 0;
+    }
+    .post-item .desc-editor {
+        width: 670px;
+        height: 200px;
+    }
+</style>
+
+<div ng-controller="ForumCtrl">
+    <div ng-hide="topicCreationEnabled" class="box">
+        <a class="btn" ng-click="enableTopicCreation()">Создать тему</a>
+    </div>
+    <div ng-show="topicCreationEnabled" class="box">
+        <input type="text" ng-model="topicTitle" class="title-editor" placeholder="Название темы">
+        <br>
+        <div class="btn-group">
+            <a class="btn" ng-click="addTopic()">Создать</a>
+            <a class="btn" ng-click="disableTopicCreation()">Отмена</a>
+        </div>
+    </div>
+    <br>
+
+    <div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="viewTopic($index)">
+        <div ng-hide="isTopicEditorEnabled($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="editTopic($index, $event)" title="править"><i class="icon-pencil"></i></a>
+                <a class="button" ng-click="deleteTopic($index, $event)" title="удалить"><i class="icon-trash"></i></a>
+            </div>
+            <h3 class="title">{{topic.title}}</h3>
+            <div style="font-size: small; text-align: right">
+                <span class="date">{{topic.author}}</span>,
+                <span class="date">{{topic.date | dateToText}}</span>
+            </div>
+        </div>
+        <div ng-show="isTopicEditorEnabled($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="updateTopic($index, $event)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="button" ng-click="editTopic(-1, $event)" title="закрыть"><i class="icon-remove"></i></a>
+            </div>
+            <input type="text" ng-model="current.title" class="title-editor" placeholder="Название темы">
+            <p class="date-editor">{{current.date | dateToText}}</p>
+        </div>
+    </div>
+</div>

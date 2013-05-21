@@ -59,7 +59,7 @@ exports.addTopic = function(req, res) {
     var topic = new Topic({
         title: req.body.title,
         courseid: req.params.courseId,
-        author: req.body.author //for testing
+        author: req.user
     });
 
     topic.save(function(err, topic) {
@@ -123,7 +123,7 @@ exports.addPost = function(req, res) {
     var post = new Post({
         body: req.body.body,
         topic: req.params.topicId,
-        author: req.body.author //for testing
+        author: req.user
     });
 
     post.save(function(err, post) {
