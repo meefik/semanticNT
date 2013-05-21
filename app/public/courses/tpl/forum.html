@@ -74,8 +74,8 @@
     <div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="viewTopic($index)">
         <div ng-hide="isTopicEditorEnabled($index)" class="box">
             <div class="toolbar">
-                <a class="button" ng-click="editTopic($index, $event)" title="править"><i class="icon-pencil"></i></a>
-                <a class="button" ng-click="deleteTopic($index, $event)" title="удалить"><i class="icon-trash"></i></a>
+                <a class="button" ng-click="editTopic($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
+                <a class="button" ng-click="deleteTopic($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
             </div>
             <h3 class="title">{{topic.title}}</h3>
             <div style="font-size: small; text-align: right">
@@ -85,8 +85,8 @@
         </div>
         <div ng-show="isTopicEditorEnabled($index)" class="box">
             <div class="toolbar">
-                <a class="button" ng-click="updateTopic($index, $event)" title="сохранить"><i class="icon-download-alt"></i></a>
-                <a class="button" ng-click="editTopic(-1, $event)" title="закрыть"><i class="icon-remove"></i></a>
+                <a class="button" ng-click="updateTopic($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="button" ng-click="editTopic(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
             </div>
             <input type="text" ng-model="current.title" class="title-editor" placeholder="Название темы">
             <p class="date-editor">{{current.date | dateToText}}</p>

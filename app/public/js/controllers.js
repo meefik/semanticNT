@@ -671,12 +671,12 @@ $scope.exam = [
 }
 
 function ForumCtrl($scope, $routeParams, Courses) {
+    $scope.topicCreationEnabled = false;
+    $scope.editedTopic = -1;
     $scope.topics = Courses.query({
         courseId: $routeParams.courseId,
         partId: $routeParams.partId
     });
-
-    $scope.topicCreationEnabled = false;
 
     $scope.enableTopicCreation = function() {
         $scope.topicCreationEnabled = true;
@@ -705,10 +705,6 @@ function ForumCtrl($scope, $routeParams, Courses) {
     };
 
     $scope.editTopic = function(id, event) {
-        if(event) {
-            event.stopPropagation();
-        }
-
         $scope.editedTopic = id;
         if (id >= 0) {
             $scope.current = {
@@ -721,10 +717,6 @@ function ForumCtrl($scope, $routeParams, Courses) {
     };
 
     $scope.updateTopic = function(id, event) {
-        if(event) {
-            event.stopPropagation();
-        }
-
         var topic = new Courses($scope.current);
         topic.$update({courseId: $routeParams.courseId,
             partId: $routeParams.partId,
@@ -735,10 +727,6 @@ function ForumCtrl($scope, $routeParams, Courses) {
     };
 
     $scope.deleteTopic = function(id, event) {
-        if(event) {
-            event.stopPropagation();
-        }
-
         Courses.remove({courseId: $routeParams.courseId,
             partId: $routeParams.partId,
             itemId: $scope.topics[id]._id}, function() {
