@@ -69,7 +69,7 @@
     .type1 {
         width: 20px;
         height: 20px;
-        background-color: #24a647;
+        background-color: #ff7c2b;
         color: white;
         font-weight: bold;
         font-size: large;
@@ -107,7 +107,7 @@
 <div class="container main-block">
     <!--<h3 style="color: #0f88cc; font-family: 'Jura'">Курсы</h3>-->
     <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
-        <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px; border-color: #a5a5a5">
+        <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px; border-color: #04357a">
             <div>
                 <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">
 
@@ -116,7 +116,7 @@
                     <p><span class="circle type2">{{getDiffInWeeks(course.beginDate,course.endDate)}}</span> <span style="font-weight: bold">{{getWeekName(getDiffInWeeks(course.beginDate,course.endDate))}}</span></p>
                 </div>
 
-                <p style="color: #0f88cc; font-family: 'Jura'; font-size: x-large; padding-bottom: 5px; font-weight: bold">{{course.name}}</p>
+                <p style="color: #0f88cc; font-family: 'Jura'; font-size: x-large; padding-bottom: 5px; font-weight: bold; letter-spacing: 1px">{{course.name}}</p>
 
                 <p>{{course.description}}</p>
                 <p>Авторы курса: {{getAuthors(course.authors)}}</p>
