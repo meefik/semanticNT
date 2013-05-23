@@ -687,70 +687,113 @@ function ExamCtrl($scope, $routeParams, Courses) {
     }
 }
 
-function ForumCtrl($scope, $routeParams, Topic) {
+function ForumTopicsCtrl($scope, $routeParams, $location, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
     $scope.current = {};
-    $scope.newTopic = {};
-    $scope.editedTopic = -1;
+    $scope.new = {};
+    $scope.edited = -1;
     $scope.topics = Topic.query({ courseId: $routeParams.courseId });
 
-    $scope.enableTopicCreation = function () {
-        $scope.topicCreationEnabled = true;
+    $scope.enableCreation = function () {
+        $scope.creationEnabled = true;
     };
 
-    $scope.disableTopicCreation = function () {
-        $scope.newTopic.title = "";
-        $scope.topicCreationEnabled = false;
+    $scope.disableCreation = function () {
+        $scope.new.title = "";
+        $scope.creationEnabled = false;
     };
 
-    $scope.addTopic = function () {
-        var topic = new Topic({ title: $scope.newTopic.title });
+    $scope.add = function () {
+        var topic = new Topic($scope.new);
         topic.$save({ courseId: $routeParams.courseId }, function (data) {
-            $scope.topics.splice(0, 0, data);
-            $scope.disableTopicCreation();
+            $scope.topics.unshift(data);
+            $scope.disableCreation();
         });
     };
 
-    $scope.isTopicEditorEnabled = function (id) {
-        if ($scope.editedTopic === id) {
+    $scope.isEditorEnabled = function (id) {
+        if ($scope.edited === id) {
             return true;
         } else {
             return false;
         }
     };
 
-    $scope.editTopic = function (id) {
-        $scope.editedTopic = id;
+    $scope.edit = function (id) {
+        $scope.edited = id;
         if (id >= 0) {
-            $scope.current = {
-                title: $scope.topics[id].title,
-                date: $scope.topics[id].date
-            };
+            $scope.current = $scope.topics[id];
         } else {
             $scope.current = {};
         }
     };
 
-    $scope.updateTopic = function (id) {
-        var topic = new Topic($scope.current);
-        topic.$update({ courseId: $routeParams.courseId,
-            topicId: $scope.topics[id]._id }, function () {
-            $scope.topics[id].title = $scope.current.title;
-            $scope.editTopic(-1);
+    $scope.update = function (id) {
+        $scope.current.$update(function () {
+            $scope.edit(-1);
         });
     };
 
-    $scope.deleteTopic = function (id) {
-        Topic.remove({ courseId: $routeParams.courseId,
-            topicId: $scope.topics[id]._id }, function () {
+    $scope.delete = function (id) {
+        $scope.topics[id].$remove(function () {
             $scope.topics.splice(id, 1);
-            $scope.editTopic(-1);
         });
     };
 
-    $scope.viewTopic = function (id) {
-        alert(id);
+    $scope.view = function (id) {
+        $location.path($location.path() + "/" + $scope.topics[id]._id)
+    };
+}
+
+function ForumPostsCtrl($scope, $routeParams, Post) {
+    $scope.template = 'courses/tpl/forum-topic.html';
+
+    $scope.edited = -1;
+    $scope.new = {};
+    $scope.current = {};
+    $scope.posts = Post.query({
+        courseId: $routeParams.courseId,
+        topicId: $routeParams.topicId
+    });
+
+    $scope.isEditorEnabled = function (id) {
+        if ($scope.edited === id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.edit = function (id) {
+        $scope.edited = id;
+        if (id >= 0) {
+            $scope.current = $scope.posts[id];
+        } else {
+            $scope.current = {};
+        }
+    };
+
+    $scope.add = function() {
+        var post = new Post($scope.new);
+        post.$save({
+            topicId: $routeParams.topicId
+        }, function(data) {
+            $scope.posts.push(data);
+            $scope.new = {};
+        });
+    };
+
+    $scope.update = function(id) {
+        $scope.current.$update(function() {
+            $scope.edit(-1);
+        });
+    };
+
+    $scope.delete = function(id) {
+        $scope.posts[id].$remove(function() {
+            $scope.posts.splice(id, 1);
+        });
     };
 }
 

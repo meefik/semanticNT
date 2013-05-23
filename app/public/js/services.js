@@ -19,12 +19,19 @@ angular.module('app.services', ['ngResource'])
         });
     })
     .factory('Topic', function ($resource) {
-        return $resource('api/courses/:courseId/forum/:topicId', {}, {
+        return $resource('api/courses/:courseId/forum/:topicId', {
+            courseId: '@courseid',
+            topicId: '@_id'
+        }, {
             update: { method: 'PUT' }
         });
     })
     .factory('Post', function ($resource) {
-        return $resource('api/courses/:courseId/forum/:topicId/:postId', {}, {
+        return $resource('api/courses/:courseId/forum/:topicId/:postId', {
+            courseId: '_',
+            topicId: '@topic',
+            postId: '@_id'
+        }, {
             update: { method: 'PUT' }
         });
     })
