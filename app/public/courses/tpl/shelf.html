@@ -60,43 +60,39 @@
         $("#sortable").disableSelection();
     });
 </script>
-<div ng-controller="ShelfCtrl">
-    
-    <div id="tocbox" class="hide" style="position: absolute; right: 10px; width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
-        <h4>Содержание:</h4>
-        <div id="toc"></div>
-    </div>
-    
 
-    <div id="sortable">
-        <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500">
-            <div ng-hide="isEditor($index)" class="box">
-                <div class="toolbar">
-                    <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
-                    <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
-                    <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
-                </div>
-                <h3 class="title">{{item.title}}</h3>
-                <div class="desc" ng-bind-html-unsafe="item.text"></div>
-                <div style="font-size: small; text-align: right">
-                    <span class="date">{{item.author}}</span>,
-                    <span class="date">{{item.date | dateToText}}</span>
-                </div>
+<div id="tocbox" class="hide" style="position: absolute; right: 10px; width: 200px; float: right; border: 1px solid #ddd; padding: 10px; margin-left: 10px; font-size: small; background-color: #fefefe">
+    <h4>Содержание:</h4>
+    <div id="toc"></div>
+</div>
+
+<div id="sortable">
+    <div ng-repeat="item in posts" class="post-item" style="background-color: #fff" fadey="500">
+        <div ng-hide="isEditor($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="add($index)" title="добавить"><i class="icon-plus"></i></a>
+                <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
+                <a class="button" ng-click="del($index)" title="удалить"><i class="icon-trash"></i></a>
             </div>
-            <div ng-show="isEditor($index)" class="box">
-                <div class="toolbar">
-                    <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
-                    <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
-                </div>
-                <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
-                <p class="date-editor">{{curr.date | dateToText}}</p>
-                <textarea class="desc-editor" ng-model="curr.text"></textarea>
+            <h3 class="title">{{item.title}}</h3>
+            <div class="desc" ng-bind-html-unsafe="item.text"></div>
+            <div style="font-size: small; text-align: right">
+                <span class="date">{{item.author}}</span>,
+                <span class="date">{{item.date | dateToText}}</span>
             </div>
         </div>
+        <div ng-show="isEditor($index)" class="box">
+            <div class="toolbar">
+                <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+            </div>
+            <input type="text" ng-model="curr.title" class="title-editor" placeholder="Заголовок">
+            <p class="date-editor">{{curr.date | dateToText}}</p>
+            <textarea class="desc-editor" ng-model="curr.text"></textarea>
+        </div>
     </div>
-
-    <button ng-show="posts.length == 0" ng-click="add()">Add</button>
-    <hr>
-    <pre ng-bind="posts|json"></pre>
-
 </div>
+
+<button ng-show="posts.length == 0" ng-click="add()">Add</button>
+<hr>
+<pre ng-bind="posts|json"></pre>

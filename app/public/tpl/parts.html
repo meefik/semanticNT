@@ -13,6 +13,8 @@
     }
     .main-block {
         display: table;
+
+        width: 100%;
     }
     .left-block {
         display: table-cell;
@@ -26,7 +28,7 @@
     }
 </style>
 <div class="container">
-    <div class="main-block">
+    <div class="main-block" ng-controller="PartsCtrl">
         <div class="left-block">
             <a href="#/courses/{{course.id}}"><img ng-src="{{logo}}" class="thumbnail course-logo"></a>
             <div class="tabbable tabs-left">
@@ -38,7 +40,7 @@
         <div class="right-block">
             <div class="tab-content">
                 <h2 class="page-header">{{course.name}}</h2>
-                <div ng-include src="content"></div>
+                <div ng-include src="template"></div>
             </div>
         </div>
     </div>

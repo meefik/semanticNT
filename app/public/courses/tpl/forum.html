@@ -57,39 +57,37 @@
     }
 </style>
 
-<div ng-controller="ForumCtrl">
-    <div ng-hide="topicCreationEnabled" class="box">
-        <a class="btn" ng-click="enableTopicCreation()">Создать тему</a>
-    </div>
-    <div ng-show="topicCreationEnabled" class="box">
-        <input type="text" ng-model="topicTitle" class="title-editor" placeholder="Название темы">
-        <br>
-        <div class="btn-group">
-            <a class="btn" ng-click="addTopic()">Создать</a>
-            <a class="btn" ng-click="disableTopicCreation()">Отмена</a>
-        </div>
-    </div>
+<div ng-hide="topicCreationEnabled" class="box">
+    <a class="btn" ng-click="enableTopicCreation()">Создать тему</a>
+</div>
+<div ng-show="topicCreationEnabled" class="box">
+    <input type="text" ng-model="newTopic.title" class="title-editor" placeholder="Название темы">
     <br>
+    <div class="btn-group">
+        <a class="btn" ng-click="addTopic()">Создать</a>
+        <a class="btn" ng-click="disableTopicCreation()">Отмена</a>
+    </div>
+</div>
+<br>
 
-    <div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="viewTopic($index)">
-        <div ng-hide="isTopicEditorEnabled($index)" class="box">
-            <div class="toolbar">
-                <a class="button" ng-click="editTopic($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
-                <a class="button" ng-click="deleteTopic($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
-            </div>
-            <h3 class="title">{{topic.title}}</h3>
-            <div style="font-size: small; text-align: right">
-                <span class="date">{{topic.author}}</span>,
-                <span class="date">{{topic.date | dateToText}}</span>
-            </div>
+<div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="viewTopic($index)">
+    <div ng-hide="isTopicEditorEnabled($index)" class="box">
+        <div class="toolbar">
+            <a class="button" ng-click="editTopic($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
+            <a class="button" ng-click="deleteTopic($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
         </div>
-        <div ng-show="isTopicEditorEnabled($index)" class="box">
-            <div class="toolbar">
-                <a class="button" ng-click="updateTopic($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
-                <a class="button" ng-click="editTopic(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
-            </div>
-            <input type="text" ng-model="current.title" class="title-editor" placeholder="Название темы">
-            <p class="date-editor">{{current.date | dateToText}}</p>
+        <h3 class="title">{{topic.title}}</h3>
+        <div style="font-size: small; text-align: right">
+            <span class="date">{{topic.author}}</span>,
+            <span class="date">{{topic.date | dateToText}}</span>
         </div>
+    </div>
+    <div ng-show="isTopicEditorEnabled($index)" class="box">
+        <div class="toolbar">
+            <a class="button" ng-click="updateTopic($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
+            <a class="button" ng-click="editTopic(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
+        </div>
+        <input type="text" ng-model="current.title" stop-bubbling="click" class="title-editor" placeholder="Название темы">
+        <p class="date-editor">{{current.date | dateToText}}</p>
     </div>
 </div>
