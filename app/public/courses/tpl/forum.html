@@ -1,54 +1,65 @@
 <style type="text/css">
     .post-item {
         padding: 5px;
+        margin-bottom: 15px;
 
         cursor: pointer;
     }
     .post-item:hover {
-        border: 1px dashed lightgrey;
-        border-radius: 5px;
         padding: 4px;
+
+        border: 1px dashed lightgray;
+        border-radius: 5px;
     }
     .post-item .box {
-        position:relative;
+        position: relative;
+
         width: 100%;
     }
     .post-item .toolbar {
-        position:absolute;
-        top:0px;
-        right:0px;
-        width:80px;
-        text-align: right;
         position: absolute;
+        top: 0;
+        right: 0;
+
         display: none;
+
+        width: 80px;
+
+        text-align: right;
     }
     .post-item:hover .toolbar {
         display: block;
     }
     .post-item .title {
-        margin: 0;
-        padding: 0;
-        color: #5080a0;
         font-family: 'Jura', sans-serif;
         font-size: x-large;
+
+        width: 90%;
+        margin: 0;
+        padding: 0;
+
+        color: #5080a0;
     }
     .post-item .date {
         font-style: italic;
     }
     .post-item .button {
-        margin-right: 5px;
         font-size: small;
+
+        margin-right: 5px;
     }
     .post-item .desc {
         white-space: pre-wrap;
     }
     .post-item .title-editor {
-        width: 400px;
         float: left;
+
+        width: 400px;
         margin-right: 1em;
     }
     .post-item .date-editor {
         font-style: italic;
+
         padding: 5px 40px 0 0;
     }
     .post-item .desc-editor {
@@ -72,7 +83,7 @@
 
 <div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="view($index)">
     <div ng-hide="isEditorEnabled($index)" class="box">
-        <div class="toolbar">
+        <div ng-show="isAuthor($index)" class="toolbar">
             <a class="button" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
             <a class="button" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
         </div>

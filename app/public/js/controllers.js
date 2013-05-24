@@ -312,12 +312,8 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) 
     $scope.course = Courses.get({courseId: $routeParams.courseId});
 
     $scope.isModerator = function () {
-        if ($scope.course.moderators &&
-            $scope.course.moderators.indexOf($scope.profile.login) >= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return $scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0
     };
 }
 
@@ -687,7 +683,7 @@ function ExamCtrl($scope, $routeParams, Courses) {
     }
 }
 
-function ForumTopicsCtrl($scope, $routeParams, $location, Topic) {
+function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
     $scope.current = {};
@@ -710,6 +706,11 @@ function ForumTopicsCtrl($scope, $routeParams, $location, Topic) {
             $scope.topics.unshift(data);
             $scope.disableCreation();
         });
+    };
+
+    $scope.isAuthor = function (id) {
+        return $scope.topics[id].author ===
+            $cookieStore.get('userid');
     };
 
     $scope.isEditorEnabled = function (id) {
@@ -746,7 +747,7 @@ function ForumTopicsCtrl($scope, $routeParams, $location, Topic) {
     };
 }
 
-function ForumPostsCtrl($scope, $routeParams, Post) {
+function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
     $scope.template = 'courses/tpl/forum-topic.html';
 
     $scope.edited = -1;
@@ -756,6 +757,11 @@ function ForumPostsCtrl($scope, $routeParams, Post) {
         courseId: $routeParams.courseId,
         topicId: $routeParams.topicId
     });
+
+    $scope.isAuthor = function (id) {
+        return $scope.posts[id].author ===
+            $cookieStore.get('userid');
+    };
 
     $scope.isEditorEnabled = function (id) {
         if ($scope.edited === id) {
@@ -774,26 +780,39 @@ function ForumPostsCtrl($scope, $routeParams, Post) {
         }
     };
 
-    $scope.add = function() {
+    $scope.add = function () {
         var post = new Post($scope.new);
         post.$save({
             topicId: $routeParams.topicId
-        }, function(data) {
+        }, function (data) {
             $scope.posts.push(data);
             $scope.new = {};
         });
     };
 
-    $scope.update = function(id) {
-        $scope.current.$update(function() {
+    $scope.update = function (id) {
+        $scope.current.$update(function () {
             $scope.edit(-1);
         });
     };
 
-    $scope.delete = function(id) {
-        $scope.posts[id].$remove(function() {
+    $scope.delete = function (id) {
+        $scope.posts[id].$remove(function () {
             $scope.posts.splice(id, 1);
         });
+    };
+
+    $scope.isStarred = function (id) {
+        return $scope.posts[id].stars
+            .indexOf($cookieStore.get('userid')) !== -1;
+    };
+
+    $scope.toggleStar = function (id) {
+        if ($scope.isStarred(id)) {
+            $scope.posts[id].$unstar();
+        } else {
+            $scope.posts[id].$star();
+        }
     };
 }
 

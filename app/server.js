@@ -26,38 +26,38 @@ var SERVER_PORT = 3000;
 var dbUrl = 'mongodb://192.168.4.41:27017/openitmo';
 //var dbUrl = 'mongodb://localhost:27017/openitmo';
 
-app.configure(function() {
+app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.set("view options", {layout: false});
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
-    
+
     /*
-    app.use(express.session({
-        cookie: { path: '/', httpOnly: true, maxAge: null }, 
-        secret:'dfe9df2b07fb476e6b28fc70a814173e'
-    }));
-    */
+     app.use(express.session({
+     cookie: { path: '/', httpOnly: true, maxAge: null },
+     secret:'dfe9df2b07fb476e6b28fc70a814173e'
+     }));
+     */
 
     app.use(express.session({
         secret: 'dfe9df2b07fb476e6b28fc70a814173e',
         cookie: {maxAge: 1000 * 60 * 60}
         /*
-        store: new MongoStore({
-            url: dbUrl
-        })
-        */
+         store: new MongoStore({
+         url: dbUrl
+         })
+         */
     }));
 
     /*
-    app.use(express.session({
-        cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, // month
-        secret: 'dfe9df2b07fb476e6b28fc70a814173e',
-        store: new SessionStore({url: dbUrl, interval: 1000 * 60 * 60})
-    }));
-    */
+     app.use(express.session({
+     cookie: {maxAge: 1000 * 60 * 60 * 24 * 30}, // month
+     secret: 'dfe9df2b07fb476e6b28fc70a814173e',
+     store: new SessionStore({url: dbUrl, interval: 1000 * 60 * 60})
+     }));
+     */
 
     /*
      app.use(express.session({
@@ -67,23 +67,23 @@ app.configure(function() {
      cookie: { maxAge: 1000 * 60 * 60 }
      }));
      */
-    
+
     //app.use(stylus.middleware({ src: __dirname + '/public', compress: true }));
 
     app.use(express.logger('dev'));
     app.use(express.static(__dirname + '/public'));
-    
+
     app.use(passport.initialize());
     app.use(passport.session());
-    
+
     app.use(app.router);
 });
 
-app.configure('development', function() {
+app.configure('development', function () {
     app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
 });
 
-app.configure('production', function() {
+app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
@@ -142,6 +142,8 @@ app.get('/api/courses/:courseId/forum/:topicId', forum.getPosts);
 app.post('/api/courses/:courseId/forum/:topicId', forum.addPost);
 app.put('/api/courses/:courseId/forum/:topicId/:postId', forum.updatePost);
 app.del('/api/courses/:courseId/forum/:topicId/:postId', forum.removePost);
+app.post('/api/courses/:courseId/forum/:topicId/:postId/star', forum.starPost);
+app.del('/api/courses/:courseId/forum/:topicId/:postId/star', forum.unstarPost);
 
 /**
  * Return 404 error
@@ -159,7 +161,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', function callback() {
     // Start server
-    app.listen(SERVER_PORT, function() {
+    app.listen(SERVER_PORT, function () {
         console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
     });
 });
