@@ -22,10 +22,7 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
     };
 
     $rootScope.isAuth = function () {
-        if ($rootScope.profile && $rootScope.profile.login)
-            return true;
-        else
-            return false;
+        return $rootScope.profile && $rootScope.profile.login;
     };
 
     if (!$rootScope.isAuth()) {
@@ -787,6 +784,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
         }, function (data) {
             $scope.posts.push(data);
             $scope.new = {};
+            $("html, body").stop().animate({ scrollTop: $(document).height() }, 1000);
         });
     };
 
@@ -808,6 +806,10 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
     };
 
     $scope.toggleStar = function (id) {
+        if (!$scope.isAuth()) {
+            return;
+        }
+
         if ($scope.isStarred(id)) {
             $scope.posts[id].$unstar();
         } else {

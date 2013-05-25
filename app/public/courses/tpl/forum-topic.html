@@ -73,7 +73,7 @@
     }
 </style>
 
-<div class="box">
+<div class="box" ng-show="isAuth()">
     <textarea style="width: 90%; resize: none;" ng-model="new.body"></textarea>
     <br>
     <a class="btn" ng-click="add()">Опубликовать</a>
@@ -89,7 +89,7 @@
             </span>
             <a class="button" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i>{{post.stars.length}}</a>
         </div>
-        <div class="desc">{{post.body}}</div>
+        <div class="desc" ng-bind-html-unsafe="post.body"></div>
         <div style="font-size: small; text-align: right">
             <span class="date">{{post.author}}</span>,
             <span class="date">{{post.date | dateToText}}</span>

@@ -68,7 +68,7 @@
     }
 </style>
 
-<div ng-hide="creationEnabled" class="box">
+<div ng-hide="!isAuth() || creationEnabled" class="box">
     <a class="btn" ng-click="enableCreation()">Создать тему</a>
 </div>
 <div ng-show="creationEnabled" class="box">
@@ -87,7 +87,7 @@
             <a class="button" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
             <a class="button" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
         </div>
-        <h3 class="title">{{topic.title}}</h3>
+        <h3 class="title" ng-bind-html-unsafe="topic.title"></h3>
         <div style="font-size: small; text-align: right">
             <span class="date">{{topic.author}}</span>,
             <span class="date">{{topic.date | dateToText}}</span>
