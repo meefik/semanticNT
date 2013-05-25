@@ -73,10 +73,16 @@
     }
 </style>
 
-<div class="box" ng-show="isAuth()">
-    <textarea style="width: 90%; resize: none;" ng-model="new.body"></textarea>
+<div class="box" ng-hide="!isAuth() || creationEnabled">
+    <a class="btn" ng-click="enableCreation()">Разместить ответ</a>
+</div>
+<div class="box" ng-show="creationEnabled">
+    <textarea style="width: 90%; height: 60px; resize: none;" ng-model="new.body"></textarea>
     <br>
-    <a class="btn" ng-click="add()">Опубликовать</a>
+    <div class="btn-group">
+        <a class="btn" ng-click="add()">Опубликовать</a>
+        <a class="btn" ng-click="disableCreation()">Отмена</a>
+    </div>
 </div>
 <br>
 

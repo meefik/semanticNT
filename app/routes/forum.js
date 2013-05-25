@@ -43,8 +43,10 @@ var Topic = mongoose.model('Topic', TopicSchema),
  */
 
 exports.getTopics = function (req, res) {
+    var offset = req.params.offset || 0;
+
     Topic.find({ courseid: req.params.courseId })
-        .sort({ date: -1 })
+        .skip(offset)
         .exec(function (err, topics) {
             if (!err) {
                 res.json(topics); // 200 OK + data
@@ -139,14 +141,18 @@ exports.removeTopic = function (req, res) {
 };
 
 exports.getPosts = function (req, res) {
-    Post.find({ topic: req.params.topicId }, function (err, posts) {
-        if (!err) {
-            res.json(posts); // 200 OK + data
-        } else {
-            res.send(500); // 500 Internal Server Error
-            console.log(err);
-        }
-    });
+    var offset = req.params.offset || 0;
+
+    Post.find({ topic: req.params.topicId })
+        .skip(offset)
+        .exec(function (err, posts) {
+            if (!err) {
+                res.json(posts); // 200 OK + data
+            } else {
+                res.send(500); // 500 Internal Server Error
+                console.log(err);
+            }
+        });
 };
 
 exports.addPost = function (req, res) {

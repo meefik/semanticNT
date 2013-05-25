@@ -680,28 +680,41 @@ function ExamCtrl($scope, $routeParams, Courses) {
     }
 }
 
-function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, Topic) {
+function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, $http, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
     $scope.current = {};
     $scope.new = {};
     $scope.edited = -1;
-    $scope.topics = Topic.query({ courseId: $routeParams.courseId });
+    Topic.query({ courseId: $routeParams.courseId }, function(data) {
+        $scope.topics = data.reverse();
+    });
+
+    $scope.refresh = function (cb) {
+        var path = 'api/courses/' + $routeParams.courseId +
+            '/forum/offset/' + $scope.topics.length;
+        $http.get(path).success(function (data) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                $scope.topics.unshift(new Topic(data[i]));
+            }
+            cb();
+        });
+    };
 
     $scope.enableCreation = function () {
         $scope.creationEnabled = true;
     };
 
     $scope.disableCreation = function () {
-        $scope.new.title = "";
+        $scope.new = {};
         $scope.creationEnabled = false;
     };
 
     $scope.add = function () {
         var topic = new Topic($scope.new);
         topic.$save({ courseId: $routeParams.courseId }, function (data) {
-            $scope.topics.unshift(data);
             $scope.disableCreation();
+            $scope.refresh();
         });
     };
 
@@ -744,7 +757,7 @@ function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, Topic) {
     };
 }
 
-function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
+function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     $scope.template = 'courses/tpl/forum-topic.html';
 
     $scope.edited = -1;
@@ -754,6 +767,27 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
         courseId: $routeParams.courseId,
         topicId: $routeParams.topicId
     });
+
+    $scope.refresh = function (cb) {
+        var path = 'api/courses/' + $routeParams.courseId +
+            '/forum/' + $routeParams.topicId +
+            '/offset/' + $scope.posts.length;
+        $http.get(path).success(function (data) {
+            for (var i = 0, len = data.length; i < len; i++) {
+                $scope.posts.push(new Post(data[i]));
+            }
+            cb();
+        });
+    };
+
+    $scope.enableCreation = function () {
+        $scope.creationEnabled = true;
+    };
+
+    $scope.disableCreation = function () {
+        $scope.new.title = {};
+        $scope.creationEnabled = false;
+    };
 
     $scope.isAuthor = function (id) {
         return $scope.posts[id].author ===
@@ -782,9 +816,10 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, Post) {
         post.$save({
             topicId: $routeParams.topicId
         }, function (data) {
-            $scope.posts.push(data);
-            $scope.new = {};
-            $("html, body").stop().animate({ scrollTop: $(document).height() }, 1000);
+            $scope.disableCreation();
+            $scope.refresh(function () {
+                $("html, body").stop().animate({ scrollTop: $(document).height() }, 500);
+            });
         });
     };
 
