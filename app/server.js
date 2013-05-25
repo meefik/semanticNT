@@ -135,10 +135,12 @@ app.del('/api/courses/:courseId/struct/:itemId', struct.remove);
 
 // Course forum
 app.get('/api/courses/:courseId/forum', forum.getTopics);
+app.get('/api/courses/:courseId/forum/offset/:offset', forum.getTopics);
 app.post('/api/courses/:courseId/forum', forum.addTopic);
 app.put('/api/courses/:courseId/forum/:topicId', forum.updateTopic);
 app.del('/api/courses/:courseId/forum/:topicId', forum.removeTopic);
 app.get('/api/courses/:courseId/forum/:topicId', forum.getPosts);
+app.get('/api/courses/:courseId/forum/:topicId/offset/:offset', forum.getPosts);
 app.post('/api/courses/:courseId/forum/:topicId', forum.addPost);
 app.put('/api/courses/:courseId/forum/:topicId/:postId', forum.updatePost);
 app.del('/api/courses/:courseId/forum/:topicId/:postId', forum.removePost);
