@@ -785,7 +785,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.disableCreation = function () {
-        $scope.new.title = {};
+        $scope.new = {};
         $scope.creationEnabled = false;
     };
 
