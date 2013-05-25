@@ -236,7 +236,9 @@ exports.starPost = function (req, res) {
 
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
-            if (post.stars.indexOf(req.user) === -1) {
+            if (req.user !== post.author &&
+                post.stars.indexOf(req.user) === -1)
+            {
                 post.stars.push(req.user);
                 post.save(function (err) {
                     if (!err) {
@@ -247,7 +249,7 @@ exports.starPost = function (req, res) {
                     }
                 });
             } else {
-                res.send(400); //Already starred
+                res.send(400); //Already starred or not allowed
             }
         } else {
             res.send(500); // 500 Internal Server Error

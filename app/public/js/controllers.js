@@ -680,7 +680,7 @@ function ExamCtrl($scope, $routeParams, Courses) {
     }
 }
 
-function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, $http, Topic) {
+function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieStore, $http, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
     $scope.current = {};
@@ -753,7 +753,7 @@ function ForumTopicsCtrl($scope, $routeParams, $location, $cookieStore, $http, T
     };
 
     $scope.view = function (id) {
-        $location.path($location.path() + "/" + $scope.topics[id]._id)
+        $location.path($location.path() + "/" + $scope.topics[id]._id);
     };
 }
 
@@ -845,10 +845,14 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             return;
         }
 
-        if ($scope.isStarred(id)) {
-            $scope.posts[id].$unstar();
-        } else {
-            $scope.posts[id].$star();
+        var post = $scope.posts[id];
+
+        if(post.author !== $cookieStore.get('userid')) {
+            if (!$scope.isStarred(id)) {
+                post.$star();
+            } else {
+                $scope.posts[id].$unstar();
+            }
         }
     };
 }
