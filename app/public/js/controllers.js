@@ -735,11 +735,7 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     };
 
     $scope.isEditorEnabled = function (id) {
-        if ($scope.edited === id) {
-            return true;
-        } else {
-            return false;
-        }
+        return $scope.edited === id;
     };
 
     $scope.edit = function (id) {
@@ -818,11 +814,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.isEditorEnabled = function (id) {
-        if ($scope.edited === id) {
-            return true;
-        } else {
-            return false;
-        }
+        return $scope.edited === id;
     };
 
     $scope.edit = function (id) {
