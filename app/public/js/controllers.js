@@ -22,7 +22,7 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
     };
 
     $rootScope.isAuth = function () {
-        return $rootScope.profile && $rootScope.profile.login;
+        return !!($rootScope.profile && $rootScope.profile.login);
     };
 
     if (!$rootScope.isAuth()) {
@@ -309,8 +309,8 @@ function PartsCtrl($rootScope, $scope, $routeParams, $location, Courses, Parts) 
     $scope.course = Courses.get({courseId: $routeParams.courseId});
 
     $scope.isModerator = function () {
-        return $scope.course.moderators &&
-            $scope.course.moderators.indexOf($scope.profile.login) >= 0
+        return !!($scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0)
     };
 }
 
