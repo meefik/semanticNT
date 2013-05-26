@@ -35,13 +35,13 @@
             <a href="#/courses/{{course.id}}"><img ng-src="{{logo}}" class="thumbnail course-logo"></a>
             <div class="tabbable tabs-left">
                 <ul class="nav nav-tabs nav-parts">
-                    <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}">{{tab.name}}</a></li>
+                    <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}" ng-bind="tab.name"></a></li>
                 </ul>
             </div>
         </div>
         <div class="right-block">
             <div class="tab-content">
-                <h2 class="page-header">{{course.name}}</h2>
+                <h2 class="page-header" ng-bind="course.name"></h2>
                 <div ng-include src="template"></div>
             </div>
         </div>

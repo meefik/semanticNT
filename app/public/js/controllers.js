@@ -691,13 +691,13 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     });
 
     //refresh every 3 minutes
-    var refreshingInterval = setInterval(function() {
+    var refreshingInterval = setInterval(function () {
         Topic.query({ courseId: $routeParams.courseId }, function (data) {
             $scope.topics = data.reverse();
         });
     }, 180000);
 
-    $scope.$on("$destroy", function(){
+    $scope.$on("$destroy", function () {
         clearInterval(refreshingInterval);
     });
 
@@ -776,14 +776,14 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     });
 
     //refresh every 3 minutes
-    var refreshingInterval = setInterval(function() {
+    var refreshingInterval = setInterval(function () {
         $scope.posts = Post.query({
             courseId: $routeParams.courseId,
             topicId: $routeParams.topicId
         });
     }, 180000);
 
-    $scope.$on("$destroy", function(){
+    $scope.$on("$destroy", function () {
         clearInterval(refreshingInterval);
     });
 
