@@ -52,7 +52,8 @@ h1, h2, h3, h4, h5, h6 {
     white-space: nowrap;
 }
 .navbar-inner {
-    background: rgba(4,53,122,0.85);
+    background: rgba(4, 53, 122, 0.85);
+    filter: none;
     border: 0;
 }
 .navbar .brand {
