@@ -237,8 +237,8 @@ exports.starPost = function (req, res) {
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
             if (req.user !== post.author &&
-                post.stars.indexOf(req.user) === -1)
-            {
+                post.stars.indexOf(req.user) === -1) {
+
                 post.stars.push(req.user);
                 post.save(function (err) {
                     if (!err) {
