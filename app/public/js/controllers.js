@@ -686,11 +686,18 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     $scope.current = {};
     $scope.new = {};
     $scope.edited = -1;
-    Topic.query({ courseId: $routeParams.courseId }, function(data) {
+    Topic.query({ courseId: $routeParams.courseId }, function (data) {
         $scope.topics = data.reverse();
     });
 
-    $scope.refresh = function (cb) {
+    //refresh every 3 minutes
+    var refreshInterval = setInterval(function() {
+        Topic.query({ courseId: $routeParams.courseId }, function (data) {
+            $scope.topics = data.reverse();
+        });
+    }, 180000);
+
+    $scope.loadNew = function (cb) {
         var path = 'api/courses/' + $routeParams.courseId +
             '/forum/offset/' + $scope.topics.length;
         $http.get(path).success(function (data) {
@@ -714,7 +721,7 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
         var topic = new Topic($scope.new);
         topic.$save({ courseId: $routeParams.courseId }, function (data) {
             $scope.disableCreation();
-            $scope.refresh();
+            $scope.loadNew();
         });
     };
 
@@ -768,7 +775,15 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
         topicId: $routeParams.topicId
     });
 
-    $scope.refresh = function (cb) {
+    //refresh every 3 minutes
+    var refreshInterval = setInterval(function() {
+        $scope.posts = Post.query({
+            courseId: $routeParams.courseId,
+            topicId: $routeParams.topicId
+        });
+    }, 180000);
+
+    $scope.loadNew = function (cb) {
         var path = 'api/courses/' + $routeParams.courseId +
             '/forum/' + $routeParams.topicId +
             '/offset/' + $scope.posts.length;
@@ -817,7 +832,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             topicId: $routeParams.topicId
         }, function (data) {
             $scope.disableCreation();
-            $scope.refresh(function () {
+            $scope.loadNew(function () {
                 $("html, body").stop().animate({ scrollTop: $(document).height() }, 500);
             });
         });
@@ -847,11 +862,11 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
 
         var post = $scope.posts[id];
 
-        if(post.author !== $cookieStore.get('userid')) {
+        if (post.author !== $cookieStore.get('userid')) {
             if (!$scope.isStarred(id)) {
                 post.$star();
             } else {
-                $scope.posts[id].$unstar();
+                post.$unstar();
             }
         }
     };
