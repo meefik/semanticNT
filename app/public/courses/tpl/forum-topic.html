@@ -80,8 +80,10 @@
     </div>
 </div>
 <br>
+<input type="text" ng-model="search" placeholder="Поиск">
+<br><br>
 
-<div ng-repeat="post in posts" class="post-item" fadey="500">
+<div ng-repeat="post in posts | filter: search" class="post-item" fadey="500">
     <div ng-hide="isEditorEnabled($index)" class="box">
         <div class="toolbar">
             <span ng-show="isAuthor($index)" class="toolbar-hidden">

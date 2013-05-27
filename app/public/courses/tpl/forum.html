@@ -82,8 +82,10 @@
     </div>
 </div>
 <br>
+<input type="text" ng-model="search" placeholder="Поиск">
+<br><br>
 
-<div ng-repeat="topic in topics" class="post-item" fadey="500" ng-click="view($index)">
+<div ng-repeat="topic in topics | filter: search" class="post-item" fadey="500" ng-click="view($index)">
     <div ng-hide="isEditorEnabled($index)" class="box">
         <div ng-show="isAuthor($index)" class="toolbar">
             <a class="button" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
