@@ -36,7 +36,7 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
         $http.get('api/logout').
                 success(function() {
             $rootScope.delProfile();
-            //$location.path("/");
+            $location.path("/");
         });
     };
 
