@@ -1,80 +1,8 @@
-<style type="text/css">
-    .post-item {
-        padding: 5px;
-        margin-bottom: 15px;
-
-        cursor: pointer;
-    }
-    .post-item:hover {
-        padding: 4px;
-
-        border: 1px dashed lightgray;
-        border-radius: 5px;
-    }
-    .post-item .box {
-        position: relative;
-
-        width: 100%;
-    }
-    .post-item .toolbar {
-        position: absolute;
-        top: 0;
-        right: 0;
-
-        display: none;
-
-        width: 80px;
-
-        text-align: right;
-    }
-    .post-item:hover .toolbar {
-        display: block;
-    }
-    .post-item .title {
-        font-family: 'Jura', sans-serif;
-        font-size: x-large;
-
-        width: 90%;
-        margin: 0;
-        padding: 0;
-
-        color: #5080a0;
-    }
-    .post-item .date {
-        font-style: italic;
-    }
-    .post-item .button {
-        font-size: small;
-
-        margin-right: 5px;
-    }
-    .post-item .desc {
-        font-size: medium;
-
-        white-space: pre-wrap;
-    }
-    .post-item .title-editor {
-        float: left;
-
-        width: 400px;
-        margin-right: 1em;
-    }
-    .post-item .date-editor {
-        font-style: italic;
-
-        padding: 5px 40px 0 0;
-    }
-    .post-item .desc-editor {
-        width: 670px;
-        height: 200px;
-    }
-</style>
-
 <div ng-hide="!isAuth() || creationEnabled" class="box">
     <a class="btn" ng-click="enableCreation()">Создать тему</a>
 </div>
-<div ng-show="creationEnabled" class="box">
-    <input type="text" ng-model="new.title" class="title-editor" placeholder="Название темы">
+<div ng-show="creationEnabled">
+    <input type="text" ng-model="new.title" placeholder="Название темы">
     <br>
     <div class="btn-group">
         <a class="btn" ng-click="add()">Создать</a>
@@ -85,24 +13,33 @@
 <input type="text" ng-model="search" placeholder="Поиск">
 <br><br>
 
-<div ng-repeat="topic in topics | filter: search" class="post-item" fadey="500" ng-click="view($index)">
-    <div ng-hide="isEditorEnabled($index)" class="box">
-        <div ng-show="isAuthor($index)" class="toolbar">
-            <a class="button" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
-            <a class="button" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
+<div ng-repeat="topic in topics | filter: search" class="item topic" fadey="500" ng-click="view($index)">
+    <div ng-hide="isEditorEnabled($index)">
+        <div ng-show="isAuthor($index)" class="item-toolbar">
+            <div class="item-toolbar-addl">
+                <a class="item-btn" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
+                <a class="item-btn" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
+            </div>
         </div>
-        <h3 class="title" ng-bind-html-unsafe="topic.title"></h3>
-        <div style="font-size: small; text-align: right">
-            <span class="date">{{topic.author}}</span>,
-            <span class="date">{{topic.date | dateToText}}</span>
+        <div class="item-body">
+            <h3 ng-bind-html-unsafe="topic.title"></h3>
+        </div>
+        <div class="item-info">
+            <span class="item-info-author">{{topic.author}}</span>,
+            <span class="item-info-date">{{topic.date | dateToText}}</span>
         </div>
     </div>
-    <div ng-show="isEditorEnabled($index)" class="box">
-        <div class="toolbar">
-            <a class="button" ng-click="update($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
-            <a class="button" ng-click="edit(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
+    <div ng-show="isEditorEnabled($index)">
+        <div class="item-toolbar">
+            <a class="item-btn" ng-click="update($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
+            <a class="item-btn" ng-click="edit(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
         </div>
-        <input type="text" ng-model="current.title" stop-bubbling="click" class="title-editor" placeholder="Название темы">
-        <p class="date-editor">{{current.date | dateToText}}</p>
+        <div class="item-body">
+            <input type="text" ng-model="current.title" stop-bubbling="click" placeholder="Название темы">
+        </div>
+        <div class="item-info">
+            <span class="item-info-author">{{topic.author}}</span>,
+            <span class="item-info-date">{{topic.date | dateToText}}</span>
+        </div>
     </div>
 </div>

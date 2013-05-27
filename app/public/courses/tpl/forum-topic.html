@@ -1,78 +1,8 @@
-<style type="text/css">
-    .post-item {
-        padding: 5px;
-        margin-bottom: 15px;
-
-        border: 1px dashed lightgray;
-        border-radius: 5px;
-    }
-    .post-item .box {
-        position: relative;
-
-        width: 100%;
-    }
-    .post-item .toolbar {
-        position: absolute;
-        top:0;
-        right:0;
-
-        width: 80px;
-
-        text-align: right;
-    }
-    .post-item .toolbar .toolbar-hidden {
-        display: inline;
-    }
-    .post-item .title {
-        font-family: 'Jura', sans-serif;
-        font-size: x-large;
-
-        margin: 0;
-        padding: 0;
-        color: #5080a0;
-    }
-    .post-item .date {
-        font-style: italic;
-    }
-    .post-item .button {
-        font-size: small;
-
-        margin-right: 5px;
-
-        text-decoration: none;
-        cursor: pointer;
-
-        color: #000;
-    }
-    .post-item .desc {
-        font-size: medium;
-
-        width: 89%;
-
-        white-space: pre-wrap;
-    }
-    .post-item .title-editor {
-        width: 400px;
-        float: left;
-        margin-right: 1em;
-    }
-    .post-item .date-editor {
-        font-style: italic;
-        padding: 5px 40px 0 0;
-    }
-    .post-item .desc-editor {
-        width: 89%;
-        height: 100px;
-
-        resize: none;
-    }
-</style>
-
-<div class="box" ng-hide="!isAuth() || creationEnabled">
+<div ng-hide="!isAuth() || creationEnabled">
     <a class="btn" ng-click="enableCreation()">Разместить сообщение</a>
 </div>
-<div class="box" ng-show="creationEnabled">
-    <textarea id="crArea" style="width: 90%; height: 100px; resize: none;" ng-model="new.body"></textarea>
+<div ng-show="creationEnabled">
+    <textarea id="crArea" class="edit_area" ng-model="new.body"></textarea>
     <br>
     <div class="btn-group">
         <a class="btn" ng-click="add()">Опубликовать</a>
@@ -83,27 +13,35 @@
 <input type="text" ng-model="search" placeholder="Поиск">
 <br><br>
 
-<div ng-repeat="post in posts | filter: search" class="post-item" fadey="500">
-    <div ng-hide="isEditorEnabled($index)" class="box">
-        <div class="toolbar">
-            <span ng-show="isAuthor($index)" class="toolbar-hidden">
-                <a class="button" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
-                <a class="button" ng-click="delete($index)" title="удалить"><i class="icon-trash"></i></a>
-            </span>
-            <a class="button" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i>{{post.stars.length}}</a>
+<div ng-repeat="post in posts | filter: search" class="item" fadey="500">
+    <div ng-hide="isEditorEnabled($index)">
+        <div class="item-toolbar">
+            <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
+            <div ng-show="isAuthor($index)" class="item-toolbar-addl">
+                <a class="item-btn" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
+                <a class="item-btn" ng-click="delete($index)" title="удалить"><i class="icon-trash"></i></a>
+            </div>
         </div>
-        <div class="desc" ng-bind-html-unsafe="parseBody(post.body)"></div>
-        <div style="font-size: small; text-align: right">
-            <span class="date">{{post.author}}</span>,
-            <span class="date">{{post.date | dateToText}}</span>
+        <div class="item-body" ng-bind-html-unsafe="parseBody(post.body)"></div>
+        <div class="item-info">
+            <span class="item-info-author">{{post.author}}</span>,
+            <span class="item-info-date">{{post.date | dateToText}}</span>
         </div>
     </div>
-    <div ng-show="isEditorEnabled($index)" class="box">
-        <div class="toolbar">
-            <a class="button" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
-            <a class="button" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+    <div ng-show="isEditorEnabled($index)">
+        <div class="item-toolbar">
+            <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
+            <div class="item-toolbar-addl">
+                <a class="item-btn" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="item-btn" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+            </div>
         </div>
-        <textarea class="desc-editor" ng-model="current.body"></textarea>
-        <p class="date-editor">{{current.date | dateToText}}</p>
+        <div class="item-body">
+            <textarea class="edit_area" ng-model="current.body"></textarea>
+        </div>
+        <div class="item-info">
+            <span class="item-info-author">{{post.author}}</span>,
+            <span class="item-info-date">{{post.date | dateToText}}</span>
+        </div>
     </div>
 </div>

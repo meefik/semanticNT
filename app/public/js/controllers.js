@@ -821,16 +821,18 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
         return $scope.edited === id;
     };
 
+    $scope.getTextArea = function (id) {
+        return $('.item:eq(' + id + ') textarea');
+    };
+
     $scope.edit = function (id) {
         if($scope.edited > -1) {
-            $('.post-item:eq(' + $scope.edited + ') textarea')
-                .markItUpRemove();
+            $scope.getTextArea($scope.edited).markItUpRemove();
         }
 
         $scope.edited = id;
         if (id >= 0) {
-            $('.post-item:eq(' + id + ') textarea')
-                .markItUp(MarkItUpSettings);
+            $scope.getTextArea(id).markItUp(MarkItUpSettings);
             $scope.current = $scope.posts[id];
         } else {
             $scope.current = {};
@@ -854,7 +856,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
 
     $scope.update = function (id) {
         //Model value update
-        $scope.current.body = $('.post-item:eq(' + id + ') textarea').val();
+        $scope.current.body = $('.item:eq(' + id + ') textarea').val();
 
         $scope.current.$update(function () {
             $scope.edit(-1);
