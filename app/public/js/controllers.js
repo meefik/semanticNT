@@ -787,6 +787,10 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
         clearInterval(refreshingInterval);
     });
 
+    $scope.$on("$includeContentLoaded", function () {
+        $('#crArea').markItUp(MarkItUpSettings);
+    });
+
     $scope.loadNew = function (cb) {
         var path = 'api/courses/' + $routeParams.courseId +
             '/forum/' + $routeParams.topicId +
@@ -818,8 +822,15 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.edit = function (id) {
+        if($scope.edited > -1) {
+            $('.post-item:eq(' + $scope.edited + ') textarea')
+                .markItUpRemove();
+        }
+
         $scope.edited = id;
         if (id >= 0) {
+            $('.post-item:eq(' + id + ') textarea')
+                .markItUp(MarkItUpSettings);
             $scope.current = $scope.posts[id];
         } else {
             $scope.current = {};
@@ -827,6 +838,9 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.add = function () {
+        //Model value update
+        $scope.new.body = document.getElementById('crArea').value;
+
         var post = new Post($scope.new);
         post.$save({
             topicId: $routeParams.topicId
@@ -839,6 +853,9 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.update = function (id) {
+        //Model value update
+        $scope.current.body = $('.post-item:eq(' + id + ') textarea').val();
+
         $scope.current.$update(function () {
             $scope.edit(-1);
         });
@@ -869,6 +886,40 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
                 post.$unstar();
             }
         }
+    };
+
+    $scope.parseBody = function (body) {
+        var search = [
+            /\[b\](.*?)\[\/b\]/g,
+            /\[i\](.*?)\[\/i\]/g,
+            /\[u\](.*?)\[\/u\]/g,
+            /\[img\](.*?)\[\/img\]/g,
+            /\[url\="?(.*?)"?\](.*?)\[\/url\]/g,
+            /\[code]([\s\S]*?)\[\/code\]/g,
+            /\[quote]([\s\S]*?)\[\/quote\]/g,
+            /\[list\=(.*?)\]([\s\S]*?)\[\/list\]/gi,
+            /\[list\]([\s\S]*?)\[\/list\]/gi,
+            /\[\*\]\s?(.*?)\n/g
+        ];
+
+        var replace = [
+            '<strong>$1</strong>',
+            '<em>$1</em>',
+            '<u>$1</u>',
+            '<img src="$1" style="max-width: 400px;" alt="">',
+            '<a target="_blank" href="$1">$2</a>',
+            '<pre>$1</pre>',
+            '<blockquote>$1</blockquote>',
+            '<ol start="$1">$2</ol>',
+            '<ul>$1</ul>',
+            '<li>$1</li>'
+        ];
+
+        for (var i = 0; i < search.length; i++) {
+            body = body.replace(search[i], replace[i]);
+        }
+
+        return body;
     };
 }
 

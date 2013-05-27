@@ -46,6 +46,7 @@ exports.getTopics = function (req, res) {
     var offset = req.params.offset || 0;
 
     Topic.find({ courseid: req.params.courseId })
+        .sort({ date: 1 })
         .skip(offset)
         .exec(function (err, topics) {
             if (!err) {
@@ -144,6 +145,7 @@ exports.getPosts = function (req, res) {
     var offset = req.params.offset || 0;
 
     Post.find({ topic: req.params.topicId })
+        .sort({ date: 1 })
         .skip(offset)
         .exec(function (err, posts) {
             if (!err) {
