@@ -754,9 +754,14 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     };
 
     $scope.delete = function (id) {
-        $scope.topics[id].$remove(function () {
-            $scope.topics.splice(id, 1);
-        });
+        $('#removalModal').modal('show')
+            .find('.btn-danger')
+            .unbind('click.remove')
+            .bind('click.remove', function(e) {
+                $scope.topics[id].$remove(function () {
+                    $scope.topics.splice(id, 1);
+                });
+            });
     };
 
     $scope.view = function (id) {
@@ -864,9 +869,14 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.delete = function (id) {
-        $scope.posts[id].$remove(function () {
-            $scope.posts.splice(id, 1);
-        });
+        $('#removalModal').modal('show')
+            .find('.btn-danger')
+            .unbind('click.remove')
+            .bind('click.remove', function () {
+                $scope.posts[id].$remove(function () {
+                    $scope.posts.splice(id, 1);
+                });
+            });
     };
 
     $scope.isStarred = function (id) {

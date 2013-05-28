@@ -15,8 +15,8 @@
 
 <div ng-repeat="topic in topics | filter: search" class="item topic" fadey="500" ng-click="view($index)">
     <div ng-hide="isEditorEnabled($index)">
-        <div ng-show="isAuthor($index)" class="item-toolbar">
-            <div class="item-toolbar-addl">
+        <div class="item-toolbar">
+            <div class="item-toolbar-addl" ng-show="isAuthor($index)">
                 <a class="item-btn" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
                 <a class="item-btn" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
             </div>
@@ -31,8 +31,10 @@
     </div>
     <div ng-show="isEditorEnabled($index)">
         <div class="item-toolbar">
-            <a class="item-btn" ng-click="update($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
-            <a class="item-btn" ng-click="edit(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
+            <div class="item-toolbar-addl">
+                <a class="item-btn" ng-click="update($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="item-btn" ng-click="edit(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>
+            </div>
         </div>
         <div class="item-body">
             <input type="text" ng-model="current.title" stop-bubbling="click" placeholder="Название темы">
@@ -41,5 +43,19 @@
             <span class="item-info-author">{{topic.author}}</span>,
             <span class="item-info-date">{{topic.date | dateToText}}</span>
         </div>
+    </div>
+</div>
+
+<div id="removalModal" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>Удаление темы</h3>
+    </div>
+    <div class="modal-body">
+        <p>Вы действительно хотите удалить тему и все связанные с ней сообщения?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Отмена</button>
+        <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true">Удалить</button>
     </div>
 </div>
