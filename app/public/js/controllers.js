@@ -900,6 +900,13 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
         }
     };
 
+    $scope.reply = function (id) {
+        var post = $scope.posts[id];
+        $scope.new.body = '[quote=' + post.author + ']' + post.body + '[/quote]';
+        $("html, body").stop().animate({ scrollTop: 0 }, 500);
+        $scope.enableCreation();
+    };
+
     $scope.parseBody = function (body) {
         var search = [
             /\[b\](.*?)\[\/b\]/gi,
@@ -909,6 +916,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             /\[url\="?(.*?)"?\](.*?)\[\/url\]/gi,
             /\[code]([\s\S]*?)\[\/code\]/gi,
             /\[quote]([\s\S]*?)\[\/quote\]/gi,
+            /\[quote\=(.*?)\]([\s\S]*?)\[\/quote\]/gi,
             /\[list\=(.*?)\]([\s\S]*?)\[\/list\]/gi,
             /\[list\]([\s\S]*?)\[\/list\]/gi,
             /\[\*\]\s?(.*?)\n/gi
@@ -922,6 +930,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             '<a target="_blank" href="$1">$2</a>',
             '<pre>$1</pre>',
             '<blockquote>$1</blockquote>',
+            '<blockquote><i>$1 пишет:</i><br /><br />$2</blockquote>',
             '<ol start="$1">$2</ol>',
             '<ul>$1</ul>',
             '<li>$1</li>'

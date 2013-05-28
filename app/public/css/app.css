@@ -103,8 +103,8 @@ h1, h2, h3, h4, h5, h6 {
 
     .item-toolbar {
         height: 20px;
+        word-spacing: 5px;
     }
-
         .item-toolbar-addl {
             display: block;
             float: right;
@@ -116,7 +116,6 @@ h1, h2, h3, h4, h5, h6 {
         width: 100%;
         margin: 8px 0 10px 0;
     }
-
         .item-body h1, h2, h3, h4, h5, h6 {
             margin: 0;
         }
@@ -130,16 +129,14 @@ h1, h2, h3, h4, h5, h6 {
 
         color: #000;
     }
-
-        .item-btn:hover {
-            text-decoration: none;
-
-            color: #000;
-        }
-
         .item-btn * {
             vertical-align: middle;
         }
+    .item-btn:hover {
+         text-decoration: none;
+
+         color: #000;
+     }
 
 .item.topic {
     cursor: pointer;
