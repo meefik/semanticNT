@@ -757,7 +757,7 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
         $('#removalModal').modal('show')
             .find('.btn-danger')
             .unbind('click.remove')
-            .bind('click.remove', function(e) {
+            .bind('click.remove', function (e) {
                 $scope.topics[id].$remove(function () {
                     $scope.topics.splice(id, 1);
                 });
@@ -831,7 +831,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     };
 
     $scope.edit = function (id) {
-        if($scope.edited > -1) {
+        if ($scope.edited > -1) {
             $scope.getTextArea($scope.edited).markItUpRemove();
         }
 
@@ -902,16 +902,16 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
 
     $scope.parseBody = function (body) {
         var search = [
-            /\[b\](.*?)\[\/b\]/g,
-            /\[i\](.*?)\[\/i\]/g,
-            /\[u\](.*?)\[\/u\]/g,
-            /\[img\](.*?)\[\/img\]/g,
-            /\[url\="?(.*?)"?\](.*?)\[\/url\]/g,
-            /\[code]([\s\S]*?)\[\/code\]/g,
-            /\[quote]([\s\S]*?)\[\/quote\]/g,
+            /\[b\](.*?)\[\/b\]/gi,
+            /\[i\](.*?)\[\/i\]/gi,
+            /\[u\](.*?)\[\/u\]/gi,
+            /\[img\](.*?)\[\/img\]/gi,
+            /\[url\="?(.*?)"?\](.*?)\[\/url\]/gi,
+            /\[code]([\s\S]*?)\[\/code\]/gi,
+            /\[quote]([\s\S]*?)\[\/quote\]/gi,
             /\[list\=(.*?)\]([\s\S]*?)\[\/list\]/gi,
             /\[list\]([\s\S]*?)\[\/list\]/gi,
-            /\[\*\]\s?(.*?)\n/g
+            /\[\*\]\s?(.*?)\n/gi
         ];
 
         var replace = [
@@ -927,9 +927,13 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             '<li>$1</li>'
         ];
 
-        for (var i = 0; i < search.length; i++) {
-            body = body.replace(search[i], replace[i]);
-        }
+        var parsedBody;
+        do {
+            parsedBody = body;
+            for (var i = 0; i < search.length; i++) {
+                body = body.replace(search[i], replace[i]);
+            }
+        } while (body != parsedBody);
 
         return body;
     };
