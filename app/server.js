@@ -87,6 +87,11 @@ app.configure('production', function () {
     app.use(express.errorHandler());
 });
 
+//Handler of uncaught exceptions
+process.on('uncaughtException', function (err) {
+    console.error(err);
+});
+
 /**
  *  Routes
  */
@@ -136,16 +141,18 @@ app.del('/api/courses/:courseId/struct/:itemId', struct.remove);
 // Course forum
 app.get('/api/courses/:courseId/forum', forum.getTopics);
 app.get('/api/courses/:courseId/forum/offset/:offset', forum.getTopics);
+app.get('/api/courses/:courseId/forum/:topicId', forum.getTopicById);
 app.post('/api/courses/:courseId/forum', forum.addTopic);
 app.put('/api/courses/:courseId/forum/:topicId', forum.updateTopic);
 app.del('/api/courses/:courseId/forum/:topicId', forum.removeTopic);
-app.get('/api/courses/:courseId/forum/:topicId', forum.getPosts);
-app.get('/api/courses/:courseId/forum/:topicId/offset/:offset', forum.getPosts);
-app.post('/api/courses/:courseId/forum/:topicId', forum.addPost);
-app.put('/api/courses/:courseId/forum/:topicId/:postId', forum.updatePost);
-app.del('/api/courses/:courseId/forum/:topicId/:postId', forum.removePost);
-app.post('/api/courses/:courseId/forum/:topicId/:postId/star', forum.starPost);
-app.del('/api/courses/:courseId/forum/:topicId/:postId/star', forum.unstarPost);
+app.get('/api/courses/:courseId/forum/:topicId/posts', forum.getPosts);
+app.get('/api/courses/:courseId/forum/:topicId/posts/offset/:offset', forum.getPosts);
+app.get('/api/courses/:courseId/forum/:topicId/posts/:postId', forum.getPostById);
+app.post('/api/courses/:courseId/forum/:topicId/posts', forum.addPost);
+app.put('/api/courses/:courseId/forum/:topicId/posts/:postId', forum.updatePost);
+app.del('/api/courses/:courseId/forum/:topicId/posts/:postId', forum.removePost);
+app.post('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.starPost);
+app.del('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.unstarPost);
 
 /**
  * Return 404 error
