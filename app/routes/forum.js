@@ -19,7 +19,8 @@ var TopicSchema = new Schema({
     author: {type: String, required: true}
 });
 TopicSchema.pre('save', function (next) {
-    this.title = sanitize(this.title).entityEncode();
+    var decoded = sanitize(this.title).entityDecode();
+    this.title = sanitize(decoded).entityEncode();
     next();
 });
 
@@ -31,7 +32,8 @@ var PostSchema = new Schema({
     topic: { type: ObjectId, required: true }
 });
 PostSchema.pre('save', function (next) {
-    this.body = sanitize(this.body).entityEncode();
+    var decoded = sanitize(this.body).entityDecode();
+    this.body = sanitize(decoded).entityEncode();
     next();
 });
 
