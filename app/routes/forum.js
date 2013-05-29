@@ -60,6 +60,17 @@ exports.getTopics = function (req, res) {
         });
 };
 
+exports.getTopicById = function (req, res) {
+    Topic.findById(req.params.topicId, function(err, topic) {
+        if (!err) {
+            res.json(topic); // 200 OK + data
+        } else {
+            res.send(500); // 500 Internal Server Error
+            console.log(err);
+        }
+    });
+};
+
 exports.addTopic = function (req, res) {
     if (!req.user) {
         return res.send(401); // 401 Unauthorized
@@ -88,6 +99,9 @@ exports.updateTopic = function (req, res) {
 
     Topic.findById(req.params.topicId, function (err, topic) {
         if (!err) {
+            if(!topic) {
+                return res.send(400); //Bad request
+            }
             if (topic.author !== req.user) {
                 return res.send(403); // 401 Access forbidden
             }
@@ -117,6 +131,9 @@ exports.removeTopic = function (req, res) {
 
     Topic.findById(topicId, function (err, topic) {
         if (!err) {
+            if(!topic) {
+                return res.send(400); //Bad request
+            }
             if (topic.author !== req.user) {
                 return res.send(403);  // 401 Access forbidden
             }
@@ -159,24 +176,44 @@ exports.getPosts = function (req, res) {
         });
 };
 
-exports.addPost = function (req, res) {
-    if (!req.user) {
-        return res.send(401); // 401 Unauthorized
-    }
-
-    var post = new Post({
-        body: req.body.body,
-        topic: req.params.topicId,
-        author: req.user
-    });
-
-    post.save(function (err, post) {
+exports.getPostById = function (req, res) {
+    Post.findById(req.params.postId, function(err, post) {
         if (!err) {
             res.json(post); // 200 OK + data
         } else {
             res.send(500); // 500 Internal Server Error
             console.log(err);
         }
+    });
+};
+
+exports.addPost = function (req, res) {
+    if (!req.user) {
+        return res.send(401); // 401 Unauthorized
+    }
+
+    Topic.findById(req.params.topicId, function(err, topic) {
+        if(err) {
+            return res.send(500); // Internal server error
+        }
+        if(!topic) {
+            return res.send(400); // Bad request
+        }
+
+        var post = new Post({
+            body: req.body.body,
+            topic: req.params.topicId,
+            author: req.user
+        });
+
+        post.save(function (err, post) {
+            if (!err) {
+                res.json(post); // 200 OK + data
+            } else {
+                res.send(500); // 500 Internal Server Error
+                console.log(err);
+            }
+        });
     });
 };
 
@@ -187,6 +224,9 @@ exports.updatePost = function (req, res) {
 
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
+            if(!post) {
+                return res.send(400); //Bad request
+            }
             if (post.author !== req.user) {
                 return res.send(403); // 401 Access forbidden
             }
@@ -214,6 +254,9 @@ exports.removePost = function (req, res) {
 
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
+            if(!post) {
+                return res.send(400); //Bad request
+            }
             if (post.author !== req.user) {
                 return res.send(403); // 401 Access forbidden
             }
@@ -240,7 +283,8 @@ exports.starPost = function (req, res) {
 
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
-            if (req.user !== post.author &&
+            if (post &&
+                req.user !== post.author &&
                 post.stars.indexOf(req.user) === -1) {
 
                 post.stars.push(req.user);
@@ -253,7 +297,7 @@ exports.starPost = function (req, res) {
                     }
                 });
             } else {
-                res.send(400); //Already starred or not allowed
+                res.send(400); //Already starred, not allowed or not found
             }
         } else {
             res.send(500); // 500 Internal Server Error
@@ -269,8 +313,9 @@ exports.unstarPost = function (req, res) {
 
     Post.findById(req.params.postId, function (err, post) {
         if (!err) {
-            var index = post.stars.indexOf(req.user);
-            if (index !== -1) {
+            var index;
+            if (post &&
+                (index = post.stars.indexOf(req.user)) !== -1) {
                 post.stars.splice(index, 1);
                 post.save(function (err) {
                     if (!err) {
@@ -281,7 +326,7 @@ exports.unstarPost = function (req, res) {
                     }
                 });
             } else {
-                res.send(400); //Not starred
+                res.send(400); //Not starred or not found
             }
         } else {
             res.send(500); // 500 Internal Server Error

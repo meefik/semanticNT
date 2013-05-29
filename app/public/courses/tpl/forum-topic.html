@@ -1,5 +1,6 @@
 <button class="btn" ng-click="back()"><i class="icon-arrow-left"></i>&nbsp;Назад</button>
-<br><br>
+<h3>{{topic.title}}</h3>
+<br>
 
 <div ng-hide="!isAuth() || creationEnabled">
     <a class="btn" ng-click="enableCreation()">Разместить сообщение</a>
@@ -13,18 +14,19 @@
     </div>
 </div>
 <br>
+
 <input type="text" ng-model="search" placeholder="Поиск">
 <br><br>
 
 <div ng-repeat="post in posts | filter: search" class="item" fadey="500" id="{{post._id}}" repeat-done="processHash()">
-    <div ng-hide="isEditorEnabled($index)">
+    <div ng-hide="isEditorEnabled(post)">
         <div class="item-toolbar">
-            <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
-            <a class="item-btn" ng-show="isAuth($index)" ng-click="reply($index)" title="ответить"><i class="icon-comment"></i></a>
-            <a class="item-btn" ng-click="changeHash($index)"><span>#</span></a>
-            <div ng-show="isAuthor($index)" class="item-toolbar-addl">
-                <a class="item-btn" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
-                <a class="item-btn" ng-click="delete($index)" title="удалить"><i class="icon-trash"></i></a>
+            <a class="item-btn" ng-click="toggleStar(post)" title="отметить"><i ng-class="isStarred(post) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
+            <a class="item-btn" ng-show="isAuth(post)" ng-click="reply(post)" title="ответить"><i class="icon-comment"></i></a>
+            <a class="item-btn" ng-click="changeHash(post)"><span>#</span></a>
+            <div ng-show="isAuthor(post)" class="item-toolbar-addl">
+                <a class="item-btn" ng-click="edit(post)" title="править"><i class="icon-pencil"></i></a>
+                <a class="item-btn" ng-click="delete(post)" title="удалить"><i class="icon-trash"></i></a>
             </div>
         </div>
         <div class="item-body" ng-bind-html-unsafe="parseBody(post.body)"></div>
@@ -33,14 +35,14 @@
             <span class="item-info-date">{{post.date | dateToText}}</span>
         </div>
     </div>
-    <div ng-show="isEditorEnabled($index)">
+    <div ng-show="isEditorEnabled(post)">
         <div class="item-toolbar">
-            <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
-            <a class="item-btn" ng-click="reply($index)" title="ответить"><i class="icon-comment"></i></a>
-            <a class="item-btn" ng-click="changeHash($index)"><span>#</span></a>
+            <a class="item-btn" ng-click="toggleStar(post)" title="отметить"><i ng-class="isStarred(post) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
+            <a class="item-btn" ng-click="reply(post)" title="ответить"><i class="icon-comment"></i></a>
+            <a class="item-btn" ng-click="changeHash(post)"><span>#</span></a>
             <div class="item-toolbar-addl">
-                <a class="item-btn" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
-                <a class="item-btn" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>
+                <a class="item-btn" ng-click="update(post)" title="сохранить"><i class="icon-download-alt"></i></a>
+                <a class="item-btn" ng-click="edit(null)" title="закрыть"><i class="icon-remove"></i></a>
             </div>
         </div>
         <div class="item-body">

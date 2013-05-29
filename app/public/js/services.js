@@ -27,7 +27,7 @@ angular.module('app.services', ['ngResource'])
         });
     })
     .factory('Post', function ($resource) {
-        return $resource('api/courses/:courseId/forum/:topicId/:postId/:additional', {
+        return $resource('api/courses/:courseId/forum/:topicId/posts/:postId/:additional', {
             courseId: '_',
             topicId: '@topic',
             postId: '@_id'
