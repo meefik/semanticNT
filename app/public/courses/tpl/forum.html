@@ -13,9 +13,10 @@
 <input type="text" ng-model="search" placeholder="Поиск">
 <br><br>
 
-<div ng-repeat="topic in topics | filter: search" class="item topic" fadey="500" ng-click="view($index)">
+<div ng-repeat="topic in topics | filter: search" class="item topic" id="{{topic._id}}" fadey="500" ng-click="view($index)" repeat-done="processHash()">
     <div ng-hide="isEditorEnabled($index)">
         <div class="item-toolbar">
+            <a class="item-btn" ng-click="changeHash($index)" stop-bubbling="click"><span>#</span></a>
             <div class="item-toolbar-addl" ng-show="isAuthor($index)">
                 <a class="item-btn" ng-click="edit($index)" stop-bubbling="click" title="править"><i class="icon-pencil"></i></a>
                 <a class="item-btn" ng-click="delete($index)" stop-bubbling="click" title="удалить"><i class="icon-trash"></i></a>
@@ -31,6 +32,7 @@
     </div>
     <div ng-show="isEditorEnabled($index)">
         <div class="item-toolbar">
+            <a class="item-btn" ng-click="changeHash($index)" stop-bubbling="click"><span>#</span></a>
             <div class="item-toolbar-addl">
                 <a class="item-btn" ng-click="update($index)" stop-bubbling="click" title="сохранить"><i class="icon-download-alt"></i></a>
                 <a class="item-btn" ng-click="edit(-1)" stop-bubbling="click" title="закрыть"><i class="icon-remove"></i></a>

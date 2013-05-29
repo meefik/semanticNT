@@ -13,11 +13,12 @@
 <input type="text" ng-model="search" placeholder="Поиск">
 <br><br>
 
-<div ng-repeat="post in posts | filter: search" class="item" fadey="500">
+<div ng-repeat="post in posts | filter: search" class="item" fadey="500" id="{{post._id}}" repeat-done="processHash()">
     <div ng-hide="isEditorEnabled($index)">
         <div class="item-toolbar">
             <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
             <a class="item-btn" ng-click="reply($index)" title="ответить"><i class="icon-comment"></i></a>
+            <a class="item-btn" ng-click="changeHash($index)"><span>#</span></a>
             <div ng-show="isAuthor($index)" class="item-toolbar-addl">
                 <a class="item-btn" ng-click="edit($index)" title="править"><i class="icon-pencil"></i></a>
                 <a class="item-btn" ng-click="delete($index)" title="удалить"><i class="icon-trash"></i></a>
@@ -32,6 +33,8 @@
     <div ng-show="isEditorEnabled($index)">
         <div class="item-toolbar">
             <a class="item-btn" ng-click="toggleStar($index)" title="отметить"><i ng-class="isStarred($index) && 'icon-star' || 'icon-star-empty'"></i><span>{{post.stars.length}}</span></a>
+            <a class="item-btn" ng-click="reply($index)" title="ответить"><i class="icon-comment"></i></a>
+            <a class="item-btn" ng-click="changeHash($index)"><span>#</span></a>
             <div class="item-toolbar-addl">
                 <a class="item-btn" ng-click="update($index)" title="сохранить"><i class="icon-download-alt"></i></a>
                 <a class="item-btn" ng-click="edit(-1)" title="закрыть"><i class="icon-remove"></i></a>

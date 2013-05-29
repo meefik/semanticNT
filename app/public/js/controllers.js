@@ -680,9 +680,10 @@ function ExamCtrl($scope, $routeParams, Courses) {
     }
 }
 
-function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieStore, $http, Topic) {
+function ForumTopicsCtrl($scope, $routeParams, $location, $anchorScroll, $cookieStore, $http, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
+    $scope.hashProcessed = false;
     $scope.current = {};
     $scope.new = {};
     $scope.edited = -1;
@@ -698,6 +699,7 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     }, 180000);
 
     $scope.$on("$destroy", function () {
+        $location.hash('');
         clearInterval(refreshingInterval);
     });
 
@@ -767,11 +769,28 @@ function ForumTopicsCtrl($rootScope, $scope, $routeParams, $location, $cookieSto
     $scope.view = function (id) {
         $location.path($location.path() + "/" + $scope.topics[id]._id);
     };
+
+    $scope.changeHash = function (id) {
+        $location.hash($scope.topics[id]._id);
+    };
+
+    $scope.processHash = function () {
+        if($scope.hashProcessed) {
+            return;
+        }
+        $scope.hashProcessed = true;
+
+        setTimeout(function () {
+            $anchorScroll();
+        }, 1);
+        $anchorScroll();
+    };
 }
 
-function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
+function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, $location, $anchorScroll, Post) {
     $scope.template = 'courses/tpl/forum-topic.html';
 
+    $scope.hashProcessed = false;
     $scope.edited = -1;
     $scope.new = {};
     $scope.current = {};
@@ -789,6 +808,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
     }, 180000);
 
     $scope.$on("$destroy", function () {
+        $location.hash('');
         clearInterval(refreshingInterval);
     });
 
@@ -907,6 +927,22 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
         $scope.enableCreation();
     };
 
+    $scope.changeHash = function (id) {
+        $location.hash($scope.posts[id]._id);
+    };
+
+    $scope.processHash = function () {
+        if($scope.hashProcessed) {
+            return;
+        }
+        $scope.hashProcessed = true;
+
+        setTimeout(function () {
+            $anchorScroll();
+        }, 1);
+        $anchorScroll();
+    };
+
     $scope.parseBody = function (body) {
         var search = [
             /\[b\](.*?)\[\/b\]/gi,
@@ -930,7 +966,7 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, Post) {
             '<a target="_blank" href="$1">$2</a>',
             '<pre>$1</pre>',
             '<blockquote>$1</blockquote>',
-            '<blockquote><i>$1 пишет:</i><br /><br />$2</blockquote>',
+            '<blockquote><i>$1 написал:</i><br /><br />$2</blockquote>',
             '<ol start="$1">$2</ol>',
             '<ul>$1</ul>',
             '<li>$1</li>'
