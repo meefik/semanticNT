@@ -943,6 +943,12 @@ function ForumPostsCtrl($scope, $routeParams, $cookieStore, $http, $location, $a
         $anchorScroll();
     };
 
+    $scope.back = function () {
+        var path = $location.path(),
+            to = path.lastIndexOf('/');
+        $location.path(path.substring(0, to));
+    };
+
     $scope.parseBody = function (body) {
         var search = [
             /\[b\](.*?)\[\/b\]/gi,
