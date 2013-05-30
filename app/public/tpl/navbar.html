@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Navigation Bar -->
 <div class="navbar navbar-static-top">
     <div class="navbar-inner">
@@ -168,3 +169,175 @@
     </form>
     
 </div>
+=======
+<!-- Navigation Bar -->
+<div class="navbar navbar-static-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#"><img src="img/logo.png" style="margin-top: -18px; margin-bottom: -15px"><span style="margin-left: 20px">Открытое онлайн-обучение</span></a>
+            <div class="nav-collapse collapse" ng-hide="isAuth()">
+                <ul class="nav pull-right">
+                    <li><a href="#/about">О проекте</a></li>
+                    <li><a href="#/courses">Каталог курсов</a></li>
+                    <li><a href="#login" data-toggle="modal">Вход</a></li>
+                </ul>
+            </div>
+            <div class="nav-collapse collapse" ng-show="isAuth()">
+                <ul class="nav pull-right">
+                    <li><a href="#/about">О проекте</a></li>
+                    <li><a href="#/courses">Каталог курсов</a></li>
+                    <li><a href="#/mycourses">Мои курсы</a></li>
+                    <li><a href="#/profile">Профиль</a></li>
+                    <li><a href="#/" ng-click="logout()">Выход</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Auth Modal -->
+<div style="position: absolute">
+    
+    <!-- Sign In -->
+    <form class="form-horizontal" name="loginForm" ng-submit="submit()" ng-controller="LoginFormCtrl" novalidate>
+        <div id="login" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Авторизация</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-error" ng-show="result == false">
+                    Доступ запрещен! Проверьте правильность введенных данных.
+                </div>
+                <div class="control-group" ng-class="{error: loginForm.inputLogin.$invalid}">
+                    <label class="control-label" for="inputLogin">Логин:</label>
+                    <div class="controls">
+                        <input id="inputLogin" ng-model="user.login" type="text" name="inputLogin" placeholder="уникальный идентификатор" login required>
+                    </div>
+                </div>
+                <div class="control-group" ng-class="{error: loginForm.inputPassword.$invalid}">
+                    <label class="control-label" for="inputPassword">Пароль:</label>
+                    <div class="controls">
+                        <input id="inputPassword" ng-model="user.passwd" ng-minlength="4" ng-maxlength="32" type="password" name="inputPassword" placeholder="******" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float: left; text-align: left; margin-top: 4px">
+                    <a href="#signup" data-toggle="modal" ng-click="reset()">Нет учетной записи</a> или <a href="#forgot" data-toggle="modal" ng-click="reset()">забыли пароль</a>?
+                </div>
+                <div style="float: right">
+                    <button id="submit" ng-disabled="loginForm.$invalid" type="submit" class="btn btn-primary">Войти</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Sign Up -->
+    <form class="form-horizontal" name="signupForm" ng-submit="submit()" ng-controller="SignupFormCtrl" novalidate>
+        <div id="signup" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Регистрация</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-error" ng-show="result == false">
+                    Регистрация временно недоступна. Повторите попытку позже.
+                </div>
+                <div class="control-group" ng-class="{error: signupForm.inputLogin.$invalid}">
+                    <label class="control-label" for="inputLogin">Логин:</label>
+                    <div class="controls">
+                        <input id="inputLogin" ng-model="user.login" type="text" name="inputLogin" placeholder="уникальный идентификатор" login required>
+                    </div>
+                </div>
+                <div class="control-group" ng-class="{error: signupForm.inputEmail.$invalid}">
+                    <label class="control-label" for="inputEmail">Электронная почта:</label>
+                    <div class="controls">
+                        <input  id="inputEmail" ng-model="user.email" ng-minlength="4" ng-maxlength="32" type="email" name="inputEmail" placeholder="yourname@domain.com" required>
+                    </div>
+                </div>
+                <div class="control-group" ng-class="{error: signupForm.inputPassword.$invalid}">
+                    <label class="control-label" for="inputPassword">Пароль:</label>
+                    <div class="controls">
+                        <input id="inputPassword" ng-model="user.passwd" ng-minlength="4" ng-maxlength="32" type="password" name="inputPassword" placeholder="******" required>
+                    </div>
+                </div>
+                <div class="control-group" ng-class="{error: signupForm.inputRePassword.$invalid}">
+                    <label class="control-label" for="inputRePassword">Подтверждение пароля:</label>
+                    <div class="controls">
+                        <input id="inputRePassword" ng-model="user.repasswd" type="password" name="inputRePassword" placeholder="******" repeat-password="inputPassword" required>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputFullname">Полное имя:</label>
+                    <div class="controls">
+                        <input id="inputFullname" ng-model="user.fullname" type="text" name="inputFullname" placeholder="указывается в сертификате">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input ng-model="user.terms" type="checkbox" required>Я принимаю <a href="#/terms" target="_blank">условия обслуживания</a>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float: left; text-align: left; margin-top: 4px">
+                    Уже есть учетная запись? <a href="#login" data-toggle="modal" ng-click="reset()">Авторизоваться</a>.
+                </div>
+                <div style="float: right">
+                    <button id="submit" ng-disabled="signupForm.$invalid" type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Reset password -->
+    <form class="form-horizontal" name="forgotForm" ng-submit="submit()" ng-controller="ForgotFormCtrl" novalidate>
+        <div id="forgot" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Сбросить пароль</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-error" ng-show="getStatus() == 1">
+                    Почтовый адрес <b>{{email}}</b> не зарегистрирован.
+                </div>
+                <div class="alert alert-info" ng-show="getStatus() == 2">
+                    Новый пароль и ключ активации отправлены на адрес: <b>{{email}}</b>
+                </div>
+                <div class="alert alert-error" ng-show="getStatus() == 3">
+                    Введен неверный ключ активации.
+                </div>
+                <div class="control-group" ng-show="getStatus() > 1">
+                    <label class="control-label" for="inputEmail">Ключ активации:</label>
+                    <div class="controls">
+                        <input id="inputKey" ng-model="user.key" type="text" name="inputKey" ng-required="getStatus() > 1">
+                    </div>
+                </div>
+                <div class="control-group" ng-class="{error: forgotForm.inputEmail.$invalid}" ng-show="getStatus() < 2">
+                    <label class="control-label" for="inputEmail">Электронная почта:</label>
+                    <div class="controls">
+                        <input id="inputEmail" ng-model="user.email" type="email" name="inputEmail" placeholder="yourname@domain.com" ng-required="getStatus() < 2">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float: left; text-align: left; margin-top: 4px">
+                    &#171; <a data-toggle="modal" ng-click="reset()">Вернуться назад</a>.
+                </div>
+                <div style="float: right">
+                    <button id="submit" ng-disabled="forgotForm.$invalid" type="submit" class="btn btn-primary">Выполнить</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    
+</div>
+>>>>>>> master

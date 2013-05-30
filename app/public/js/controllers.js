@@ -31,10 +31,17 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
 
     $rootScope.logout = function () {
         $http.get('api/logout').
+<<<<<<< HEAD
             success(function () {
                 $rootScope.delProfile();
                 //$location.path("/");
             });
+=======
+                success(function() {
+            $rootScope.delProfile();
+            $location.path("/");
+        });
+>>>>>>> master
     };
 
     $rootScope.DateDiff = {
@@ -670,6 +677,7 @@ function ExamCtrl($scope, $routeParams, Courses) {
         $scope.currentPage = id;
         $scope.test = $scope.exam[id];
     };
+<<<<<<< HEAD
 
     $scope.add = function () {
 
@@ -998,4 +1006,15 @@ function ProgressCtrl($scope) {
 
 function OntologyCtrl($scope) {
     $scope.template = 'courses/tpl/ontology.html';
+=======
+    
+    $scope.add = function() {
+        
+    };
+    
+    $scope.edit = function() {
+        
+    }
+    
+>>>>>>> master
 }
