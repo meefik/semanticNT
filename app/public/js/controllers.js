@@ -31,17 +31,10 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
 
     $rootScope.logout = function () {
         $http.get('api/logout').
-<<<<<<< HEAD
-            success(function () {
-                $rootScope.delProfile();
-                //$location.path("/");
-            });
-=======
                 success(function() {
             $rootScope.delProfile();
             $location.path("/");
         });
->>>>>>> master
     };
 
     $rootScope.DateDiff = {
