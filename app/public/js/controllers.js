@@ -670,15 +670,7 @@ function ExamCtrl($scope, $routeParams, Courses) {
         $scope.currentPage = id;
         $scope.test = $scope.exam[id];
     };
-<<<<<<< HEAD
 
-    $scope.add = function () {
-
-    };
-
-    $scope.edit = function () {
-
-    }
 }
 
 function ForumTopicsCtrl($scope, $routeParams, $location, $anchorScroll, $http, Topic) {
@@ -999,15 +991,5 @@ function ProgressCtrl($scope) {
 
 function OntologyCtrl($scope) {
     $scope.template = 'courses/tpl/ontology.html';
-=======
-    
-    $scope.add = function() {
-        
-    };
-    
-    $scope.edit = function() {
-        
-    }
-    
->>>>>>> master
+
 }
