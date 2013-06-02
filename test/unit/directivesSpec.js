@@ -2,7 +2,7 @@
 
 /* jasmine specs for directives go here */
 
-describe('directives', function() {
+/*describe('directives', function() {
   beforeEach(module('myApp.directives'));
 
   describe('app-version', function() {
@@ -16,4 +16,4 @@ describe('directives', function() {
       });
     });
   });
-});
+});*/

@@ -31,10 +31,10 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
 
     $rootScope.logout = function () {
         $http.get('api/logout').
-                success(function() {
-            $rootScope.delProfile();
-            $location.path("/");
-        });
+            success(function () {
+                $rootScope.delProfile();
+                //$location.path("/");
+            });
     };
 
     $rootScope.DateDiff = {
@@ -671,11 +671,19 @@ function ExamCtrl($scope, $routeParams, Courses) {
         $scope.test = $scope.exam[id];
     };
 
+    $scope.add = function () {
+
+    };
+
+    $scope.edit = function () {
+
+    }
 }
 
 function ForumTopicsCtrl($scope, $routeParams, $location, $anchorScroll, $http, Topic) {
     $scope.template = 'courses/tpl/forum.html';
 
+    $scope.creationEnabled = false;
     $scope.hashProcessed = false;
     $scope.current = {};
     $scope.new = {};
@@ -703,7 +711,10 @@ function ForumTopicsCtrl($scope, $routeParams, $location, $anchorScroll, $http, 
             for (var i = 0, len = data.length; i < len; i++) {
                 $scope.topics.unshift(new Topic(data[i]));
             }
-            cb();
+
+            if(typeof cb == 'function') {
+                cb();
+            }
         });
     };
 
@@ -784,12 +795,12 @@ function ForumTopicsCtrl($scope, $routeParams, $location, $anchorScroll, $http, 
 function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, Post, Topic) {
     $scope.template = 'courses/tpl/forum-topic.html';
 
+    $scope.creationEnabled = false;
     $scope.hashProcessed = false;
     $scope.edited = null;
     $scope.new = {};
     $scope.current = {};
     $scope.posts = Post.query({
-        courseId: $routeParams.courseId,
         topicId: $routeParams.topicId
     });
     $scope.topic = Topic.get({
@@ -800,7 +811,6 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
     //refresh every 3 minutes
     var refreshingInterval = setInterval(function () {
         $scope.posts = Post.query({
-            courseId: $routeParams.courseId,
             topicId: $routeParams.topicId
         });
     }, 180000);
@@ -815,14 +825,16 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
     });
 
     $scope.loadNew = function (cb) {
-        var path = 'api/courses/' + $routeParams.courseId +
-            '/forum/' + $routeParams.topicId +
+        var path = 'api/courses/_/forum/' + $routeParams.topicId +
             '/posts/offset/' + $scope.posts.length;
         $http.get(path).success(function (data) {
             for (var i = 0, len = data.length; i < len; i++) {
                 $scope.posts.push(new Post(data[i]));
             }
-            cb();
+
+            if(typeof cb == 'function') {
+                cb();
+            }
         });
     };
 
@@ -864,7 +876,7 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
 
     $scope.add = function () {
         //Model value update
-        $scope.new.body = document.getElementById('crArea').value;
+        $scope.new.body = $('#crArea').val();
 
         var post = new Post($scope.new);
         post.$save({
@@ -907,7 +919,7 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
             return;
         }
 
-        if (item.author !== $cookieStore.get('userid')) {
+        if (!$scope.isAuthor(item)) {
             if (!$scope.isStarred(item)) {
                 item.$star();
             } else {
@@ -960,14 +972,14 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
         ];
 
         var replace = [
-            '<strong>$1</strong>',
-            '<em>$1</em>',
+            '<b>$1</b>',
+            '<i>$1</i>',
             '<u>$1</u>',
             '<img src="$1" style="max-width: 400px;" alt="">',
             '<a target="_blank" href="$1">$2</a>',
             '<pre>$1</pre>',
             '<blockquote>$1</blockquote>',
-            '<blockquote><i>$1 написал:</i><br /><br />$2</blockquote>',
+            '<blockquote><i>$1 написал:</i><br><br>$2</blockquote>',
             '<ol start="$1">$2</ol>',
             '<ul>$1</ul>',
             '<li>$1</li>'
@@ -991,5 +1003,4 @@ function ProgressCtrl($scope) {
 
 function OntologyCtrl($scope) {
     $scope.template = 'courses/tpl/ontology.html';
-
 }

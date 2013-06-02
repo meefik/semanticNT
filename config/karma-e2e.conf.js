@@ -8,13 +8,9 @@ files = [
 
 autoWatch = false;
 
-browsers = ['Chrome'];
+browsers = ['Firefox'];
 
 singleRun = true;
-
-proxies = {
-  '/': 'http://localhost:8000/'
-};
 
 junitReporter = {
   outputFile: 'test_out/e2e.xml',
