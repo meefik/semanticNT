@@ -23,7 +23,7 @@ var app = module.exports = express.createServer();
  */
 
 var SERVER_PORT = 3000;
-var dbUrl = 'mongodb://192.168.4.41:27017/openitmo';
+var dbUrl = 'mongodb://localhost:27017/openitmo';
 //var dbUrl = 'mongodb://localhost:27017/openitmo';
 
 app.configure(function () {

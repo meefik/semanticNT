@@ -1004,3 +1004,9 @@ function ProgressCtrl($scope) {
 function OntologyCtrl($scope) {
     $scope.template = 'courses/tpl/ontology.html';
 }
+
+function VideoCtrl($scope, $routeParams){
+    $scope.template = 'courses/tpl/video.html';
+    $routeParams.videoId;
+
+}
