@@ -1007,6 +1007,9 @@ function OntologyCtrl($scope) {
 
 function VideoCtrl($scope, $routeParams){
     $scope.template = 'courses/tpl/video.html';
-    $routeParams.videoId;
+    $scope.videoId = $routeParams.videoId;
+
+    $scope.path = 'courses/' + $routeParams.courseId + '/video/' + $scope.videoId + ".json";
+    $scope.frameSrc = "video/videoCnt.html";
 
 }

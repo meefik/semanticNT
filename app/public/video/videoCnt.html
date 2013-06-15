@@ -1,0 +1,72 @@
+<html>
+<head><title>Video</title>
+    <link href="/video/video.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<script type="text/javascript">
+    //Объект с плеером
+    var ytapiplayer;
+
+    //Секунда, на которой паузнули видео
+    var sec = 0;
+
+    //Объект с вопросами
+    var quiz;
+
+    var videoId;
+
+    var old = 0;
+
+    var timer;
+
+    var curQuest;
+</script>
+<script type="text/javascript" src="/video/swfobject/swfobject.js"></script>
+<script type="text/javascript" src="/video/video.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.js"></script>
+
+<script type="text/javascript">
+
+</script>
+<div id="player">
+    <div id="win">
+        <div id="ytapiplayer">
+            You need Flash player 8+ and JavaScript enabled to view this video.
+        </div>
+    </div>
+    <div id="quiz">
+        <div id="quiz-cnt">
+
+            <div id="quiz-top">
+                <div id="question"></div>
+                <div id="variants"></div>
+            </div>
+
+            <div id = "message" class="">&nbsp;</div>
+            <div id="quiz-ctrl">
+                <button id="submit" class="btn btn-primary" onclick="checkQuiz();">Submit</button>
+                <button id="skip" class="btn" onclick="hideQuiz();">Skip</button>
+                <button id="continue" class="btn btn-primary" style="display: none" onclick="hideQuiz();">Continue</button>
+            </div>
+        </div>
+
+    </div>
+    <div id="controls">
+        <div class="btn-group">
+            <button id="play" class="btn" onclick="play(); ">Play</button>
+            <button id="pause" class="btn" onclick="pause(); ">Pause</button>
+        </div>
+        <span id="time"></span> | <span id="totalTime"></span>
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    init();
+</script>
+
+</body>
+</html>
