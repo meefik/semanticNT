@@ -19,6 +19,21 @@ function init(){
             quiz = eval(h);
             videoId = quiz[0].ytId;
 
+            var lang = quiz[0].languages;
+
+            for (var i = 0; i < lang.length; i++){
+                var curLang = lang[i];
+
+                $.ajax(({
+                    url : "http://video.google.com/timedtext?lang=" + curLang + "&v=" + videoId,
+                    type: "GET",
+                    dataType : "html",
+                    success : function(h){
+                        subtitles.push({"lang" : curLang, "content" : parseSubtitles(h)});
+                    }
+                }))
+            }
+
         }
     });
 
@@ -185,4 +200,21 @@ function checkQuiz(){
         $("#message").removeClass("alert-success");
         $("#message").addClass("alert-error");
     }
+}
+
+function parseSubtitles(xml){
+    var subtls = [];
+
+    $(xml).find("text").each(function(){
+        var one = {
+            "start" : $(this).attr("start"),
+            "dur" : $(this).attr("dur"),
+            "text" : $(this).text()
+
+        }
+
+        subtls.push(one);
+
+    });
+    return subtls;
 }
