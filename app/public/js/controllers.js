@@ -377,8 +377,22 @@ function NewsCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function LecturesCtrl($scope) {
+function LecturesCtrl($scope, $routeParams, $http) {
     $scope.template = 'courses/tpl/lectures.html';
+
+    var courseId = $routeParams.courseId;
+    $scope.courseId = courseId;
+
+    $http(
+        {
+            "method": "GET",
+            "url" : "courses/" + courseId + "/json/lectures.json"
+        }
+    ).success(function(data, status){
+            $scope.content = data.content;
+        });
+
+    //$scope.content = [{"id" : 1}, {"id": 2}];
 }
 
 function WorkCtrl($scope) {
@@ -1003,4 +1017,25 @@ function ProgressCtrl($scope) {
 
 function OntologyCtrl($scope) {
     $scope.template = 'courses/tpl/ontology.html';
+}
+
+function VideoCtrl($scope, $routeParams, $http){
+    $scope.template = 'courses/tpl/video.html';
+    $scope.videoId = $routeParams.videoId;
+
+    var courseId = $routeParams.courseId;
+    $scope.courseId = courseId;
+
+    $http(
+        {
+            "method": "GET",
+            "url" : "courses/" + courseId + "/video/" + $scope.videoId +".json"
+        }
+    ).success(function(data, status){
+            $scope.name = data[0].name;
+        });
+
+    $scope.path = 'courses/' + $routeParams.courseId + '/video/' + $scope.videoId + ".json";
+    $scope.frameSrc = "video/videoCnt.html";
+
 }
