@@ -22,6 +22,12 @@ function init(){
             var lang = quiz[0].languages;
 
             numOfLang = lang.length;
+            $("#listLang").html("<li><a style='cursor: hand;' onclick='hideSubtitles();'>Turn off</a></li><li class='divider'></li>");
+
+            for (var i = 0; i < numOfLang; i++){
+                $("#listLang").html($("#listLang").html() + "" +
+                    "<li><a style='cursor: hand;' onclick=\"curSubtitlesLang = \'" + lang[i] + "\'; showSubtitles();\">" + lang[i] + "</a></li>");
+            }
 
             for (var i = 0; i < lang.length; i++){
                 var curLang = lang[i];
@@ -31,7 +37,7 @@ function init(){
                     type: "GET",
                     dataType : "html",
                     success : function(h){
-                        subtitles.push({"lang" : curLang, "content" : parseSubtitles(h)});
+                        subtitles.push({"lang" : this.url.split("lang=")[1].split("&v=")[0], "content" : parseSubtitles(h)});
                     }
                 }))
             }

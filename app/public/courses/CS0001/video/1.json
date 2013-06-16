@@ -1,7 +1,7 @@
 [{
     "ytId" : "ylLzyHk54Z0",
     "name" : "Лекция 1",
-    "languages" : ["en"],
+    "languages" : ["en", "fr"],
     "questions" : [
         {
             "question" : "How are you?",
