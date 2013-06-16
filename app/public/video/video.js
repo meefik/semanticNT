@@ -21,6 +21,8 @@ function init(){
 
             var lang = quiz[0].languages;
 
+            numOfLang = lang.length;
+
             for (var i = 0; i < lang.length; i++){
                 var curLang = lang[i];
 
@@ -41,7 +43,8 @@ function init(){
 
 function onYouTubePlayerReady(playerId) {
     ytapiplayer = document.getElementById("ytapiplayer");
-    ytapiplayer.cueVideoById(videoId);
+    ytapiplayer.loadVideoById(videoId);
+    ytapiplayer.pauseVideo();
 
     //После возобновления проигрывания
     if (sec != 0){
@@ -53,7 +56,7 @@ function onYouTubePlayerReady(playerId) {
     ytapiplayer.addEventListener("onStateChange", "onStateChange");
 
 
-    ytapiplayer.getOptions("cc");
+    //ytapiplayer.getOptions("cc");
     //checkSeconds();
 }
 
@@ -168,6 +171,32 @@ function checkSeconds(){
         }
     }
 
+    //Крутим субтитры
+    if (subtitlesOn){
+        var childs = $("#subtls")[0].children;
+
+        for (var i = 0; i < childs.length; i++){
+            childs[i].style.backgroundColor = "ffffff";
+        }
+
+
+        for (var i = 0; i < childs.length; i++){
+
+            var start = parseFloat(childs[i].id.substr(3));
+            var dur = parseFloat(childs[i].lang);
+
+            if ((cur > start) && (cur < (start + dur))){
+                childs[i].style.backgroundColor = "aaaaaa";
+
+                var offSet = childs[i].offsetTop;
+
+                if ((offSet - 200) > 0){
+                    $("#subtls").scrollTop(offSet - 200);
+                }
+            }
+        }
+    }
+
 }
 
 function checkQuiz(){
@@ -216,5 +245,34 @@ function parseSubtitles(xml){
         subtls.push(one);
 
     });
+
     return subtls;
+}
+
+function showSubtitles(){
+    subtitlesOn = true;
+
+    var mas;
+    for (var i = 0; i < subtitles.length; i++){
+        if (subtitles[i].lang === curSubtitlesLang){
+            mas = subtitles[i].content;
+        }
+    }
+
+    $("#subtls").html("");
+
+    for (var i = 0; i < mas.length; i++){
+        $("#subtls").html($("#subtls").html()
+            + "<div id='cnt" + mas[i].start + "' lang='" + mas[i].dur + "'>" +mas[i].text + "</div>");
+    }
+
+    //$("#subtls").scrollTop(10);
+}
+
+function hideSubtitles(){
+    subtitlesOn = false;
+    $("#subtls").html("");
+}
+
+function initSubtitles(){
 }

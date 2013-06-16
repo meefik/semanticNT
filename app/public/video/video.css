@@ -51,3 +51,13 @@
     position: relative;
     top: 300px;
 }
+
+#subtls {
+    position: absolute;
+    left: 640px;
+    width: 120px;
+    height: 480px;
+    overflow: auto;
+    margin: 2px;
+    overflow-x: hidden;
+}

@@ -1,7 +1,7 @@
 [{
     "ytId" : "ylLzyHk54Z0",
     "name" : "Лекция 1",
-    "languages" : ["en", "fr"],
+    "languages" : ["en"],
     "questions" : [
         {
             "question" : "How are you?",
@@ -10,7 +10,7 @@
                 "Not ok"
             ],
             "right" : 1,
-            "time" : 1
+            "time" : 50
         },
         {
             "question" : "What is up?",
@@ -19,7 +19,7 @@
                 "Not hi"
             ],
             "right" : 2,
-            "time" : 4
+            "time" : 60
         }
     ]
 }]

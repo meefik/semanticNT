@@ -22,6 +22,9 @@
 
     var curQuest;
 
+    //Флаг, показывающий состояние субтитров
+    var subtitlesOn = false;
+
     //Объект с субтитрами
     // ["lang" : "en",
     // "content" : [
@@ -66,10 +69,16 @@
         <div class="btn-group">
             <button id="play" class="btn" onclick="play(); ">Play</button>
             <button id="pause" class="btn" onclick="pause(); ">Pause</button>
+            <button id="showSubtls" class="btn" onclick="showSubtitles(); ">Show subtitles</button>
+            <button id="hideSubtls" class="btn" onclick="hideSubtitles(); ">Hide subtitles</button>
         </div>
         <span id="time"></span> | <span id="totalTime"></span>
 
     </div>
+</div>
+
+<div id="subtls">
+
 </div>
 
 
