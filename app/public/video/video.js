@@ -38,6 +38,7 @@ function onYouTubePlayerReady(playerId) {
     ytapiplayer.addEventListener("onStateChange", "onStateChange");
 
 
+    ytapiplayer.getOptions("cc");
     //checkSeconds();
 }
 
