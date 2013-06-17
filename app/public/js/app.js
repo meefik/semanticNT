@@ -22,6 +22,7 @@ angular.module('openITMO', ['ngCookies', 'app.services', 'app.filters', 'app.dir
         when('/courses/:courseId/shelf', { templateUrl: 'tpl/parts.html', controller: ShelfCtrl }).
         when('/courses/:courseId/progress', { templateUrl: 'tpl/parts.html', controller: ProgressCtrl }).
         when('/courses/:courseId/ontology', { templateUrl: 'tpl/parts.html', controller: OntologyCtrl }).
+        when('/courses/:courseId/video/:videoId', { templateUrl: 'tpl/parts.html', controller: VideoCtrl }).
         otherwise({ redirectTo: '/' });
 }]);
 

@@ -1,0 +1,63 @@
+#player {
+    width: 640px;
+    height: 510px;
+
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+}
+
+#quiz {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    width: 640px;
+    height: 480px;
+    z-index: 999;
+    background-color: white;
+    display: none;
+
+}
+
+#controls {
+    position: absolute;
+    top: 480px;
+    left: 0px;
+}
+
+#quiz-cnt {
+    left: 50px;
+    width: 540px;
+    position: relative;
+    height: 480px;
+
+}
+
+#quiz-top {
+    position: relative;
+    top: 20px;
+}
+
+#quiz-ctrl {
+    position: absolute;
+    top: 440px;
+    text-align: right;
+    width: 540px;
+}
+
+#message {
+    position: relative;
+    top: 300px;
+}
+
+#subtls {
+    position: absolute;
+    left: 640px;
+    width: 120px;
+    height: 480px;
+    overflow: auto;
+    margin: 2px;
+    overflow-x: hidden;
+}
