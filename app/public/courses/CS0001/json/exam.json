@@ -1,13 +1,19 @@
 [
     {
-        "name": "Контрольная работа 1",
-        "deadline": "2013-04-20",
+        "_id": "sn4XZbHM5erlNeE",
+        "courseid":"CS0001",
+        "author": "anton",
+        "title": "Контрольная работа 1",
+        "deadline": "2013-04-10",
         "description": "Описание к контрольной работе 1",
         "questions": [
             {
+                "id": 1,
                 "name": "Вопрос 1",
                 "description": "Выберите один из вариантов ответа. ",
-                "answers": [
+                "qtype": "oneSelect",
+                "answer" : ["1"],
+                "options": [
                     {
                         "id": "1",
                         "text": "A"
@@ -27,9 +33,12 @@
                 ]
             },
             {
+                "id": 2,
                 "name": "Вопрос 2",
                 "description": "Ответьте да или нет:",
-                "answers": [
+                "qtype": "oneSelect",
+                "answer" : ["1"],
+                "options": [
                     {
                         "id": "1",
                         "text": "Да"
@@ -37,6 +46,100 @@
                     {
                         "id": "2",
                         "text": "Нет"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Вопрос 3",
+                "description": "Выберите правильные варианты:",
+                "qtype": "manySelect",
+                "answer" : ["12"],
+                "options": [
+                    {
+                        "id": "1",
+                        "text": "Правильно"
+                    },
+                    {
+                        "id": "2",
+                        "text": "Правильно"
+                    },
+                    {
+                        "id": "3",
+                        "text": "Неравильно"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "MiUghVjNUMwpz1b",
+        "courseid":"CS0001",
+        "author": "anton",
+        "title": "Контрольная работа 2",
+        "deadline": "2013-05-20",
+        "description": "Описание к контрольной работе 2",
+        "questions": [
+            {
+                "id": 1,
+                "name": "Вопрос 1",
+                "description": "Выберите один из вариантов ответа. ",
+                "qtype": "oneSelect",
+                "answer" : ["1"],
+                "options": [
+                    {
+                        "id": "1",
+                        "text": "A"
+                    },
+                    {
+                        "id": "2",
+                        "text": "B"
+                    },
+                    {
+                        "id": "3",
+                        "text": "C"
+                    },
+                    {
+                        "id": "4",
+                        "text": "D"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Вопрос 2",
+                "description": "Ответьте да или нет:",
+                "qtype": "oneSelect",
+                "answer" : ["1"],
+                "options": [
+                    {
+                        "id": "1",
+                        "text": "Да"
+                    },
+                    {
+                        "id": "2",
+                        "text": "Нет"
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "name": "Вопрос 3",
+                "description": "Выберите правильные варианты:",
+                "qtype": "manySelect",
+                "answer" : ["erfdgrehretdh", "erbenet"],
+                "options": [
+                    {
+                        "id": "erfdgrehretdh",
+                        "text": "Правильно"
+                    },
+                    {
+                        "id": "erbenet",
+                        "text": "Правильно"
+                    },
+                    {
+                        "id": "3rt4224g3eg",
+                        "text": "Неравильно"
                     }
                 ]
             }

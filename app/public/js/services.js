@@ -38,4 +38,41 @@ angular.module('app.services', ['ngResource'])
     })
     .factory('Parts', function ($resource) {
         return $resource('courses/:courseId/modules.json');
+    })
+
+    .factory('Answer', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId/answers/:answerId', {
+            courseId: '@courseid',
+            examId: '@examId',
+            answerId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
     });
+
+//    .factory('Exam', function ($resource) {
+//        return $resource('api/courses/:courseId/exam/:examId', {
+//            courseId: '@courseid',
+//            examId: '@_id'
+//        }, {
+//            update: { method: 'PUT' }
+//        });
+//    })
+//    .factory('Question', function ($resource) {
+//        return $resource('api/courses/_/exam/:examId/question/:questionId', {
+//            examId: '@exam',
+//            questionId: '@_id'
+//        }, {
+//            update: { method: 'PUT' }
+//        });
+//    })
+//    .factory('Option', function ($resource) {
+//        return $resource('api/courses/_/exam/_/question/:questionId/option/:optionId', {
+//            questionId: '@question',
+//            optionId: '@_id'
+//        }, {
+//            update: { method: 'PUT' },
+//            star: { method: 'POST', params: { additional: 'star' } },
+//            unstar: { method: 'DELETE', params: { additional: 'star' } }
+//        });
+//    });

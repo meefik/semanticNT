@@ -14,7 +14,9 @@ var routes = require('./routes'),
     news = require('./routes/news'),
     shelf = require('./routes/shelf'),
     struct = require('./routes/struct'),
-    forum = require('./routes/forum');
+    forum = require('./routes/forum'),
+    exam = require('./routes/exam');
+    answers = require('./routes/answers');
 
 var app = module.exports = express.createServer();
 
@@ -153,6 +155,35 @@ app.put('/api/courses/:courseId/forum/:topicId/posts/:postId', forum.updatePost)
 app.del('/api/courses/:courseId/forum/:topicId/posts/:postId', forum.removePost);
 app.post('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.starPost);
 app.del('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.unstarPost);
+
+// Course exams
+app.get('/api/courses/:courseId/exam', exam.getExams);
+app.get('/api/courses/:courseId/exam/:examId', exam.getExamById);
+app.post('/api/courses/:courseId/exam', exam.addExam);
+app.put('/api/courses/:courseId/exam/:examId', exam.updateExam);
+app.del('/api/courses/:courseId/exam/:examId', exam.removeExam);
+
+app.get('/api/courses/:courseId/exam/:examId/question', exam.getQuestions);
+app.get('/api/courses/:courseId/exam/:examId/question/:questionId', exam.getQuestionById);
+app.post('/api/courses/:courseId/exam/:examId/question', exam.addQuestion);
+app.put('/api/courses/:courseId/exam/:examId/question/:questionId', exam.updateQuestion);
+app.del('/api/courses/:courseId/exam/:examId/question/:questionId', exam.removeQuestion);
+
+/*
+app.get('/api/courses/:courseId/exam/:examId/question/:questionId/option/', exam.getOptions);
+app.get('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.getOptionsById);
+app.post('/api/courses/:courseId/exam/:examId/question/:questionId/option', exam.addOption);
+app.put('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.updateOption);
+app.del('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.removeOption);
+ */
+
+// Course exam answers
+app.get('/api/courses/:courseId/exam/:examId/answers', answers.get);
+app.get('/api/courses/:courseId/exam/:examId/answers', answers.getByExam);
+app.get('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.getById);
+app.post('/api/courses/:courseId/exam/:examId/answers', answers.add);
+app.del('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.remove);
+
 
 /**
  * Return 404 error

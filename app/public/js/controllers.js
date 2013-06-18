@@ -587,96 +587,104 @@ function StructCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function ExamCtrl($scope, $routeParams, Courses) {
+function ExamCtrl($scope, $location, $routeParams, $http) {
     $scope.template = 'courses/tpl/exam.html';
 
-    $scope.exam = [
-        {
-            "name": "Контрольная работа 1",
-            "deadline": "2013-04-20",
-            "description": "Описание к контрольной работе 1",
-            "questions": [
-                {
-                    "title": "Вопрос 1",
-                    "description": "Выберите один из вариантов ответа. ",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "A"
-                        },
-                        {
-                            "id": "2",
-                            "text": "B"
-                        },
-                        {
-                            "id": "3",
-                            "text": "C"
-                        },
-                        {
-                            "id": "4",
-                            "text": "D"
-                        }
-                    ]
-                },
-                {
-                    "title": "Вопрос 2",
-                    "description": "Ответьте да или нет:",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "Да"
-                        },
-                        {
-                            "id": "2",
-                            "text": "Нет"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "name": "Контрольная работа 2",
-            "deadline": "2013-04-20",
-            "description": "Описание к контрольной работе 2",
-            "questions": [
-                {
-                    "title": "Вопрос 1",
-                    "description": "Ответьте да или нет:",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "Да"
-                        },
-                        {
-                            "id": "2",
-                            "text": "Нет"
-                        }
-                    ]
-                }
-            ]
+    $http({
+        "method": "GET",
+        "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
+    }).success(function(data, status){
+        $scope.exam = data;
+    });
+
+    $scope.start = function (test) {
+        $location.path($location.path() + "/" + test._id);
+    };
+}
+
+function TestCtrl ($scope, $routeParams, $location, $http, Answer) {
+    $scope.template = 'courses/tpl/exam-test.html';
+
+    $http({
+        "method": "GET",
+        "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
+    }).success(function(data, status){
+        for (var i=0; i < data.length; i++) {
+            if (data[i]._id == $routeParams.examId) {
+                $scope.test = data[i];
+                $scope.maxRightAnswers = $scope.test.questions.length;
+            }
         }
-    ];
+    });
 
-    $scope.currentPage = -1;
-
-    $scope.isTest = function () {
-        return ($scope.currentPage >= 0);
+    $scope.back = function () {
+        var path = $location.path(),
+            to = path.lastIndexOf('/');
+        $location.path(path.substring(0, to));
     };
 
-    $scope.showPage = function (id) {
-        if (typeof id === 'undefined') {
-            id = -1;
+    $scope.isItRadio = function (id) {
+        return (id.qtype == "oneSelect");
+    }
+
+    $scope.isItCheckbox = function (id) {
+        return (id.qtype == "manySelect");
+    }
+
+    $scope.isItInputText = function (id) {
+        return (id.qtype === 'text');
+    }
+
+    $scope.submitTest = function () {
+        var temp = $('label.question > input');
+
+        var listAnswers = new Array();
+
+        for (var i = 0; i < $scope.maxRightAnswers; i++) {
+            listAnswers.push(new Array());
         }
-        $scope.currentPage = id;
-        $scope.test = $scope.exam[id];
-    };
 
-    $scope.add = function () {
+        //select all marked fields
+        for (var i = 0; i < temp.length; i++) {
+            if (temp[i].parentNode.parentNode.style.display != 'none') {
+                if ((temp[i].type == 'radio' || temp[i].type == 'checkbox') && temp[i].checked) {
+                    listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                }
+                if (temp[i].type == 'text') {
+                    listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                }
+            }
+        }
 
-    };
+        //calculate score
+        var score = 0;
+        var point = 0;
+        for (var i = 0; i < $scope.maxRightAnswers; i++) {
+            if (listAnswers[i].length == $scope.test.questions[i].answer.length) {
+                for (var j = 0; j < listAnswers[i].length; j++) {
+                    if (listAnswers[i][j] == $scope.test.questions[i].answer[j]) {
+                        score += 100/($scope.maxRightAnswers*listAnswers[i]);
+                    }
+                }
+            }
+        }
 
-    $scope.edit = function () {
-
+        //send data to server
+        var newAnswer = new Answer({
+            user: $scope.profile.login,
+            examId: $scope.test._id,
+            date: new Date(),
+            answers: listAnswers,
+            score: score
+        });
+        newAnswer.$save(function(err, data) {
+            if (!err) {
+                res.json(data); // 200 OK + data
+            } else {
+                res.send(500); // 500 Internal Server Error
+                console.log(err);
+            }
+        });
     }
 }
 

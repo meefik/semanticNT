@@ -1,0 +1,29 @@
+<div ng-repeat="question in test.questions" class="well">
+    <h4>{{question.name}}</h4>
+    <p>{{question.description}}</p>
+    <div ng-repeat="item in question.options" ng-show="isItRadio(question)"  >
+        <label class="question radio">
+            <input type="radio" name="{{question.name}}" value="{{item.id}}">
+            {{item.text}}
+        </label>
+    </div>
+    <div ng-repeat="item in question.options" ng-show="isItCheckbox(question)" >
+        <label class="question checkbox">
+            <input type="checkbox" name="{{question.name}}" value="{{item.id}}" >
+            {{item.text}}
+        </label>
+    </div>
+    <div ng-repeat="item in question.options" ng-show="isItInputText(question)" >
+        <label class="question input-medium">
+            <input type="text" name="{{question.name}}" value="{{item.text}}" >
+        </label>
+    </div>
+</div>
+
+<a class="btn" href ng-click="back()">
+    Вернуться назад
+</a>
+
+<a class="btn btn-success" href ng-click="submitTest()">
+    Отправить на проверку
+</a>
