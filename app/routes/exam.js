@@ -8,41 +8,47 @@ var mongoose = require('mongoose');
  * Schemas
  */
 
+var Schema = mongoose.Schema;
+
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var OptionSchema = new Schema({
-    id: {type: String, unique: true, required: true},
-    text: {type: String, required: true},
-    question: { type: ObjectId, required: true }
+var VariantSchema = new Schema({
+    variantId: {type: String, required: true},
+    text: {type: String, required: false}
 });
 
 var QuestionSchema = new Schema({
+    id: {type: Number, required: true},
     name: {type: String, required: true},
     description: {type: String, required: true},
     qtype: {type: String, required: true},
     answer: [String],
-    exam: {type: ObjectId, required: true }
+    variants: [VariantSchema],
+    examId: { type: ObjectId, required: true }
 });
 
 var ExamSchema = new Schema({
-    courseid: {type: String, required: true},
+    courseId: {type: String, required: true},
     author: {type: String, required: true},
     title: {type: String, unique: true, required: true},
     deadline: {type: Date, required: true},
     description: {type: String, required: true}
 });
 
-var Exam = mongoose.model('Exam', ExamSchema),
+var Variant = mongoose.model('Variant', VariantSchema),
     Question  = mongoose.model('Question', QuestionSchema),
-    Option = mongoose.model('Option', OptionSchema);
+    Exam = mongoose.model('Exam', ExamSchema);
 
 /*
  * Serve JSON to our AngularJS client
  */
 
 // exam API
-exports.getExams = function(req, res) {
+exports.listExam = function(req, res) {
+    if (!req.session.passport.user)
+        return res.send(401); // 401 Unauthorized
+
     Exam.find().sort({ deadline: -1 }).exec(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
@@ -52,8 +58,10 @@ exports.getExams = function(req, res) {
         }
     });
 };
+exports.getExam = function (req, res) {
+    if (!req.session.passport.user)
+        return res.send(401); // 401 Unauthorized
 
-exports.getExamById = function (req, res) {
     Exam.findById(req.params.examId, function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
@@ -63,11 +71,13 @@ exports.getExamById = function (req, res) {
         }
     });
 };
-
 exports.addExam = function(req, res) {
+    if (!req.session.passport.user)
+        return res.send(401); // 401 Unauthorized
+
     var newExam = new Exam({
-        courseid: req.params.courseId,
-        author: req.user,
+        courseId: req.body.courseId,
+        author: req.body.author,
         deadline: req.body.deadline,
         title: req.body.title,
         description: req.body.description
@@ -81,8 +91,9 @@ exports.addExam = function(req, res) {
         }
     });
 };
-
 exports.updateExam = function(req, res) {
+    if (!req.session.passport.user)
+        return res.send(401); // 401 Unauthorized
 
     Exam.findById(req.params.examId, function (err, exam) {
         if (!err) {
@@ -93,7 +104,7 @@ exports.updateExam = function(req, res) {
                 return res.send(403); // 401 Access forbidden
             }
 
-            exam.set({ courseid: req.body.courseid });
+            exam.set({ courseId: req.body.courseId });
             exam.set({ deadline: req.body.deadline });
             exam.set({ title: req.body.title });
             exam.set({ description: req.body.description });
@@ -111,7 +122,6 @@ exports.updateExam = function(req, res) {
         }
     });
 };
-
 exports.removeExam = function(req, res) {
     if (!req.user) {
         return res.send(401); // 401 Unauthorized
@@ -124,26 +134,21 @@ exports.removeExam = function(req, res) {
             if(!exam) {
                 return res.send(400); //Bad request
             }
-            if (exam.author !== req.user) {
-                return res.send(403);  // 401 Access forbidden
-            }
+//            if (exam.author !== req.user) {
+//                return res.send(403);  // 401 Access forbidden
+//            }
 
             exam.remove(function (err) {
                 if (!err) {
-                    Question.remove({ examId: examId }, function (err) {
-                        if (!err) {
-                            Option.remove({ examId: examId }, function (err) {
-                                if (!err) {
-                                    res.send(200); // 200 OK
-                                } else {
-                                    res.send(500); // 500 Internal Server Error
-                                    console.log(err);
-                                }
-                            });
-                        } else {
-                            res.send(500); // 500 Internal Server Error
-                            console.log(err);
-                        }
+                    Question.remove({ examId: examId }, function (err, question) {
+                        Variant.remove({ questionId : question._id }, function (err) {
+                            if (!err) {
+                                res.send(200); // 200 OK
+                            } else {
+                                res.send(500); // 500 Internal Server Error
+                                console.log(err);
+                            }
+                        });
                     });
                 } else {
                     res.send(500); // 500 Internal Server Error
@@ -159,8 +164,8 @@ exports.removeExam = function(req, res) {
 };
 
 // questions API
-exports.getQuestions = function(req, res) {
-    Question.find({ exam: req.params.examId }).sort({ name: 1 }).exec(function(err, data) {
+exports.listQuestion = function(req, res) {
+    Question.find({ examId: req.params.examId }).sort({ id: 1 }).exec(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
         } else {
@@ -169,8 +174,7 @@ exports.getQuestions = function(req, res) {
         }
     });
 };
-
-exports.getQuestionById = function (req, res) {
+exports.getQuestion = function (req, res) {
     Question.findById(req.params.questionId, function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
@@ -180,7 +184,6 @@ exports.getQuestionById = function (req, res) {
         }
     });
 };
-
 exports.addQuestion = function (req, res) {
     if (!req.user) {
         return res.send(401); // 401 Unauthorized
@@ -195,15 +198,18 @@ exports.addQuestion = function (req, res) {
         }
 
         var question = new Question({
-            name: req.params.name,
+            id: req.body.id,
+            name: req.body.name,
             description: req.body.description,
             qtype: req.body.qtype,
-            exam: req.params.examId
+            answer: req.body.answer,
+            variants: req.body.variants,
+            examId: req.body.examId
         });
 
-        question.save(function (err, post) {
+        question.save(function (err, question) {
             if (!err) {
-                res.json(post); // 200 OK + data
+                res.json(question); // 200 OK + data
             } else {
                 res.send(500); // 500 Internal Server Error
                 console.log(err);
@@ -211,7 +217,6 @@ exports.addQuestion = function (req, res) {
         });
     });
 };
-
 exports.updateQuestion = function (req, res) {
     if (!req.user) {
         return res.send(401); // 401 Unauthorized
@@ -223,21 +228,13 @@ exports.updateQuestion = function (req, res) {
                 return res.send(400); //Bad request
             }
 
-            Exam.findById(req.params.questionId, function(err, data) {
-                if (!err) {
-                    res.json(data); // 200 OK + data
-                } else {
-                    res.send(500); // 500 Internal Server Error
-                    console.log(err);
-                }
-            });
-
             question.set({ name: req.body.name });
             question.set({ description: req.body.description});
-            question.set({ type: req.body.description });
-            //question.set({ exam: req.body.exam });
+            question.set({ qtype: req.body.qtype });
+            question.set({ answer: req.body.answer});
+            question.set({ variants: req.body.variants});
 
-            question.save(function (err) {
+            question.save(function (err, post) {
                 if (!err) {
                     res.json(post); // 200 OK + data
                 } else {
@@ -251,7 +248,6 @@ exports.updateQuestion = function (req, res) {
         }
     });
 };
-
 exports.removeQuestion = function (req, res) {
     if (!req.user) {
         return res.send(401); // 401 Unauthorized
@@ -280,9 +276,3 @@ exports.removeQuestion = function (req, res) {
         }
     });
 };
-
-//    opts: new OptionsSchema({
-//        id: req.body.quests.opts.id,
-//        text: req.body.quests.opts.text,
-//        isRight: req.body.quests.opts.isRight
-//    })

@@ -42,37 +42,27 @@ angular.module('app.services', ['ngResource'])
 
     .factory('Answer', function ($resource) {
         return $resource('api/courses/:courseId/exam/:examId/answers/:answerId', {
-            courseId: '@courseid',
+            courseId: '@courseId',
             examId: '@examId',
             answerId: '@_id'
         }, {
             update: { method: 'PUT' }
         });
+    })
+    .factory('Exam', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId', {
+            courseId: '@courseId',
+            examId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
+    })
+    .factory('Question', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId/question/:questionId', {
+            courseId: '@courseId',
+            examId: '@examId',
+            questionId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
     });
-
-//    .factory('Exam', function ($resource) {
-//        return $resource('api/courses/:courseId/exam/:examId', {
-//            courseId: '@courseid',
-//            examId: '@_id'
-//        }, {
-//            update: { method: 'PUT' }
-//        });
-//    })
-//    .factory('Question', function ($resource) {
-//        return $resource('api/courses/_/exam/:examId/question/:questionId', {
-//            examId: '@exam',
-//            questionId: '@_id'
-//        }, {
-//            update: { method: 'PUT' }
-//        });
-//    })
-//    .factory('Option', function ($resource) {
-//        return $resource('api/courses/_/exam/_/question/:questionId/option/:optionId', {
-//            questionId: '@question',
-//            optionId: '@_id'
-//        }, {
-//            update: { method: 'PUT' },
-//            star: { method: 'POST', params: { additional: 'star' } },
-//            unstar: { method: 'DELETE', params: { additional: 'star' } }
-//        });
-//    });

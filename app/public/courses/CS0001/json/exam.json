@@ -1,7 +1,6 @@
 [
     {
-        "_id": "sn4XZbHM5erlNeE",
-        "courseid":"CS0001",
+        "courseId":"CS0001",
         "author": "anton",
         "title": "Контрольная работа 1",
         "deadline": "2013-04-10",
@@ -12,22 +11,22 @@
                 "name": "Вопрос 1",
                 "description": "Выберите один из вариантов ответа. ",
                 "qtype": "oneSelect",
-                "answer" : ["1"],
-                "options": [
+                "answer" : ["qwe"],
+                "variants": [
                     {
-                        "id": "1",
+                        "variantId": "qwe",
                         "text": "A"
                     },
                     {
-                        "id": "2",
+                        "variantId": "et",
                         "text": "B"
                     },
                     {
-                        "id": "3",
+                        "variantId": "wqt",
                         "text": "C"
                     },
                     {
-                        "id": "4",
+                        "variantId": "wgw",
                         "text": "D"
                     }
                 ]
@@ -37,14 +36,14 @@
                 "name": "Вопрос 2",
                 "description": "Ответьте да или нет:",
                 "qtype": "oneSelect",
-                "answer" : ["1"],
-                "options": [
+                "answer" : ["1q"],
+                "variants": [
                     {
-                        "id": "1",
+                        "variantId": "1q",
                         "text": "Да"
                     },
                     {
-                        "id": "2",
+                        "variantId": "2q",
                         "text": "Нет"
                     }
                 ]
@@ -54,18 +53,18 @@
                 "name": "Вопрос 3",
                 "description": "Выберите правильные варианты:",
                 "qtype": "manySelect",
-                "answer" : ["12"],
-                "options": [
+                "answer" : ["1gre", "2reh"],
+                "variants": [
                     {
-                        "id": "1",
+                        "variantId": "1gre",
                         "text": "Правильно"
                     },
                     {
-                        "id": "2",
+                        "variantId": "2reh",
                         "text": "Правильно"
                     },
                     {
-                        "id": "3",
+                        "variantId": "3egw",
                         "text": "Неравильно"
                     }
                 ]
@@ -73,8 +72,7 @@
         ]
     },
     {
-        "_id": "MiUghVjNUMwpz1b",
-        "courseid":"CS0001",
+        "courseId":"CS0001",
         "author": "anton",
         "title": "Контрольная работа 2",
         "deadline": "2013-05-20",
@@ -86,21 +84,21 @@
                 "description": "Выберите один из вариантов ответа. ",
                 "qtype": "oneSelect",
                 "answer" : ["1"],
-                "options": [
+                "variants": [
                     {
-                        "id": "1",
+                        "variantId": "1",
                         "text": "A"
                     },
                     {
-                        "id": "2",
+                        "variantId": "2",
                         "text": "B"
                     },
                     {
-                        "id": "3",
+                        "variantId": "3",
                         "text": "C"
                     },
                     {
-                        "id": "4",
+                        "variantId": "4",
                         "text": "D"
                     }
                 ]
@@ -111,13 +109,13 @@
                 "description": "Ответьте да или нет:",
                 "qtype": "oneSelect",
                 "answer" : ["1"],
-                "options": [
+                "variants": [
                     {
-                        "id": "1",
+                        "variantId": "1",
                         "text": "Да"
                     },
                     {
-                        "id": "2",
+                        "variantId": "2",
                         "text": "Нет"
                     }
                 ]
@@ -128,18 +126,56 @@
                 "description": "Выберите правильные варианты:",
                 "qtype": "manySelect",
                 "answer" : ["erfdgrehretdh", "erbenet"],
-                "options": [
+                "variants": [
                     {
-                        "id": "erfdgrehretdh",
+                        "variantId": "erfdgrehretdh",
                         "text": "Правильно"
                     },
                     {
-                        "id": "erbenet",
+                        "variantId": "erbenet",
                         "text": "Правильно"
                     },
                     {
-                        "id": "3rt4224g3eg",
+                        "variantId": "3rt4224g3eg",
                         "text": "Неравильно"
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "name": "Вопрос 4",
+                "description": "Введите 'Правильно':",
+                "qtype": "text",
+                "answer" : ["Правильно"],
+                "variants" : [
+                    {
+                        "variantId": "rthrtrtnnh",
+                        "text": ""
+                    }
+                ]
+            },
+            {
+                "id": 5,
+                "name": "Вопрос 5",
+                "description": "Восстановите порядок (по возрастанию):",
+                "qtype": "order",
+                "answer" : ["2", "4", "3", "1"],
+                "variants" : [
+                    {
+                        "variantId": "1",
+                        "text": "2002 год"
+                    },
+                    {
+                        "variantId": "2",
+                        "text": "1364 год"
+                    },
+                    {
+                        "variantId": "3",
+                        "text": "1952 год"
+                    },
+                    {
+                        "variantId": "4",
+                        "text": "1503 год"
                     }
                 ]
             }

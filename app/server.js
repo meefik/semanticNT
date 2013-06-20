@@ -25,8 +25,8 @@ var app = module.exports = express.createServer();
  */
 
 var SERVER_PORT = 3000;
-var dbUrl = 'mongodb://192.168.4.41:27017/openitmo';
-//var dbUrl = 'mongodb://localhost:27017/openitmo';
+//var dbUrl = 'mongodb://192.168.4.41:27017/openitmo';
+var dbUrl = 'mongodb://localhost:27017/openitmo';
 
 app.configure(function () {
     app.set('views', __dirname + '/views');
@@ -157,33 +157,23 @@ app.post('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.starP
 app.del('/api/courses/:courseId/forum/:topicId/posts/:postId/star', forum.unstarPost);
 
 // Course exams
-app.get('/api/courses/:courseId/exam', exam.getExams);
-app.get('/api/courses/:courseId/exam/:examId', exam.getExamById);
+app.get('/api/courses/:courseId/exam', exam.listExam);
+app.get('/api/courses/:courseId/exam/:examId', exam.getExam);
 app.post('/api/courses/:courseId/exam', exam.addExam);
 app.put('/api/courses/:courseId/exam/:examId', exam.updateExam);
 app.del('/api/courses/:courseId/exam/:examId', exam.removeExam);
-
-app.get('/api/courses/:courseId/exam/:examId/question', exam.getQuestions);
-app.get('/api/courses/:courseId/exam/:examId/question/:questionId', exam.getQuestionById);
+app.get('/api/courses/:courseId/exam/:examId/question', exam.listQuestion);
+app.get('/api/courses/:courseId/exam/:examId/question/:questionId', exam.getQuestion);
 app.post('/api/courses/:courseId/exam/:examId/question', exam.addQuestion);
 app.put('/api/courses/:courseId/exam/:examId/question/:questionId', exam.updateQuestion);
 app.del('/api/courses/:courseId/exam/:examId/question/:questionId', exam.removeQuestion);
 
-/*
-app.get('/api/courses/:courseId/exam/:examId/question/:questionId/option/', exam.getOptions);
-app.get('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.getOptionsById);
-app.post('/api/courses/:courseId/exam/:examId/question/:questionId/option', exam.addOption);
-app.put('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.updateOption);
-app.del('/api/courses/:courseId/exam/:examId/question/:questionId/option/:optionId', exam.removeOption);
- */
-
 // Course exam answers
-app.get('/api/courses/:courseId/exam/:examId/answers', answers.get);
-app.get('/api/courses/:courseId/exam/:examId/answers', answers.getByExam);
-app.get('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.getById);
+app.get('/api/courses/:courseId/progress', answers.getByCourse);
+app.get('/api/courses/:courseId/exam/:examId/answers', answers.list);
+app.get('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.get);
 app.post('/api/courses/:courseId/exam/:examId/answers', answers.add);
 app.del('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.remove);
-
 
 /**
  * Return 404 error

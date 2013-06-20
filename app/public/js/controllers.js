@@ -587,33 +587,103 @@ function StructCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function ExamCtrl($scope, $location, $routeParams, $http) {
+function ExamCtrl($scope, $location, $routeParams, $http, Exam, Question) {
     $scope.template = 'courses/tpl/exam.html';
 
-    $http({
-        "method": "GET",
-        "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
-    }).success(function(data, status){
-        $scope.exam = data;
+    Exam.query({ courseId: $routeParams.courseId }, function (data) {
+        if (data.length > 0) {
+            //loading data from mongo
+            $scope.exam = data;
+        } else {
+            //import data to mongo
+            $http({
+                "method": "GET",
+                "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
+            }).success(function(exams, status){
+                $scope.exam = exams;
+                for (var i = 0; i < exams.length; i++) {
+                    var newExam = new Exam({
+                        courseId: exams[i].courseId,
+                        author: exams[i].author,
+                        deadline: exams[i].deadline,
+                        title: exams[i].title,
+                        description: exams[i].description
+                    });
+                    newExam.$save({ courseId: $routeParams.courseId }, function(exam, err) {
+                        var questions;
+                        for (var q = 0; q < $scope.exam.length; q++) {
+                            if (exam.title == $scope.exam[q].title) {
+                                questions = $scope.exam[q].questions;
+                                break;
+                            }
+                        }
+                        for (var j = 0; j < questions.length; j++) {
+                            var newQuestion = new Question({
+                                id: questions[j].id,
+                                name: questions[j].name,
+                                description: questions[j].description,
+                                qtype: questions[j].qtype,
+                                answer: questions[j].answer,
+                                variants: questions[j].variants,
+                                examId: exam._id
+                            });
+                            newQuestion.$save({courseId: $routeParams.courseId, examId: exam._id });
+                        }
+                    });
+                }
+                $("#refresh").modal('show');
+            });
+
+        }
     });
 
-    $scope.start = function (test) {
-        $location.path($location.path() + "/" + test._id);
+    $scope.isNotLoggedIn = function () {
+        return $scope.profile == undefined || $scope.profile.login == undefined;
+    }
+
+    $scope.isModerator = function () {
+        return (!!($scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0))
     };
+
+    $scope.start = function (test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            $location.path($location.path() + "/" + test._id);
+        } else {
+            $("#login").modal('show');
+        }
+    }
+
+    //todo data on page is not updating
+    $scope.remove = function(test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            Exam.remove( {courseId: $routeParams.courseId, examId: test._id} );
+        } else {
+            $("#login").modal('show');
+        }
+    }
 }
 
-function TestCtrl ($scope, $routeParams, $location, $http, Answer) {
+function TestCtrl ($scope, $routeParams, $location, Exam, Question, Answer) {
     $scope.template = 'courses/tpl/exam-test.html';
 
-    $http({
-        "method": "GET",
-        "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
-    }).success(function(data, status){
-        for (var i=0; i < data.length; i++) {
-            if (data[i]._id == $routeParams.examId) {
-                $scope.test = data[i];
-                $scope.maxRightAnswers = $scope.test.questions.length;
-            }
+    $scope.start = function (test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            $location.path($location.path() + "/" + test._id);
+        } else {
+            $("#login").modal('show');
+        }
+    };
+
+    Exam.query({ courseId: $routeParams.courseId, _id: $routeParams.examId }, function (test) {
+        if ($scope.profile.login == undefined) {
+            $("#login").modal('show');
+        } else {
+            $scope.test = test;
+            Question.query({courseId: $routeParams.courseId, examId : $routeParams.examId }, function (questions) {
+                $scope.questions = questions;
+                $scope.quantityOfAnswers = questions.length;
+            });
         }
     });
 
@@ -635,22 +705,32 @@ function TestCtrl ($scope, $routeParams, $location, $http, Answer) {
         return (id.qtype === 'text');
     }
 
+    $scope.isItRestoreOrder = function (id) {
+        return (id.qtype === 'order');
+    }
+
     $scope.submitTest = function () {
-        var temp = $('label.question > input');
+        var inputs = $('label.question > input');
+        var selects = $('label.question > select');
 
+        var temp = $.merge( inputs, selects );
         var listAnswers = new Array();
-
-        for (var i = 0; i < $scope.maxRightAnswers; i++) {
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
             listAnswers.push(new Array());
         }
 
         //select all marked fields
         for (var i = 0; i < temp.length; i++) {
             if (temp[i].parentNode.parentNode.style.display != 'none') {
-                if ((temp[i].type == 'radio' || temp[i].type == 'checkbox') && temp[i].checked) {
-                    listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                if (temp[i].localName == "input") {
+                    if ((temp[i].type == 'radio' || temp[i].type == 'checkbox') && temp[i].checked) {
+                        listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                    }
+                    if (temp[i].type == 'text') {
+                        listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                    }
                 }
-                if (temp[i].type == 'text') {
+                if (temp[i].localName == "select") {
                     listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
                 }
             }
@@ -659,32 +739,44 @@ function TestCtrl ($scope, $routeParams, $location, $http, Answer) {
         //calculate score
         var score = 0;
         var point = 0;
-        for (var i = 0; i < $scope.maxRightAnswers; i++) {
-            if (listAnswers[i].length == $scope.test.questions[i].answer.length) {
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
+            if (listAnswers[i].length == $scope.questions[i].answer.length) {
                 for (var j = 0; j < listAnswers[i].length; j++) {
-                    if (listAnswers[i][j] == $scope.test.questions[i].answer[j]) {
-                        score += 100/($scope.maxRightAnswers*listAnswers[i]);
+                    if (listAnswers[i][j] == $scope.questions[i].answer[j]) {
+                        score += 100/($scope.quantityOfAnswers*listAnswers[i].length);
                     }
                 }
             }
+        }
+        $scope.score = Number((score).toFixed(2));
+
+        //forming exit answer string array
+        var outputAnswers = new Array($scope.quantityOfAnswers);
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
+            var outputString = new String();
+            for (var j = 0; j < listAnswers[i].length; j++) {
+                outputString += listAnswers[i][j]+" ";
+            }
+            outputAnswers[i] = outputString.trim();
         }
 
         //send data to server
         var newAnswer = new Answer({
             user: $scope.profile.login,
-            examId: $scope.test._id,
+            courseId: $routeParams.courseId,
+            examId: $routeParams.examId,
             date: new Date(),
-            answers: listAnswers,
-            score: score
+            answers: outputAnswers,
+            score: $scope.score
         });
-        newAnswer.$save(function(err, data) {
-            if (!err) {
-                res.json(data); // 200 OK + data
-            } else {
-                res.send(500); // 500 Internal Server Error
-                console.log(err);
-            }
+        newAnswer.$save({ courseId: $routeParams.courseId, examId: $routeParams.examId }, function(err, data) {
+            $('#result').modal('show');
         });
+    }
+
+    $scope.returnToExams = function () {
+        $('#result').modal('hide');
+        $scope.back();
     }
 }
 
@@ -1005,8 +1097,51 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
     };
 }
 
-function ProgressCtrl($scope) {
+function ProgressCtrl($scope, $http, $routeParams, Courses, Answer, Exam) {
     $scope.template = 'courses/tpl/progress.html';
+    $scope.course = Courses.get({courseId: $routeParams.courseId}, function () {});
+
+    $scope.isLoggedIn = function () {
+        return $scope.profile != undefined || $scope.profile.login != undefined;
+    }
+
+    $scope.isNotLoggedIn = function () {
+        return $scope.profile == undefined || $scope.profile.login == undefined;
+    }
+
+    $scope.isModerator = function () {
+        return (!!($scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0))
+    };
+
+    Exam.query( {courseId: $routeParams.courseId }, function(exams) {
+        $http({
+            "method" : "GET",
+            "url" : "api/courses/" + $routeParams.courseId + "/progress"
+        }).success(function(answers){
+            var raw = answers;
+            for (var i = 0; i < raw.length; i++) {
+                for (var j = 0; j < exams.length; j++) {
+                    if (raw[i].examId == exams[j]._id) {
+                        raw[i].examId = exams[j].title;
+                        break;
+                    }
+                }
+            }
+            $scope.milestones = raw;
+        });
+    });
+
+    //todo doesn't used now
+    $scope.del = function (answer) {
+        var index = $scope.milestones.indexOf(answer);
+        var scope = this;
+        Answer.remove({_id: $scope.milestones[index]._id}, function () {
+            scope.destroy(function () {
+                $scope.milestones.splice(index, 1);
+            });
+        });
+    };
 }
 
 function OntologyCtrl($scope) {
