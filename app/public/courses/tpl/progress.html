@@ -1,2 +1,28 @@
-<h3>Успеваемость</h3>
-<p>В разработке...</p>
+<table class="table table-striped" ng-show="isLoggedIn()" ng-hide="isNotLoggedIn()">
+    <thead>
+        <tr ng-hide="isModerator()">
+            <td>Тест </td>
+            <td>Баллы</td>
+            <td>Дата </td>
+        </tr>
+        <tr ng-show="isModerator()">
+            <td>Обучающийся</td>
+            <td>Тест </td>
+            <td>Баллы</td>
+            <td>Дата </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-hide="isModerator()" ng-repeat="answer in milestones">
+            <td>{{answer.examId}}</td>
+            <td>{{answer.score}}            </td>
+            <td>{{answer.date | dateToText}}</td>
+        </tr>
+        <tr ng-show="isModerator()" ng-repeat="answer in milestones">
+            <td>{{answer.user}}             </td>
+            <td>{{answer.examId}}</td>
+            <td>{{answer.score}}            </td>
+            <td>{{answer.date | dateToText}}</td>
+        </tr>
+    </tbody>
+</table>

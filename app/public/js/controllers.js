@@ -601,96 +601,196 @@ function StructCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function ExamCtrl($scope, $routeParams, Courses) {
+function ExamCtrl($scope, $location, $routeParams, $http, Exam, Question) {
     $scope.template = 'courses/tpl/exam.html';
 
-    $scope.exam = [
-        {
-            "name": "Контрольная работа 1",
-            "deadline": "2013-04-20",
-            "description": "Описание к контрольной работе 1",
-            "questions": [
-                {
-                    "title": "Вопрос 1",
-                    "description": "Выберите один из вариантов ответа. ",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "A"
-                        },
-                        {
-                            "id": "2",
-                            "text": "B"
-                        },
-                        {
-                            "id": "3",
-                            "text": "C"
-                        },
-                        {
-                            "id": "4",
-                            "text": "D"
+    Exam.query({ courseId: $routeParams.courseId }, function (data) {
+        if (data.length > 0) {
+            //loading data from mongo
+            $scope.exam = data;
+        } else {
+            //import data to mongo
+            $http({
+                "method": "GET",
+                "url" : "courses/" + $routeParams.courseId + "/json/exam.json"
+            }).success(function(exams, status){
+                $scope.exam = exams;
+                for (var i = 0; i < exams.length; i++) {
+                    var newExam = new Exam({
+                        courseId: exams[i].courseId,
+                        author: exams[i].author,
+                        deadline: exams[i].deadline,
+                        title: exams[i].title,
+                        description: exams[i].description
+                    });
+                    newExam.$save({ courseId: $routeParams.courseId }, function(exam, err) {
+                        var questions;
+                        for (var q = 0; q < $scope.exam.length; q++) {
+                            if (exam.title == $scope.exam[q].title) {
+                                questions = $scope.exam[q].questions;
+                                break;
+                            }
                         }
-                    ]
-                },
-                {
-                    "title": "Вопрос 2",
-                    "description": "Ответьте да или нет:",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "Да"
-                        },
-                        {
-                            "id": "2",
-                            "text": "Нет"
+                        for (var j = 0; j < questions.length; j++) {
+                            var newQuestion = new Question({
+                                id: questions[j].id,
+                                name: questions[j].name,
+                                description: questions[j].description,
+                                qtype: questions[j].qtype,
+                                answer: questions[j].answer,
+                                variants: questions[j].variants,
+                                examId: exam._id
+                            });
+                            newQuestion.$save({courseId: $routeParams.courseId, examId: exam._id });
                         }
-                    ]
+                    });
                 }
-            ]
-        },
-        {
-            "name": "Контрольная работа 2",
-            "deadline": "2013-04-20",
-            "description": "Описание к контрольной работе 2",
-            "questions": [
-                {
-                    "title": "Вопрос 1",
-                    "description": "Ответьте да или нет:",
-                    "answers": [
-                        {
-                            "id": "1",
-                            "text": "Да"
-                        },
-                        {
-                            "id": "2",
-                            "text": "Нет"
-                        }
-                    ]
+                $("#refresh").modal('show');
+            });
+
+        }
+    });
+
+    $scope.isNotLoggedIn = function () {
+        return $scope.profile == undefined || $scope.profile.login == undefined;
+    }
+
+    $scope.isModerator = function () {
+        return (!!($scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0))
+    };
+
+    $scope.start = function (test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            $location.path($location.path() + "/" + test._id);
+        } else {
+            $("#login").modal('show');
+        }
+    }
+
+    //todo data on page is not updating
+    $scope.remove = function(test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            Exam.remove( {courseId: $routeParams.courseId, examId: test._id} );
+        } else {
+            $("#login").modal('show');
+        }
+    }
+}
+
+function TestCtrl ($scope, $routeParams, $location, Exam, Question, Answer) {
+    $scope.template = 'courses/tpl/exam-test.html';
+
+    $scope.start = function (test) {
+        if ($scope.profile != undefined || $scope.profile.login != undefined) {
+            $location.path($location.path() + "/" + test._id);
+        } else {
+            $("#login").modal('show');
+        }
+    };
+
+    Exam.query({ courseId: $routeParams.courseId, _id: $routeParams.examId }, function (test) {
+        if ($scope.profile.login == undefined) {
+            $("#login").modal('show');
+        } else {
+            $scope.test = test;
+            Question.query({courseId: $routeParams.courseId, examId : $routeParams.examId }, function (questions) {
+                $scope.questions = questions;
+                $scope.quantityOfAnswers = questions.length;
+            });
+        }
+    });
+
+    $scope.back = function () {
+        var path = $location.path(),
+            to = path.lastIndexOf('/');
+        $location.path(path.substring(0, to));
+    };
+
+    $scope.isItRadio = function (id) {
+        return (id.qtype == "oneSelect");
+    }
+
+    $scope.isItCheckbox = function (id) {
+        return (id.qtype == "manySelect");
+    }
+
+    $scope.isItInputText = function (id) {
+        return (id.qtype === 'text');
+    }
+
+    $scope.isItRestoreOrder = function (id) {
+        return (id.qtype === 'order');
+    }
+
+    $scope.submitTest = function () {
+        var inputs = $('label.question > input');
+        var selects = $('label.question > select');
+
+        var temp = $.merge( inputs, selects );
+        var listAnswers = new Array();
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
+            listAnswers.push(new Array());
+        }
+
+        //select all marked fields
+        for (var i = 0; i < temp.length; i++) {
+            if (temp[i].parentNode.parentNode.style.display != 'none') {
+                if (temp[i].localName == "input") {
+                    if ((temp[i].type == 'radio' || temp[i].type == 'checkbox') && temp[i].checked) {
+                        listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                    }
+                    if (temp[i].type == 'text') {
+                        listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                    }
                 }
-            ]
+                if (temp[i].localName == "select") {
+                    listAnswers[temp[i].name.substr(temp[i].name.lastIndexOf(" ")+1)-1].push(temp[i].value);
+                }
+            }
         }
-    ];
 
-    $scope.currentPage = -1;
-
-    $scope.isTest = function () {
-        return ($scope.currentPage >= 0);
-    };
-
-    $scope.showPage = function (id) {
-        if (typeof id === 'undefined') {
-            id = -1;
+        //calculate score
+        var score = 0;
+        var point = 0;
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
+            if (listAnswers[i].length == $scope.questions[i].answer.length) {
+                for (var j = 0; j < listAnswers[i].length; j++) {
+                    if (listAnswers[i][j] == $scope.questions[i].answer[j]) {
+                        score += 100/($scope.quantityOfAnswers*listAnswers[i].length);
+                    }
+                }
+            }
         }
-        $scope.currentPage = id;
-        $scope.test = $scope.exam[id];
-    };
+        $scope.score = Number((score).toFixed(2));
 
-    $scope.add = function () {
+        //forming exit answer string array
+        var outputAnswers = new Array($scope.quantityOfAnswers);
+        for (var i = 0; i < $scope.quantityOfAnswers; i++) {
+            var outputString = new String();
+            for (var j = 0; j < listAnswers[i].length; j++) {
+                outputString += listAnswers[i][j]+" ";
+            }
+            outputAnswers[i] = outputString.trim();
+        }
 
-    };
+        //send data to server
+        var newAnswer = new Answer({
+            user: $scope.profile.login,
+            courseId: $routeParams.courseId,
+            examId: $routeParams.examId,
+            date: new Date(),
+            answers: outputAnswers,
+            score: $scope.score
+        });
+        newAnswer.$save({ courseId: $routeParams.courseId, examId: $routeParams.examId }, function(err, data) {
+            $('#result').modal('show');
+        });
+    }
 
-    $scope.edit = function () {
-
+    $scope.returnToExams = function () {
+        $('#result').modal('hide');
+        $scope.back();
     }
 }
 
@@ -1011,8 +1111,51 @@ function ForumPostsCtrl($scope, $routeParams, $http, $location, $anchorScroll, P
     };
 }
 
-function ProgressCtrl($scope) {
+function ProgressCtrl($scope, $http, $routeParams, Courses, Answer, Exam) {
     $scope.template = 'courses/tpl/progress.html';
+    $scope.course = Courses.get({courseId: $routeParams.courseId}, function () {});
+
+    $scope.isLoggedIn = function () {
+        return $scope.profile != undefined || $scope.profile.login != undefined;
+    }
+
+    $scope.isNotLoggedIn = function () {
+        return $scope.profile == undefined || $scope.profile.login == undefined;
+    }
+
+    $scope.isModerator = function () {
+        return (!!($scope.course.moderators &&
+            $scope.course.moderators.indexOf($scope.profile.login) >= 0))
+    };
+
+    Exam.query( {courseId: $routeParams.courseId }, function(exams) {
+        $http({
+            "method" : "GET",
+            "url" : "api/courses/" + $routeParams.courseId + "/progress"
+        }).success(function(answers){
+            var raw = answers;
+            for (var i = 0; i < raw.length; i++) {
+                for (var j = 0; j < exams.length; j++) {
+                    if (raw[i].examId == exams[j]._id) {
+                        raw[i].examId = exams[j].title;
+                        break;
+                    }
+                }
+            }
+            $scope.milestones = raw;
+        });
+    });
+
+    //todo doesn't used now
+    $scope.del = function (answer) {
+        var index = $scope.milestones.indexOf(answer);
+        var scope = this;
+        Answer.remove({_id: $scope.milestones[index]._id}, function () {
+            scope.destroy(function () {
+                $scope.milestones.splice(index, 1);
+            });
+        });
+    };
 }
 
 function OntologyCtrl($scope) {

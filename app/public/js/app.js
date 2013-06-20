@@ -17,6 +17,7 @@ angular.module('openITMO', ['ngCookies', 'app.services', 'app.filters', 'app.dir
         when('/courses/:courseId/lectures', { templateUrl: 'tpl/parts.html', controller: LecturesCtrl }).
         when('/courses/:courseId/work', { templateUrl: 'tpl/parts.html', controller: WorkCtrl }).
         when('/courses/:courseId/exam', { templateUrl: 'tpl/parts.html', controller: ExamCtrl }).
+        when('/courses/:courseId/exam/:examId', { templateUrl: 'tpl/parts.html', controller: TestCtrl }).
         when('/courses/:courseId/forum', { templateUrl: 'tpl/parts.html', controller: ForumTopicsCtrl, reloadOnSearch: false }).
         when('/courses/:courseId/forum/:topicId', { templateUrl: 'tpl/parts.html', controller: ForumPostsCtrl, reloadOnSearch: false }).
         when('/courses/:courseId/shelf', { templateUrl: 'tpl/parts.html', controller: ShelfCtrl }).
