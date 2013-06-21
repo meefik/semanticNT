@@ -3,7 +3,7 @@
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.5.8"
+      "express": ">= 2.5.8"
     , "jade": ">= 0.0.1"
     , "mongoose": ">= 0.0.1"
     , "connect-mongo": ">= 0.0.1"
@@ -12,6 +12,7 @@
     , "crypto": ">= 0.0.1"
     , "nodemailer": ">= 0.0.1"
     , "cron": ">= 0.0.1"
-    , "validator": ">= 1.1.1"
+    , "validator": ">= 0.0.1"
+    , "iconv-lite": ">= 0.0.1"
   }
 }
