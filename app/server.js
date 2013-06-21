@@ -15,7 +15,7 @@ var routes = require('./routes'),
     shelf = require('./routes/shelf'),
     struct = require('./routes/struct'),
     forum = require('./routes/forum'),
-    exam = require('./routes/exam');
+    exam = require('./routes/exam'),
     answers = require('./routes/answers');
 
 var app = module.exports = express.createServer();
