@@ -1,30 +1,31 @@
-<div ng-hide="isTest()">
-    <div ng-repeat="test in exam">
-        <h3>{{test.name}}</h3>
-        <p><i>Крайний срок сдачи: {{test.deadline | dateToText:'date'}}</i></p>
-        <p>{{test.description}}</p>
-        <a class="btn" href ng-click="showPage($index)">Перейти к тесту</a>
-    </div>
+<div ng-repeat="test in exam" ng-hide="isNotLoggedIn()" class="well well-small">
+    <h3>{{test.name}}</h3>
+    <p><i>Крайний срок сдачи: {{test.deadline | dateToText:'date'}}</i></p>
+    <p>{{test.description}}</p>
+    <a class="btn btn-primary " href ng-click="start(test)">Перейти к тесту</a>
+    <a class="btn btn-danger" href ng-click="remove(test)" ng-show="isModerator()">Удалить тест</a>
 </div>
 
-<div ng-show="isTest()">
-    <div ng-repeat="question in test.questions" class="well">
-
-        <h4>{{question.title}}</h4>
-        <p>{{question.description}}</p>
-        <div ng-repeat="item in question.answers">
-            <label class="radio">
-                <input type="radio" name="{{item.id}}">
-                {{item.text}}
-            </label>
+<div style="position: absolute">
+    <!-- Show result -->
+    <div id="refresh" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <h3 id="myModalLabel">Тесты загружены</h3>
+        </div>
+        <div class="modal-body">
+            <div class="control-group" >
+                Для того, чтобы продолжить, пожалуйста, перезагрузите страницу.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div style="text-align: center">
+                <a class="btn btn-primary" onclick="window.location.reload();">
+                    Перезагрузить страницу
+                </a>
+            </div>
         </div>
     </div>
 
-    <a class="btn" href ng-click="showPage()">
-        Вернуться назад
-    </a>
-
-    <a class="btn btn-success">
-        Отправить на проверку
-    </a>
 </div>
+
+

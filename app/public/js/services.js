@@ -38,4 +38,31 @@ angular.module('app.services', ['ngResource'])
     })
     .factory('Parts', function ($resource) {
         return $resource('courses/:courseId/modules.json');
+    })
+
+    .factory('Answer', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId/answers/:answerId', {
+            courseId: '@courseId',
+            examId: '@examId',
+            answerId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
+    })
+    .factory('Exam', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId', {
+            courseId: '@courseId',
+            examId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
+    })
+    .factory('Question', function ($resource) {
+        return $resource('api/courses/:courseId/exam/:examId/question/:questionId', {
+            courseId: '@courseId',
+            examId: '@examId',
+            questionId: '@_id'
+        }, {
+            update: { method: 'PUT' }
+        });
     });

@@ -1,0 +1,62 @@
+<div ng-repeat="question in questions" class="well">
+    <h4>{{question.name}}</h4>
+    <p>{{question.description}}</p>
+    <div ng-repeat="item in question.variants" ng-show="isItRadio(question)"  >
+        <label class="question radio">
+            <input type="radio" name="{{question.name}}" value="{{item.variantId}}">
+            {{item.text}}
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItCheckbox(question)" >
+        <label class="question checkbox">
+            <input type="checkbox" name="{{question.name}}" value="{{item.variantId}}" >
+            {{item.text}}
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItInputText(question)" >
+        <label class="question input-medium">
+            <input type="text" name="{{question.name}}" value="{{item.text}}" >
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItRestoreOrder(question)" >
+        <label class="question dropdown">
+            <select name="{{question.name}}" >
+                <option disabled/>
+                <option ng-repeat="item in question.variants" value="{{item.variantId}}">{{item.text}}</option>
+            </select>
+        </label>
+
+    </div>
+</div>
+
+<a class="btn" href ng-click="back()">
+    Вернуться назад
+</a>
+
+<a class="btn btn-success" href="#result" ng-click="submitTest()" data-toggle="modal">
+    Отправить на проверку
+</a>
+
+<div style="padding-bottom: 1em;"></div>
+
+<div style="position: absolute">
+    <!-- Show result -->
+    <div id="result" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <h3 id="myModalLabel">Тестирование завершено</h3>
+        </div>
+        <div class="modal-body">
+            <div class="control-group" >
+                Количество набранных баллов за пройденный тест: {{score}}.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div style="text-align: center">
+                <a class="btn btn-primary" ng-click="returnToExams()" >
+                    Вернуться в раздел "Контроль"
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
