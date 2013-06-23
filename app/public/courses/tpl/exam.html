@@ -1,9 +1,30 @@
-<div ng-repeat="test in exam" ng-hide="isNotLoggedIn()" class="well well-small">
-    <h3>{{test.name}}</h3>
-    <p><i>Крайний срок сдачи: {{test.deadline | dateToText:'date'}}</i></p>
+<div ng-repeat="test in exam" ng-hide="isNotLoggedIn()" class="well well-small passed" >
+    <div class="btn-group pull-right" ng-show="isModerator()">
+        <a class="btn " data-toggle="dropdown"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href ng-click="edit(test)" >Редактировать</a></li>
+            <li><a href ng-click="remove(test)" >Удалить</a></li>
+        </ul>
+    </div>
+
+    <h3>{{test.title}}</h3>
     <p>{{test.description}}</p>
-    <a class="btn btn-primary " href ng-click="start(test)">Перейти к тесту</a>
-    <a class="btn btn-danger" href ng-click="remove(test)" ng-show="isModerator()">Удалить тест</a>
+    <p><i>Крайний срок сдачи: {{test.deadline | dateToText:'date'}}</i></p>
+    <div class="container-fluid">
+        <a class="btn btn-primary pull-left" href ng-click="start(test)"
+           ng-hide="isExhausted(tries(test)) || isSuccess(test)" >
+            Перейти к тесту
+        </a>
+        <a class="btn btn-success pull-left" href ng-click="start(test)"
+           ng-hide="isExhausted(tries(test)) || !isSuccess(test)" >
+            Перейти к тесту
+        </a>
+        <a class="btn btn-primary disabled pull-left" href ng-show="isExhausted(tries(test)) && !isSuccess(test)">
+            Перейти к тесту</a>
+        <a class="btn btn-success disabled pull-left" href ng-show="isExhausted(tries(test)) && isSuccess(test)" >
+            Перейти к тесту</a>
+        <p class="span2" style="margin-top: 5px;">Попыток: <b>{{tries(test)}} / 3</b>.</p>
+    </div>
 </div>
 
 <div style="position: absolute">
@@ -25,7 +46,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 

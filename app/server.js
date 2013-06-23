@@ -169,11 +169,12 @@ app.put('/api/courses/:courseId/exam/:examId/question/:questionId', exam.updateQ
 app.del('/api/courses/:courseId/exam/:examId/question/:questionId', exam.removeQuestion);
 
 // Course exam answers
-app.get('/api/courses/:courseId/progress', answers.getByCourse);
-app.get('/api/courses/:courseId/exam/:examId/answers', answers.list);
-app.get('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.get);
-app.post('/api/courses/:courseId/exam/:examId/answers', answers.add);
-app.del('/api/courses/:courseId/exam/:examId/answers/:answerId', answers.remove);
+app.get('/api/courses/:courseId/answers', answers.getByCourse);
+app.get('/api/courses/:courseId/answers/user/:user', answers.getByCourseAndUser);
+app.get('/api/courses/:courseId/answers/:answerId', answers.get);
+app.del('/api/courses/:courseId/answers/:answerId', answers.remove);
+app.get('/api/courses/:courseId/answers/exam/:examId', answers.list);
+app.post('/api/courses/:courseId/answers/exam/:examId', answers.add);
 
 /**
  * Return 404 error

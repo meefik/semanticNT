@@ -41,7 +41,7 @@ angular.module('app.services', ['ngResource'])
     })
 
     .factory('Answer', function ($resource) {
-        return $resource('api/courses/:courseId/exam/:examId/answers/:answerId', {
+        return $resource('api/courses/:courseId/answers/:answerId/exam/:examId', {
             courseId: '@courseId',
             examId: '@examId',
             answerId: '@_id'
