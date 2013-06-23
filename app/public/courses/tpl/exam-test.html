@@ -1,4 +1,17 @@
+<div class="alert alert-error" ng-show="isLate" >
+    Вы приступаете к тесту после контрольных сроков сдачи, поэтому не получите бонусных баллов в рейтинг!
+</div>
+
 <div ng-repeat="question in questions" class="well">
+    <div class="btn-group pull-right">
+        <a class="btn" data-toggle="dropdown"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li ng-hide="isHintShowed(question)"><a href ng-click="registerHint(question)">Подсказка</a></li>
+            <li ng-show="isHintShowed(question)" class="disabled"><a>Подсказка дана</a></li>
+            <li ng-show="isModerator()" ><a href ng-click="edit(question)">Редактировать (не работает)</a></li>
+            <li ng-show="isModerator()" ><a href ng-click="remove(question)">Удалить</a></li>
+        </ul>
+    </div>
     <h4>{{question.name}}</h4>
     <p>{{question.description}}</p>
     <div ng-repeat="item in question.variants" ng-show="isItRadio(question)"  >
@@ -20,12 +33,15 @@
     </div>
     <div ng-repeat="item in question.variants" ng-show="isItRestoreOrder(question)" >
         <label class="question dropdown">
+            <span style="margin-right: 6px; bottom: 3px; position: relative;">{{$index+1}}.</span>
             <select name="{{question.name}}" >
                 <option disabled/>
                 <option ng-repeat="item in question.variants" value="{{item.variantId}}">{{item.text}}</option>
             </select>
         </label>
-
+    </div>
+    <div ng-class="hintClass(question)" class="alert alert-info">
+        {{question.hint}}
     </div>
 </div>
 

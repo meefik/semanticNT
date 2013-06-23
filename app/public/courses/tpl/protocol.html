@@ -1,0 +1,45 @@
+<h3>Протокол теста "{{test.title}}"</h3>
+<div id="{{question.id}}" ng-repeat="question in questions" class="well">
+    <h4>{{question.name}}</h4>
+    <p>{{question.description}}</p>
+    <div ng-repeat="item in question.variants" ng-show="isItRadio(question)"  >
+        <label class="question radio">
+            <input ng-checked="isChecked(question,item)" disabled type="radio" name="{{question.name}}" value="{{item.variantId}}">
+            {{item.text}}
+            <i style="margin-left: 10px;" ng-class="icon(question,item)"></i>
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItCheckbox(question)" >
+        <label class="question checkbox">
+            <input ng-checked="isChecked(question,item)" disabled type="checkbox" name="{{question.name}}" value="{{item.variantId}}" >
+            {{item.text}}
+            <i style="margin-left: 10px;" ng-class="icon(question,item)"></i>
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItInputText(question)" >
+        <label class="question input-medium" style="display: inline;">
+            <input ng-value="setValue(question)" disabled type="text" name="{{question.name}}"  >
+            <i style="margin-left: 10px; margin-top: -1px;" ng-class="icon(question,item)"></i>
+        </label>
+    </div>
+    <div ng-repeat="item in question.variants" ng-show="isItRestoreOrder(question)" >
+        <label class="question dropdown">
+            <span id="{{item._id}}" style="margin-right: 6px; bottom: 3px; position: relative;">{{$index+1}}.</span>
+            <select ng-value="setValue(question)" disabled name="{{question.name}}" >
+                <option disabled/>
+                <option ng-repeat="item in question.variants" value="{{item.variantId}}">{{item.text}}</option>
+            </select>
+            <i style="margin-left: 10px;" ng-class="icon(question,item)"></i>
+        </label>
+    </div>
+    <div ng-class="hintClass(question)" class="alert alert-info">
+        {{question.hint}}
+    </div>
+</div>
+<div style="text-align: center">
+    <a class="btn btn-inverse" ng-click="back()">
+        Закрыть протокол
+    </a>
+</div>
+
+<div style="padding-bottom: 1em;"></div>

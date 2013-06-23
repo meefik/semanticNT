@@ -10,8 +10,9 @@
                 "id": 1,
                 "name": "Вопрос 1",
                 "description": "Выберите один из вариантов ответа. ",
-                "qtype": "oneSelect",
+                "qtype": "radio",
                 "answer" : ["qwe"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "qwe",
@@ -35,8 +36,9 @@
                 "id": 2,
                 "name": "Вопрос 2",
                 "description": "Ответьте да или нет:",
-                "qtype": "oneSelect",
+                "qtype": "radio",
                 "answer" : ["1q"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "1q",
@@ -52,8 +54,9 @@
                 "id": 3,
                 "name": "Вопрос 3",
                 "description": "Выберите правильные варианты:",
-                "qtype": "manySelect",
+                "qtype": "checkbox",
                 "answer" : ["1gre", "2reh"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "1gre",
@@ -82,8 +85,9 @@
                 "id": 1,
                 "name": "Вопрос 1",
                 "description": "Выберите один из вариантов ответа. ",
-                "qtype": "oneSelect",
+                "qtype": "radio",
                 "answer" : ["1"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "1",
@@ -107,8 +111,9 @@
                 "id": 2,
                 "name": "Вопрос 2",
                 "description": "Ответьте да или нет:",
-                "qtype": "oneSelect",
+                "qtype": "radio",
                 "answer" : ["1"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "1",
@@ -124,8 +129,9 @@
                 "id": 3,
                 "name": "Вопрос 3",
                 "description": "Выберите правильные варианты:",
-                "qtype": "manySelect",
+                "qtype": "checkbox",
                 "answer" : ["erfdgrehretdh", "erbenet"],
+                "hint" : "Это подсказка",
                 "variants": [
                     {
                         "variantId": "erfdgrehretdh",
@@ -147,6 +153,7 @@
                 "description": "Введите 'Правильно':",
                 "qtype": "text",
                 "answer" : ["Правильно"],
+                "hint" : "Это подсказка",
                 "variants" : [
                     {
                         "variantId": "rthrtrtnnh",
@@ -160,6 +167,7 @@
                 "description": "Восстановите порядок (по возрастанию):",
                 "qtype": "order",
                 "answer" : ["2", "4", "3", "1"],
+                "hint" : "Это подсказка",
                 "variants" : [
                     {
                         "variantId": "1",
