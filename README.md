@@ -39,5 +39,5 @@ openITMO
 
 Проект опубликован под лицензией [GPL версии 3](http://www.gnu.org/licenses/gpl-3.0.html) и выше. 
 
-Адрес в Интернете: http://open.ifmo.ru/
+Адрес в Интернете: http://courses.ifmo.ru/
 

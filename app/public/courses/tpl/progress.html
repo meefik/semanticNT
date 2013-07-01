@@ -1,28 +1,58 @@
-<table class="table table-striped" ng-show="isLoggedIn()" ng-hide="isNotLoggedIn()">
+<style type="text/css">
+    tbody tr td > div.toolbar {
+        text-align: left;
+        display: inline-block;
+        visibility: hidden;
+    }
+    tbody tr:hover td > div.toolbar {
+        visibility: visible;
+    }
+</style>
+
+<div class="btn-block" ng-show="isModerator()" >
+    <a class="btn btn-danger" ng-click="deleteAll()">Удалить все</a>
+    <a class="btn btn-danger inactual" ng-click="deleteInactual()"
+       title="Удалить только те записи, которые были связаны с удаленными тестами">Удалить неактуальные</a>
+</div>
+<table class="table table-striped table-hover" ng-show="isLoggedIn()" ng-hide="isNotLoggedIn()">
     <thead>
         <tr ng-hide="isModerator()">
             <td>Тест </td>
             <td>Баллы</td>
             <td>Дата </td>
+            <td></td>
         </tr>
         <tr ng-show="isModerator()">
             <td>Обучающийся</td>
             <td>Тест </td>
             <td>Баллы</td>
             <td>Дата </td>
+            <td></td>
         </tr>
     </thead>
     <tbody>
         <tr ng-hide="isModerator()" ng-repeat="answer in milestones">
-            <td>{{answer.examId}}</td>
+            <td>{{answer.title}}</td>
             <td>{{answer.score}}            </td>
             <td>{{answer.date | dateToText}}</td>
+            <td>
+                <div class="toolbar">
+                    <a class="button" ng-click="protocol(answer)" title="протокол теста"><i class="icon-list-alt"></i></a>
+                </div >
+            </td>
+
         </tr>
         <tr ng-show="isModerator()" ng-repeat="answer in milestones">
             <td>{{answer.user}}             </td>
-            <td>{{answer.examId}}</td>
+            <td>{{answer.title}}</td>
             <td>{{answer.score}}            </td>
             <td>{{answer.date | dateToText}}</td>
+            <td>
+                <div class="toolbar">
+                    <a class="button" ng-click="protocol(answer)" title="протокол теста"><i class="icon-list-alt"></i></a>
+                    <a class="button" ng-click="del(answer)" title="удалить"><i class="icon-trash"></i></a>
+                </div>
+            </td>
         </tr>
     </tbody>
 </table>

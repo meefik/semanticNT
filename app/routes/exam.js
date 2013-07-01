@@ -24,6 +24,7 @@ var QuestionSchema = new Schema({
     description: {type: String, required: true},
     qtype: {type: String, required: true},
     answer: [String],
+    hint: {type: String, required: false},
     variants: [VariantSchema],
     examId: { type: ObjectId, required: true }
 });
@@ -203,6 +204,7 @@ exports.addQuestion = function (req, res) {
             description: req.body.description,
             qtype: req.body.qtype,
             answer: req.body.answer,
+            hint: req.body.hint,
             variants: req.body.variants,
             examId: req.body.examId
         });
@@ -232,6 +234,7 @@ exports.updateQuestion = function (req, res) {
             question.set({ description: req.body.description});
             question.set({ qtype: req.body.qtype });
             question.set({ answer: req.body.answer});
+            question.set({ hint: req.body.hint });
             question.set({ variants: req.body.variants});
 
             question.save(function (err, post) {
@@ -253,16 +256,12 @@ exports.removeQuestion = function (req, res) {
         return res.send(401); // 401 Unauthorized
     }
 
-    Question.findById(req.params.questionId, function (err, post) {
-        if (!err) {
-            if(!post) {
+    Question.remove({ _id : req.params.questionId }, function (err, question) {
+        if(!err) {
+            if(!question) {
                 return res.send(400); //Bad request
             }
-            if (post.author !== req.user) {
-                return res.send(403); // 401 Access forbidden
-            }
-
-            post.remove(function (err) {
+            Variant.remove({ questionId : question._id }, function (err) {
                 if (!err) {
                     res.send(200); // 200 OK
                 } else {
@@ -271,7 +270,7 @@ exports.removeQuestion = function (req, res) {
                 }
             });
         } else {
-            res.send(500); // 500 Internal Server Error
+            res.send(500);
             console.log(err);
         }
     });
