@@ -17,7 +17,7 @@ var routes = require('./routes'),
     exam = require('./routes/exam'),
     answers = require('./routes/answers');
 
-var app = module.exports = express.createServer();
+var app = express();
 
 /**
  * Configuration
