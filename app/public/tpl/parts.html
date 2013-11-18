@@ -1,10 +1,11 @@
 <script src="js/lib/jquery-ui.min.js"></script>
 <style type="text/css">
     img.course-logo {
-        float: left;
-        margin: 2em 0 2em 0;
-        height: 110px;
-        width: 210px;
+        margin: 0 1em 0 0;
+        vertical-align: middle;
+        display: inline-block;
+        /*height: 110px;*/
+        /*width: 210px;*/
     }
     .nav-parts {
         width: 100%;
@@ -12,14 +13,17 @@
         font-size: 110%;
     }
     .main-block {
+        padding-top: 20px;
+    }
+    .container{
+        position: relative;
         display: table;
-
         width: 100%;
     }
     .left-block {
         display: table-cell;
         vertical-align: top;
-        width: 220px;
+        width: 23.4%;
     }
     .right-block {
         display: table-cell;
@@ -28,22 +32,45 @@
     .tab-content {
         padding-left: 20px;
     }
+    .course-header{
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+    }
+    .course-header .page-header{
+        margin: 0;
+        padding-top: 20px;
+        border-bottom: 0;
+        padding-left: 12px;
+        font-size: 40px;
+    }
+    .course-header .nav{
+        margin-bottom: 0;
+    }
+    .course-header .nav-tabs{
+        border-bottom: 0;
+    }
+
 </style>
-<div class="container">
-    <div class="main-block" ng-controller="PartsCtrl">
-        <div class="left-block">
-            <a href="#/courses/{{course.id}}"><img ng-src="{{logo}}" class="thumbnail course-logo"></a>
-            <div class="tabbable tabs-left">
+<section class="course" ng-controller="PartsCtrl">
+    <header class="course-header">
+        <div class="container">
+            <h1 class="page-header">
+                <a href="#/courses/{{course.id}}" ng-bind="course.name">
+                    <!--<img ng-src="{{logo}}" class="thumbnail course-logo">-->
+                    <!--{{ course.name }}-->
+                </a>
+            </h1>
+            <nav class="tabbable course-nav">
                 <ul class="nav nav-tabs nav-parts">
                     <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}" ng-bind="tab.name"></a></li>
                 </ul>
-            </div>
+            </nav>
         </div>
-        <div class="right-block">
-            <div class="tab-content">
-                <h2 class="page-header" ng-bind="course.name"></h2>
-                <div ng-include src="template"></div>
-            </div>
+    </header>
+
+    <div class="main-block">
+        <div class="container" ng-include src="template">
+
         </div>
     </div>
-</div>
+</section>

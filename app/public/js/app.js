@@ -14,7 +14,10 @@ angular.module('openITMO', ['ngCookies', 'app.services', 'app.filters', 'app.dir
         when('/courses/:courseId', { templateUrl: 'tpl/info.html', controller: InfoCtrl }).
         when('/courses/:courseId/struct', { templateUrl: 'tpl/parts.html', controller: StructCtrl }).
         when('/courses/:courseId/news', { templateUrl: 'tpl/parts.html', controller: NewsCtrl }).
-        when('/courses/:courseId/lectures', { templateUrl: 'tpl/parts.html', controller: LecturesCtrl }).
+        when('/courses/:courseId/lectures/', { templateUrl: 'tpl/parts.html', controller: LecturesCtrl }).
+        //вот тут подумать
+        when('/courses/:courseId/lectures/:lectureId', { templateUrl: 'tpl/parts.html', controller: LecturesCtrl }).
+
         when('/courses/:courseId/work', { templateUrl: 'tpl/parts.html', controller: WorkCtrl }).
         when('/courses/:courseId/exam', { templateUrl: 'tpl/parts.html', controller: ExamCtrl }).
         when('/courses/:courseId/exam/:examId', { templateUrl: 'tpl/parts.html', controller: TestCtrl }).

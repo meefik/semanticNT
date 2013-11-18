@@ -249,7 +249,6 @@ function InfoCtrl($rootScope, $scope, $routeParams, Courses, Profile) {
     $scope.course = Courses.get({courseId: $routeParams.courseId}, function () {
         //$scope.course.id = $routeParams.courseId;
     });
-
     //$scope.mycourses = MyCourses.query();
 
     $scope.getContent = function () {
@@ -382,17 +381,112 @@ function LecturesCtrl($scope, $routeParams, $http) {
 
     var courseId = $routeParams.courseId;
     $scope.courseId = courseId;
-
+    var lectureId = $routeParams.lectureId;
+    $scope.lectureId = lectureId;
     $http(
         {
             "method": "GET",
             "url" : "courses/" + courseId + "/json/lectures.json"
         }
     ).success(function(data, status){
-            $scope.content = data.content;
-        });
+        $scope.content = data.content;
+    });
+
 
     //$scope.content = [{"id" : 1}, {"id": 2}];
+}
+
+function LectureCtrl($scope, $routeParams, $http) {
+
+    $scope.lectureId = $routeParams.lectureId;
+    if(!$scope.lectureId) return;
+
+    $http(
+        {
+            "method": "GET",
+            "url" : "courses/" + $scope.courseId + "/lectures/" + $scope.lectureId + "/info.json"
+        }
+    ).success(function(data, status){
+        $scope.content = data;
+
+        $scope.videoPath = $scope.content.videoPath;
+        $scope.presentationPath = $scope.content.presentationPath;
+        $scope.syncVideo = $scope.content.syncVideo;
+
+        if( $scope.videoPath ) {
+            videoInit('video');
+        }
+        if( $scope.presentationPath ) {
+            if( !window.swfobject ) {
+                var swfObj = getSwfObj('../../video/swfobject/swfobject.js');
+                swfObj.onload = function() {
+                    presentationInit('presentation');
+                }
+            } else {
+                presentationInit('presentation');
+            }
+        }
+    });
+
+    function getSwfObj(swfObjPath) {
+        var script = document.createElement('script');
+        script.src = swfObjPath;
+        document.body.appendChild(script);
+        return script;
+    }
+
+    function videoInit(videoID) {
+        $scope.video = Popcorn('#'+videoID);
+        console.log('video init!');
+    }
+
+    function presentationInit(presentationID) {
+
+        function loadPlayer() {
+            var params = { allowScriptAccess: "always" };
+            var atts = { id: presentationID };
+
+            var flashvars = { doc : $scope.content.presentationPath, startSlide : 1, rel : 0 };
+
+            swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", presentationID, "auto", "auto", "8", null, flashvars, params, atts, playerLoaded);
+
+            function playerLoaded() {
+                $scope.presentation = document.getElementById(presentationID);
+
+                var counter = document.querySelector("script[src^='http://b.scorecardresearch.com/']");
+                if(counter) document.body.removeChild(counter);
+
+                console.log('presentation init!');
+
+                if( $scope.syncVideo ){
+                    sync($scope.video, $scope.presentation, $scope.syncVideo);
+                }
+            }
+
+        }
+        loadPlayer();
+    }
+
+    function sync(video, presentation, syncArr) {
+        video.on( "timeupdate", function() {
+            var time = video.roundTime();
+            var closestIndex = 1;
+
+            for(var i=0; i<syncArr.length; i++) {
+                if(syncArr[i] >= time) {
+                    closestIndex = i+1;
+                    break;
+                }
+            }
+            if(presentation.jumpTo) {
+                if( presentation.getCurrentSlide() != closestIndex ){
+                    console.log(closestIndex);
+                    presentation.jumpTo(closestIndex);
+                }
+            }
+        });
+    }
+
 }
 
 function WorkCtrl($scope) {
