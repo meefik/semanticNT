@@ -376,13 +376,17 @@ function NewsCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function LecturesCtrl($scope, $routeParams, $http) {
+function LecturesCtrl($scope, $routeParams, $http, $cookies) {
     $scope.template = 'courses/tpl/lectures.html';
 
     var courseId = $routeParams.courseId;
     $scope.courseId = courseId;
     var lectureId = $routeParams.lectureId;
     $scope.lectureId = lectureId;
+
+    lectureId ? $cookies.lastLecture = lectureId : '';
+    $scope.lastLecture = $cookies.lastLecture;
+
     $http(
         {
             "method": "GET",
@@ -408,10 +412,10 @@ function LectureCtrl($scope, $routeParams, $http) {
         }
     ).success(function(data, status){
         $scope.content = data;
-
         $scope.videoPath = $scope.content.videoPath;
         $scope.presentationPath = $scope.content.presentationPath;
         $scope.syncVideo = $scope.content.syncVideo;
+        $scope.quizes = data.quiz;
 
         if( $scope.videoPath ) {
             videoInit('video');
@@ -438,12 +442,15 @@ function LectureCtrl($scope, $routeParams, $http) {
     function videoInit(videoID) {
         $scope.video = Popcorn('#'+videoID);
         console.log('video init!');
+        if($scope.quizes) {
+            initQuiz();
+        }
     }
 
     function presentationInit(presentationID) {
 
         function loadPlayer() {
-            var params = { allowScriptAccess: "always" };
+            var params = { allowScriptAccess: "always", wmode:"opaque" };
             var atts = { id: presentationID };
 
             var flashvars = { doc : $scope.content.presentationPath, startSlide : 1, rel : 0 };
@@ -480,11 +487,71 @@ function LectureCtrl($scope, $routeParams, $http) {
             }
             if(presentation.jumpTo) {
                 if( presentation.getCurrentSlide() != closestIndex ){
-                    console.log(closestIndex);
                     presentation.jumpTo(closestIndex);
                 }
             }
         });
+    }
+
+    function initQuiz() {
+        $scope.quizes.forEach(function(item,i) {
+            $scope.video.cue(item.time, function(){
+                $scope.quiz = $scope.quizes[i];
+                showQuiz();
+                $scope.$digest();
+            });
+        });
+    }
+
+    function showQuiz() {
+//        hide success quiz:
+        //if($scope.quiz.checkResult == 'success') return;
+        $scope.quiz.quizShow = true;
+        $scope.video.pause();
+    }
+
+    function hideQuiz() {
+        $scope.quiz.quizShow = false;
+        $scope.quiz.checkResult = false;
+        $scope.quiz.quizVariant = null;
+        $scope.video.play();
+    }
+
+    function saveAndContinue() {
+        $scope.quiz.quizShow = false;
+        $scope.video.play();
+    }
+
+    function checkQuiz() {
+        if($scope.quiz.quizVariant == $scope.quiz.right) {
+            $scope.quiz.checkResult = 'success';
+        } else {
+            $scope.quiz.checkResult = 'error'
+        }
+    }
+
+    $scope.hideQuiz = hideQuiz;
+    $scope.checkQuiz = checkQuiz;
+    $scope.saveAndContinue = saveAndContinue;
+
+    $scope.previousSlide = function() {
+        $scope.presentationSync = false;
+        $scope.video.off("timeupdate");
+        $scope.presentation.previous();
+    }
+
+    $scope.nextSlide = function() {
+        $scope.presentationSync = false;
+        $scope.video.off("timeupdate");
+        $scope.presentation.next();
+    }
+
+    $scope.changeSync = function() {
+        if($scope.presentationSync) {
+            sync($scope.video, $scope.presentation, $scope.syncVideo);
+        } else {
+            $scope.video.off("timeupdate");
+        }
     }
 
 }

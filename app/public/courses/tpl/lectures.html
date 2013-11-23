@@ -1,125 +1,130 @@
-<style type="text/css">
-    .left-block{
-        padding: 19px 0px;
-        position: relative;
-        -webkit-transition: width 0.2s;
-        -moz-transition: width 0.2s;
-        -ms-transition: width 0.2s;
-        -o-transition: width 0.2s;
-        transition: width 0.2s;
-    }
-    .left-block.hideMenu{
-        width: 0;
-    }
-    .left-block.hideMenu .chapters-list{
-        width: 0;
-    }
-    .left-block.hideMenu .toggle-menu{
-        right:-20px;
-    }
-    .chapters-list{
-        margin-bottom: 20px;
-        padding: 0;
-        overflow: hidden;
-    }
-    .chapters-list li {
-        line-height: 28px;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-    .chapters-list li.active{
-        background: #dddddd;
-    }
-    .chapters-list .nav-header {
-        font-size: 14px;
-        padding-left: 12px;
-        padding-right: 12px;
-        margin: 0;
-    }
-    .toggle-menu{
-        position: absolute;
-        right:5px;
-        top:5px;
-        -webkit-transition: right 0.2s;
-        -moz-transition: right 0.2s;
-        -ms-transition: right 0.2s;
-        -o-transition: right 0.2s;
-        transition: right 0.2s;
-    }
-    .toggle-menu:active{
-        top:6px;
-        right:4px;
-    }
-    .toggle-menu input[type="checkbox"] {
-        opacity: 0;
-    }
-    .right-block{
-        padding-left: 30px;
-
-    }
-    .right-block .presentation-wrap > object, .right-block .video-wrap > video {
-        width: 100%;
-        height: 100%;
-
-    }
-    .media-wrap{
-        position: relative;
-        margin-bottom: 40px;
-
-    }
-    .media-wrap, .media-wrap > *{
-
-    }
-    .presentation-wrap{
-        position: absolute;
-        width: 29%;
-        height: 40%;
-        right:0;
-        bottom:40px;
-    }
-    @media (max-width: 980px) {
-        .left-block{
-            position: absolute;
-            height: 91%;
-            z-index: 2;
-        }
-    }
-</style>
+<link rel="stylesheet" href="./css/lecture.css"/>
 <!-- Template block -->
-<div class="left-block well" ng-class="{hideMenu: toggleMenu}">
-    <label class="toggle-menu"><i class="icon-list"><input ng-checked="false" ng-model="toggleMenu" type="checkbox"></i></label>
+<div class="row-fluid parts-container" ng-class="{'hide-menu': toggleMenu}">
 
-    <ul class="nav nav-list chapters-list" ng-repeat="block in content">
-        <li class="nav-header">{{ block.name }}</li>
-        <li ng-repeat="chapter in block.chapters" ng-class="{active: chapter.lectureId==lectureId}">
-            <p><i class="icon-film"></i> <a href="#/courses/{{courseId}}/lectures/{{chapter.lectureId}}" ><b>{{chapter.name}}</b></a></p>
-
-            <!--<p ng-show="chapter.description">{{chapter.description}}</p>-->
-            <!--<p ng-show="chapter.text" class="text-right">-->
-                <!--<a href="/courses/{{courseId}}/video/{{chapter.textSrc}}" target="_blank"><i class="icon-print"></i> Полный текст</a>-->
-            <!--</p>-->
-        </li>
-        <li class="divider"></li>
-    </ul>
-</div>
-<div class="right-block" ng-controller="LectureCtrl">
-    <div ng-hide="lectureId">
-        <p>Choose some lection</p>
+    <div class="left-block well span3" ng-class="{'lecture-menu':lectureId}">
+        <label class="toggle-menu">
+            <i class="icon-arrow-left">
+                <input hidden ng-checked="false" ng-model="toggleMenu" type="checkbox">
+            </i>
+        </label>
+        <ul class="nav nav-list chapters-list" ng-repeat="block in content">
+            <li class="nav-header">{{ block.name }}</li>
+            <li ng-repeat="chapter in block.chapters" ng-class="{active: chapter.lectureId==lectureId}">
+                <p>
+                    <i class="icon-film"></i>
+                    <a href="#/courses/{{courseId}}/lectures/{{chapter.lectureId}}" title="{{ chapter.name }}">
+                        <b>{{chapter.name}}</b>
+                    </a>
+                </p>
+            </li>
+            <li class="divider"></li>
+        </ul>
     </div>
-    <h3 ng-show="content.description" ng-bind="content.name"></h3>
-    <p class="description" ng-show="content.description" ng-bind="content.description"></p>
+    <div class="right-block span9" ng-controller="LectureCtrl">
+        <div ng-hide="lectureId">
+            <p ng-hide="lastLecture">
+                Добро пожаловать в курс {{ course.name }}!
+                Выберите интересующую Вас лекцию в меню слева. Хорошего просмотра!
+            </p>
+            <p ng-show="lastLecture">
+                Привет вновь! В последний раз Вы смотрели <a href="#/courses/{{courseId}}/lectures/{{lastLecture}}"> {{ lastLecture }}</a>.
+            </p>
+        </div>
+        <h3 ng-show="content.description" ng-bind="content.name"></h3>
+        <p class="description" ng-show="content.description" ng-bind="content.description"></p>
 
-    <div class="media-wrap">
-        <div class="video-wrap" ng-show="content.videoPath">
-            <video width="678" height="412" id="video" controls autoplay>
-                <source ng-repeat="path in videoPath" ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ path }}">
-            </video>
+        <div class="media-wrap" ng-class="{'reverse-view': viewMod == 'presentationMod'}" ng-show="lectureId">
+
+            <div class="toggle-view btn-group">
+                <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
+                    <input type="radio"
+                           hidden
+                           ng-model="viewMod"
+                           value="videoMod"
+                           ng-init="viewMod = 'videoMod'"/>
+                    <i class="icon-facetime-video">
+                    </i>
+                </label>
+                <label class="primary-presentation btn" ng-class="{'disabled': viewMod=='presentationMod'}">
+                    <input type="radio"
+                           hidden
+                           ng-model="viewMod"
+                           value="presentationMod"/>
+                    <i class="icon-picture">
+                    </i>
+                </label>
+            </div>
+
+            <div class="video-wrap"
+                 ng-show="content.videoPath"
+                 ng-class="{'hide-video':toggleVideo && viewMod == 'presentationMod'}">
+
+                <label class="toggle-video">
+                    <i class="icon-minus" ng-class="{'icon-plus': toggleVideo}">
+                        <input hidden ng-model="toggleVideo" type="checkbox"/>
+                    </i>
+                </label>
+                <video width="678" height="412" id="video" controls autoplay>
+                    <source ng-repeat="path in videoPath" ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ path }}">
+                </video>
+
+            </div>
+
+            <div class="presentation-wrap"
+                 ng-show="content.presentationPath"
+                 ng-class="{'hide-presentation': togglePresentation && viewMod != 'presentationMod'}">
+
+                <label class="toggle-presentation">
+                    <i class="icon-minus" ng-class="{'icon-plus': togglePresentation}">
+                        <input hidden ng-model="togglePresentation" type="checkbox"/>
+                    </i>
+                </label>
+                <div id="presentation"></div>
+                <div class="presentation-nav">
+                    <label class="auto">
+                        <input ng-change="changeSync()"
+                               ng-init="presentationSync = true"
+                               ng-model="presentationSync"
+                               ng-checked="presentationSync"
+                               type="checkbox"/> auto
+                    </label>
+                    <div class="buttons">
+                        <button class="btn" ng-click="previousSlide()">
+                            <i class="icon-chevron-left"></i>
+                        </button>
+                        <button class="btn" ng-click="nextSlide()">
+                            <i class="icon-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="quiz-wrap well" ng-class="{'quiz-show':quiz.quizShow}">
+                <form ng-submit="checkQuiz()">
+                    <p class="quiz-question" ng-bind="quiz.question"></p>
+
+                    <label ng-repeat="var in quiz.variants">
+                        <input type="radio"
+                               ng-model="quiz.quizVariant"
+                               value="{{ $index+1 }}"/>
+                        {{ var }}
+                    </label>
+
+                    <input class="btn btn-mini btn-primary"
+                           ng-show="quiz.checkResult!='success'"
+                           type="submit" value="Отправить"/>
+                    <input class="btn btn-mini btn-success"
+                           ng-show="quiz.checkResult=='success'"
+                           ng-click="saveAndContinue()"
+                           type="button" value="Продолжить"/>
+                    <input class="btn btn-mini" type="button" ng-click="hideQuiz()" value="Пропустить">
+                </form>
+                <div ng-show="quiz.checkResult" class="alert alert-{{ quiz.checkResult }}" ng-bind="quiz.checkResult"></div>
+            </div>
+
         </div>
 
-        <div class="presentation-wrap" ng-show="content.presentationPath">
-            <div id="presentation"></div>
-        </div>
-
     </div>
-
 </div>

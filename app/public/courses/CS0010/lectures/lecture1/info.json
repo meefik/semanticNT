@@ -5,5 +5,36 @@
     "videoPath": ["video1.mp4"],
     "presentationPath": "nodejs-130216100644-phpapp01",
     "syncVideo" : [10,20,30,40,50,60,70,80,90,100,120,130],
-    "textId": "text1"
+    "textId": "text1",
+    "quiz" : [
+        {
+            "question" : "How are you?",
+            "variants" : [
+                "Ok",
+                "Not Ok"
+            ],
+            "right" : 1,
+            "time" : 3
+        },
+        {
+            "question" : "What is up?",
+            "variants" : [
+                "Hi" ,
+                "Not hi"
+            ],
+            "right" : 2,
+            "time" : 10
+        },
+        {
+            "question" : "Another question?",
+            "variants" : [
+                "Yep" ,
+                "No, thanks",
+                "some strange",
+                "bla bla"
+            ],
+            "right" : 2,
+            "time" : 20
+        }
+    ]
 }
