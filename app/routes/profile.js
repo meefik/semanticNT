@@ -342,3 +342,13 @@ exports.logout = function(req, res) {
         });
     }
 };
+
+// Check auth
+exports.IsAuthenticated = function(req, res, next) {
+    var userid = req.session.passport.user;
+    if (userid) {
+        next();
+    } else {
+        next(new Error(401)); // 401 Unauthorized
+    }
+};
