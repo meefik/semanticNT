@@ -96,7 +96,6 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile, Ra
         var liked = $('#'+likeid).attr('class');
         $('#'+likeid).toggleClass('likeup');
         var count = $('#' + likeid).find('.counter').html();
-        console.log(liked);
         if (liked.indexOf('likeup') > -1) {
             (new Rating({likeid: likeid})).$unlike();
             count--;
