@@ -15,8 +15,7 @@ var routes = require('./routes'),
     struct = require('./routes/struct'),
     forum = require('./routes/forum'),
     exam = require('./routes/exam'),
-    answers = require('./routes/answers'),
-    rating = require('./routes/rating');
+    answers = require('./routes/answers');
 
 var app = express();
 
@@ -175,11 +174,6 @@ app.get('/api/courses/:courseId/answers/:answerId', answers.get);
 app.del('/api/courses/:courseId/answers/:answerId', answers.remove);
 app.get('/api/courses/:courseId/answers/exam/:examId', answers.list);
 app.post('/api/courses/:courseId/answers/exam/:examId', answers.add);
-
-// Rating
-app.get('/api/rating/:likeId', profile.IsAuthenticated, rating.get);
-app.put('/api/rating/:likeId', profile.IsAuthenticated, rating.like);
-app.del('/api/rating/:likeId', profile.IsAuthenticated, rating.unlike);
 
 /**
  * Return 404 error

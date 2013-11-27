@@ -53,22 +53,6 @@
         width: 670px;
         height: 200px;
     }
-    .like {
-        opacity: 0.6;
-        cursor: pointer;
-        border: 1px lightgray dotted;
-        padding: 4px;
-    }
-    .like:hover {
-        opacity: 0.9;
-    }
-    .like .counter {
-        color: black;
-    }
-    .likeup {
-        opacity: 0.7;
-        color: green;
-     }
 </style>
 <script type="text/javascript">
     $(function() {
@@ -95,7 +79,6 @@
             <div style="font-size: small; text-align: right">
                 <span class="date">{{item.author}}</span>,
                 <span class="date">{{item.date | dateToText}}</span>
-                <span id="{{item._id}}" class="like" ng-click="setLike(item._id)" ng-init="isLiked(item._id)">Мне нравится <i class="icon-heart"></i> <span class="counter"></span></span>
             </div>
         </div>
         <div ng-show="isEditor($index)" class="box">

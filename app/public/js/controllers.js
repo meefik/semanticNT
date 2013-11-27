@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile, Rating) {
+function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
 
     $rootScope.getProfile = function (userid) {
         if (userid) {
@@ -91,35 +91,6 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile, Ra
         else
             return false;
     };
-    
-    $scope.setLike = function (likeid) {
-        var liked = $('#'+likeid).attr('class');
-        $('#'+likeid).toggleClass('likeup');
-        var count = $('#' + likeid).find('.counter').html();
-        if (liked === 'like') {
-            (new Rating({likeid: likeid})).$like();
-            count++;
-        } else {
-            (new Rating({likeid: likeid})).$unlike();
-            count--;
-        }
-        if (count < 1) count = '';
-        $('#' + likeid).find('.counter').html(count);
-    };
-    
-    $scope.isLiked = function(likeid) {
-        setTimeout(function() {
-            var data = Rating.get({likeId: likeid}, function() {
-                if (data.liked) {
-                    $('#' + likeid).toggleClass('likeup');
-                }
-                if (data.count > 0) {
-                    $('#' + likeid).find('.counter').html(data.count);
-                }
-            });
-        }, 1000);
-    };
-    
 }
 
 function LoginFormCtrl($rootScope, $scope, $http) {
