@@ -65,4 +65,12 @@ angular.module('app.services', ['ngResource'])
         }, {
             update: { method: 'PUT' }
         });
+    })
+    .factory('Rating', function ($resource) {
+        return $resource('api/rating/:likeId', {
+            likeId: '@likeid'
+        }, {
+            like: { method: 'PUT' },
+            unlike: { method: 'DELETE' }
+        });
     });
