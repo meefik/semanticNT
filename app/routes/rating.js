@@ -93,7 +93,7 @@ exports.unlike = function(req, res, next) {
 exports.report = function(req, res, next) {
     var userid = req.query.userid;
     if (userid) {
-        LikeModel.find({author: userid}, function(err, data) {
+        LikeModel.findOne({author: userid}, function(err, data) {
             if (!err && data) {
                 res.json({userid: userid, rating: data.length});
             } else {
