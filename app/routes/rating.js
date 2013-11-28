@@ -101,7 +101,10 @@ exports.report = function(req, res, next) {
             }
         });
     } else {
-        LikeModel.find({}, function(err, data) {
+        var likeid = req.query.likeid;
+        var param = {};
+        if (likeid) param = {likeid: likeid};
+        LikeModel.find(param, function(err, data) {
             if (!err && data) {
                 var arr = {};
                 for (var i = 0, l = data.length; i < l; i++) {
