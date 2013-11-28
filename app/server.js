@@ -180,6 +180,7 @@ app.post('/api/courses/:courseId/answers/exam/:examId', answers.add);
 app.get('/api/rating/:likeId', profile.IsAuthenticated, rating.get);
 app.put('/api/rating/:likeId', profile.IsAuthenticated, rating.like);
 app.del('/api/rating/:likeId', profile.IsAuthenticated, rating.unlike);
+app.get('/api/rating', profile.IsAuthenticated, rating.report);
 
 /**
  * Return 404 error

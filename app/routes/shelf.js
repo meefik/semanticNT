@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose');
+var rating = require('./rating');
 
 /**
  * Schemas
@@ -54,6 +55,7 @@ exports.add = function(req, res) {
     newShelf.save(function(err, data) {
         if (!err) {
             res.json(data); // 200 OK + data
+            rating.add(data._id,userid);
         } else {
             res.send(500); // 500 Internal Server Error
             console.log(err);
@@ -70,6 +72,7 @@ exports.remove = function(req, res) {
     function(err) {
         if (!err) {
             res.send(200); // 200 OK
+            rating.remove(req.params.itemId);
         } else {
             res.send(500); // 500 Internal Server Error
             console.log(err);

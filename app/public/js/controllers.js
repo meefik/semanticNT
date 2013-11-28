@@ -270,8 +270,10 @@ function MyCoursesCtrl($rootScope, $scope, Courses, Profile) {
     };
 }
 
-function ProfileCtrl() {
-
+function ProfileCtrl($rootScope, Rating) {
+    var data = Rating.get({userid: $rootScope.profile.login}, function() {
+        $rootScope.profile.rating = data.rating;
+    });
 }
 
 function InfoCtrl($rootScope, $scope, $routeParams, Courses, Profile) {
