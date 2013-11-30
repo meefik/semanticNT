@@ -1,4 +1,8 @@
+<!-- styles are here only for development -->
 <link rel="stylesheet" href="./css/lecture.css"/>
+<link rel="stylesheet" href="../../js/lib/player/acornmediaplayer.base.css"/>
+<link rel="stylesheet" href="../../js/lib/player/themes/darkglass/acorn.darkglass.css"/>
+<script src="../../js/lib/player/jquery.acornmediaplayer.js"></script>
 <!-- Template block -->
 <div class="row-fluid parts-container" ng-class="{'hide-menu': toggleMenu}">
 
@@ -9,12 +13,12 @@
             </i>
         </label>
         <ul class="nav nav-list chapters-list" ng-repeat="block in content">
-            <li class="nav-header">{{ block.name }}</li>
+            <li class="nav-header" ng-bind="block.name"></li>
             <li ng-repeat="chapter in block.chapters" ng-class="{active: chapter.lectureId==lectureId}">
                 <p>
                     <i class="icon-film"></i>
                     <a href="#/courses/{{courseId}}/lectures/{{chapter.lectureId}}" title="{{ chapter.name }}">
-                        <b>{{chapter.name}}</b>
+                        <b ng-bind="chapter.name"></b>
                     </a>
                 </p>
             </li>
@@ -36,7 +40,7 @@
 
         <div class="media-wrap" ng-class="{'reverse-view': viewMod == 'presentationMod'}" ng-show="lectureId">
 
-            <div class="toggle-view btn-group">
+            <div class="toggle-view btn-group" ng-show="presentation.presentationPath">
                 <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
                     <input type="radio"
                            hidden
@@ -57,7 +61,7 @@
             </div>
 
             <div class="video-wrap"
-                 ng-show="content.videoPath"
+                 ng-show="video.videoPath"
                  ng-class="{'hide-video':toggleVideo && viewMod == 'presentationMod'}">
 
                 <label class="toggle-video">
@@ -66,13 +70,20 @@
                     </i>
                 </label>
                 <video width="678" height="412" id="video" controls autoplay>
-                    <source ng-repeat="path in videoPath" ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ path }}">
+                    <source ng-repeat="path in video.videoPath" ng-src="{{ path }}">
                 </video>
+                <script>
+                    $('#video').acornMediaPlayer({
+                        theme:'darkglass',
+                        volumeSlider: 'vertical',
+                        tooltipsOn: false
+                    });
+                </script>
 
             </div>
 
             <div class="presentation-wrap"
-                 ng-show="content.presentationPath"
+                 ng-show="presentation.presentationPath"
                  ng-class="{'hide-presentation': togglePresentation && viewMod != 'presentationMod'}">
 
                 <label class="toggle-presentation">
@@ -83,17 +94,17 @@
                 <div id="presentation"></div>
                 <div class="presentation-nav">
                     <label class="auto">
-                        <input ng-change="changeSync()"
-                               ng-init="presentationSync = true"
-                               ng-model="presentationSync"
-                               ng-checked="presentationSync"
+                        <input ng-change="presentation.changeSync()"
+                               ng-init="presentation.isSync = true"
+                               ng-model="presentation.isSync"
+                               ng-checked="presentation.isSync"
                                type="checkbox"/> auto
                     </label>
                     <div class="buttons">
-                        <button class="btn" ng-click="previousSlide()">
+                        <button class="btn" ng-click="presentation.previousSlide()">
                             <i class="icon-chevron-left"></i>
                         </button>
-                        <button class="btn" ng-click="nextSlide()">
+                        <button class="btn" ng-click="presentation.nextSlide()">
                             <i class="icon-chevron-right"></i>
                         </button>
                     </div>
@@ -101,27 +112,33 @@
 
             </div>
 
-            <div class="quiz-wrap well" ng-class="{'quiz-show':quiz.quizShow}">
-                <form ng-submit="checkQuiz()">
-                    <p class="quiz-question" ng-bind="quiz.question"></p>
+            <div class="quiz-wrap well" ng-class="{'quiz-show':quiz.quizElem.isShown}">
+                <form ng-submit="quiz.quizElem.selectedOption && quiz.checkQuiz()">
+                    <p class="quiz-question" ng-bind="quiz.quizElem.question"></p>
 
-                    <label ng-repeat="var in quiz.variants">
+                    <label ng-repeat="var in quiz.quizElem.variants">
                         <input type="radio"
-                               ng-model="quiz.quizVariant"
+                               ng-model="quiz.quizElem.selectedOption"
                                value="{{ $index+1 }}"/>
                         {{ var }}
                     </label>
 
                     <input class="btn btn-mini btn-primary"
-                           ng-show="quiz.checkResult!='success'"
+                           ng-show="quiz.quizElem.verificationResult!='success'"
+                           ng-class="{'disabled' : !quiz.quizElem.selectedOption}"
                            type="submit" value="Отправить"/>
+
                     <input class="btn btn-mini btn-success"
-                           ng-show="quiz.checkResult=='success'"
-                           ng-click="saveAndContinue()"
+                           ng-show="quiz.quizElem.verificationResult=='success'"
+                           ng-click="quiz.saveQuizContinue()"
                            type="button" value="Продолжить"/>
-                    <input class="btn btn-mini" type="button" ng-click="hideQuiz()" value="Пропустить">
+
+                    <input class="btn btn-mini"
+                           type="button"
+                           ng-click="quiz.hideQuiz()"
+                           value="{{quiz.quizElem.verificationResult!='success' && 'Пропустить' || 'Сбросить'}}">
                 </form>
-                <div ng-show="quiz.checkResult" class="alert alert-{{ quiz.checkResult }}" ng-bind="quiz.checkResult"></div>
+                <div ng-show="quiz.quizElem.verificationResult" class="alert alert-{{ quiz.quizElem.verificationResult }}" ng-bind="quiz.quizElem.verificationResult"></div>
             </div>
 
         </div>

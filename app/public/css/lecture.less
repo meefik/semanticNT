@@ -39,13 +39,17 @@
 .left-block.lecture-menu{
   position: absolute;
   height: 100%;
-  padding-right:20px;
+  padding-right:25px;
+  z-index: 2;
   .toggle-menu{
     display: block;
   }
 }
 
-.right-block{
+.right-block.span9{
+  margin-left:0;
+  padding-left:25px;
+  width:76.858974%;
   float:right !important;
   -webkit-transition: width 0.2s;
   -moz-transition: width 0.2s;
@@ -53,7 +57,7 @@
   -o-transition: width 0.2s;
   transition: width 0.2s;
 
-  .presentation-wrap > object{
+  .presentation-wrap  object{
     width: 100%;
     height: 100%;
     -webkit-transition: height 0.2s, width 0.2s;
@@ -62,7 +66,7 @@
     -o-transition: height 0.2s, width 0.2s;
     transition: height 0.2s, width 0.2s;
   }
-  .video-wrap >video {
+  .video-wrap video {
     width: 100%;
     height: 100%;
     -webkit-transition: height 0.2s, width 0.2s;
@@ -84,8 +88,12 @@
   width: 29%;
   height: 40%;
   right:0;
-  bottom:78px;
-
+  bottom:69px;
+  &:before{
+    content: '';
+    position: absolute;
+    top:0;bottom:0;left:0;right:0;
+  }
   .presentation-nav{
     text-align: center;
 //    height: 11%;
@@ -119,9 +127,10 @@
 .quiz-wrap{
   position: absolute;
   top:35%;
-  left:0;
+  left:-240px;
   width: 200px;
   opacity: 0;
+  z-index: 1;
   -webkit-transition: left 0.2s, margin-left 0.3s ease-in, opacity 0.2s;
   -moz-transition: left 0.2s, margin-left 0.3s ease-in, opacity 0.2s;
   -ms-transition: left 0.2s, margin-left 0.3s ease-in, opacity 0.2s;
@@ -142,7 +151,7 @@
   position: absolute;
   right:0px;
   top:0px;
-  width: 20px;
+  width: 25px;
   height: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -173,6 +182,7 @@
 }
 
 .toggle-presentation{
+  position: relative;
   background: #f5f5f5;
   margin-bottom: 0;
   text-align: right;
@@ -194,7 +204,7 @@
   position: absolute;
   width: 100%;
   top:-20px;
-  z-index: 2;
+  z-index: 1;
   -webkit-border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
@@ -230,23 +240,31 @@
     }
   }
   .right-block{
-    width: 97%;
+    width:100%;
+    padding-left:25px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+
+  .presentation-wrap{
+    bottom:61px;
   }
 
   .reverse-view{
     .presentation-wrap{
       position: static;
       width: auto;
-      height: 560px;
+      height: 585px;
     }
 
   }
 
 }
 
-.hide-presentation{
+.presentation-wrap.hide-presentation{
   height: 0;
-
+  bottom:51px;
   object {
     height: 0 !important;
   }
@@ -272,8 +290,12 @@
     background-position: -408px -96px;
   }
 
-  .toggle-video{
-    top:-26px;
+  .acorn-player.darkglass{
+    height: 0;
+    padding: 0 !important;
+  }
+  .acorn-controls{
+    display: none;
   }
 }
 
@@ -281,10 +303,11 @@
 
   .video-wrap{
     position: absolute;
+    z-index: 1;
     width: 30%;
     /*height: 40%;*/
     right:0;
-    bottom:35px;
+    bottom:41px;
   }
 
   .presentation-wrap{
@@ -310,12 +333,35 @@
   .presentation-wrap{
     position: static;
     width: auto;
-    height: 425px;
+    height: 455px;
   }
 
   .presentation-wrap .presentation-nav{
     height: 30px;
     margin-top: -46px;
+  }
+
+  .acorn-player.darkglass{
+    padding-bottom: 3px;
+    .acorn-controls{
+      width:98%;
+      padding-left: 2%;
+      padding-right:0;
+      margin-top: -3px;
+    }
+
+    .acorn-play-button{
+      display: none;
+    }
+    .acorn-timer{
+      width:auto;
+    }
+    .acorn-fullscreen-button{
+      display: none;
+    }
+    .acorn-volume-box{
+      width:11%;
+    }
   }
 
 }
@@ -326,11 +372,11 @@
     .left-block{
       position: absolute;
       //    height: 91%;
-      z-index: 2;
+//      z-index: 1;
     }
     .right-block{
-      width: 97%;
-    }
+       width: 100%;
+     }
   }
 }
 @media (max-width: 767px) {
@@ -339,6 +385,9 @@
   }
   .hide-menu .left-block{
     width: 0;
+  }
+  .right-block{
+    padding-left: 25px;
   }
   .reverse-view .presentation-wrap {
     height: 440px;

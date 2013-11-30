@@ -2,18 +2,18 @@
     "name": "Лекция 1",
     "description": "Описание лекции 1 (без полного текста)",
     "lectureId": "lecture1",
-    "videoPath": ["video1.mp4"],
+    "videoPath": ["http://learn.javascript.ru/files/nodejs-mp4/intro-1-about.mp4"],
     "presentationPath": "nodejs-130216100644-phpapp01",
-    "syncVideo" : [10,20,30,40,50,60,70,80,90,100,120,130],
+    "syncArr" : [10,20,30,40,50,60,70,80,90,100,120,130],
     "textId": "text1",
-    "quiz" : [
+    "quizList" : [
         {
             "question" : "How are you?",
             "variants" : [
                 "Ok",
                 "Not Ok"
             ],
-            "right" : 1,
+            "rightOption" : 1,
             "time" : 3
         },
         {
@@ -22,7 +22,7 @@
                 "Hi" ,
                 "Not hi"
             ],
-            "right" : 2,
+            "rightOption" : 2,
             "time" : 10
         },
         {
@@ -33,7 +33,7 @@
                 "some strange",
                 "bla bla"
             ],
-            "right" : 2,
+            "rightOption" : 2,
             "time" : 20
         }
     ]

@@ -402,6 +402,124 @@ function LecturesCtrl($scope, $routeParams, $http, $cookies) {
 
 function LectureCtrl($scope, $routeParams, $http) {
 
+    var video = {
+        videoInit: function(videoID) {
+            this.videoElem = Popcorn('#'+videoID);
+
+//                controls init - be done after angular render (in html code now).
+//                $('#'+videoID).acornMediaPlayer({
+//                    theme:'darkglass',
+//                    volumeSlider: 'vertical',
+//                    tooltipsOn: false
+//                });
+
+            console.log('video init!');
+        }
+    };
+
+    var presentation = {
+        presentationInit: function(presentationID) {
+
+            if( !window.swfobject ) {
+                var swfObj = getSwfObj('../../video/swfobject/swfobject.js');
+                swfObj.onload = function() {
+                    loadPlayer();
+                }
+            } else {
+                loadPlayer();
+            }
+
+            function loadPlayer() {
+                var params = { allowScriptAccess: "always", wmode:"opaque" };
+                var atts = { id: presentationID };
+
+                var flashvars = { doc : presentation.presentationPath, startSlide : 1, rel : 0 };
+
+                swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", presentationID, "auto", "auto", "8", null, flashvars, params, atts, playerLoaded);
+
+                function playerLoaded() {
+                    presentation.presentationElem = document.getElementById(presentationID);
+
+                    var counter = $("script[src^='http://b.scorecardresearch.com/']");
+                    if(counter) counter.remove();
+
+                    console.log('presentation init!');
+
+                    if( video.syncArr ){
+                        sync(video.videoElem, presentation.presentationElem, video.syncArr);
+                    }
+                }
+
+            }
+
+            function getSwfObj(swfObjPath) {
+                var script = document.createElement('script');
+                script.src = swfObjPath;
+                document.body.appendChild(script);
+                return script;
+            }
+        },
+
+        previousSlide: function() {
+            this.isSync = false;
+            video.videoElem.off("timeupdate");
+            this.presentationElem.previous();
+        },
+
+        nextSlide: function() {
+            this.isSync = false;
+            video.videoElem.off("timeupdate");
+            this.presentationElem.next();
+        },
+
+        changeSync: function() {
+            if(this.isSync) {
+                sync(video.videoElem, presentation.presentationElem, video.syncArr);
+            } else {
+                video.videoElem.off("timeupdate");
+            }
+        }
+    };
+
+    var quiz = {
+        initQuiz: function() {
+            this.quizList.forEach(function(item,i) {
+                video.videoElem.cue(item.time, function(){
+                    quiz.quizElem = quiz.quizList[i];
+                    quiz.showQuiz();
+                    $scope.$digest();
+                });
+            });
+        },
+
+        showQuiz: function() {
+//          hide success quiz:
+//            if(this.quizElem.verificationResult == 'success') return;
+            this.quizElem.isShown = true;
+            video.videoElem.pause();
+        },
+
+        hideQuiz: function() {
+            this.quizElem.isShown = false;
+            this.quizElem.verificationResult = false;
+            this.quizElem.selectedOption = null;
+            video.videoElem.play();
+        },
+
+        saveQuizContinue: function() {
+            this.quizElem.isShown = false;
+            video.videoElem.play();
+        },
+
+        checkQuiz: function() {
+            if(this.quizElem.selectedOption == this.quizElem.rightOption) {
+                this.quizElem.verificationResult = 'success';
+            } else {
+                this.quizElem.verificationResult = 'error'
+            }
+        }
+    };
+
     $scope.lectureId = $routeParams.lectureId;
     if(!$scope.lectureId) return;
 
@@ -412,80 +530,45 @@ function LectureCtrl($scope, $routeParams, $http) {
         }
     ).success(function(data, status){
         $scope.content = data;
-        $scope.videoPath = $scope.content.videoPath;
-        $scope.presentationPath = $scope.content.presentationPath;
-        $scope.syncVideo = $scope.content.syncVideo;
-        $scope.quizes = data.quiz;
 
-        if( $scope.videoPath ) {
-            videoInit('video');
+        video.videoPath = data.videoPath;
+        presentation.presentationPath = data.presentationPath;
+        video.syncArr = data.syncArr;
+        quiz.quizList = data.quizList;
+
+        if(video.videoPath) {
+            video.videoInit('video');
         }
-        if( $scope.presentationPath ) {
-            if( !window.swfobject ) {
-                var swfObj = getSwfObj('../../video/swfobject/swfobject.js');
-                swfObj.onload = function() {
-                    presentationInit('presentation');
-                }
-            } else {
-                presentationInit('presentation');
-            }
+        if(presentation.presentationPath) {
+            presentation.presentationInit('presentation')
+        }
+        if(quiz.quizList) {
+            quiz.initQuiz();
         }
     });
 
-    function getSwfObj(swfObjPath) {
-        var script = document.createElement('script');
-        script.src = swfObjPath;
-        document.body.appendChild(script);
-        return script;
-    }
-
-    function videoInit(videoID) {
-        $scope.video = Popcorn('#'+videoID);
-        console.log('video init!');
-        if($scope.quizes) {
-            initQuiz();
-        }
-    }
-
-    function presentationInit(presentationID) {
-
-        function loadPlayer() {
-            var params = { allowScriptAccess: "always", wmode:"opaque" };
-            var atts = { id: presentationID };
-
-            var flashvars = { doc : $scope.content.presentationPath, startSlide : 1, rel : 0 };
-
-            swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", presentationID, "auto", "auto", "8", null, flashvars, params, atts, playerLoaded);
-
-            function playerLoaded() {
-                $scope.presentation = document.getElementById(presentationID);
-
-                var counter = document.querySelector("script[src^='http://b.scorecardresearch.com/']");
-                if(counter) document.body.removeChild(counter);
-
-                console.log('presentation init!');
-
-                if( $scope.syncVideo ){
-                    sync($scope.video, $scope.presentation, $scope.syncVideo);
-                }
-            }
-
-        }
-        loadPlayer();
-    }
-
     function sync(video, presentation, syncArr) {
-        video.on( "timeupdate", function() {
-            var time = video.roundTime();
-            var closestIndex = 1;
+        var arrDisabled = false,
+            syncArrLength = syncArr.length;
 
-            for(var i=0; i<syncArr.length; i++) {
+        video.on( "timeupdate", function() {
+            var time = video.roundTime(),
+                closestIndex;
+
+            for(var i=0; i<syncArrLength; i++) {
                 if(syncArr[i] >= time) {
                     closestIndex = i+1;
                     break;
                 }
             }
+
+            if(!closestIndex) closestIndex = syncArrLength;
+
             if(presentation.jumpTo) {
+                if(!arrDisabled) {
+                    presentation.next();
+                    arrDisabled = true;
+                }
                 if( presentation.getCurrentSlide() != closestIndex ){
                     presentation.jumpTo(closestIndex);
                 }
@@ -493,67 +576,9 @@ function LectureCtrl($scope, $routeParams, $http) {
         });
     }
 
-    function initQuiz() {
-        $scope.quizes.forEach(function(item,i) {
-            $scope.video.cue(item.time, function(){
-                $scope.quiz = $scope.quizes[i];
-                showQuiz();
-                $scope.$digest();
-            });
-        });
-    }
-
-    function showQuiz() {
-//        hide success quiz:
-        //if($scope.quiz.checkResult == 'success') return;
-        $scope.quiz.quizShow = true;
-        $scope.video.pause();
-    }
-
-    function hideQuiz() {
-        $scope.quiz.quizShow = false;
-        $scope.quiz.checkResult = false;
-        $scope.quiz.quizVariant = null;
-        $scope.video.play();
-    }
-
-    function saveAndContinue() {
-        $scope.quiz.quizShow = false;
-        $scope.video.play();
-    }
-
-    function checkQuiz() {
-        if($scope.quiz.quizVariant == $scope.quiz.right) {
-            $scope.quiz.checkResult = 'success';
-        } else {
-            $scope.quiz.checkResult = 'error'
-        }
-    }
-
-    $scope.hideQuiz = hideQuiz;
-    $scope.checkQuiz = checkQuiz;
-    $scope.saveAndContinue = saveAndContinue;
-
-    $scope.previousSlide = function() {
-        $scope.presentationSync = false;
-        $scope.video.off("timeupdate");
-        $scope.presentation.previous();
-    }
-
-    $scope.nextSlide = function() {
-        $scope.presentationSync = false;
-        $scope.video.off("timeupdate");
-        $scope.presentation.next();
-    }
-
-    $scope.changeSync = function() {
-        if($scope.presentationSync) {
-            sync($scope.video, $scope.presentation, $scope.syncVideo);
-        } else {
-            $scope.video.off("timeupdate");
-        }
-    }
-
+    $scope.video = video;
+    $scope.presentation = presentation;
+    $scope.quiz = quiz;
 }
 
 function WorkCtrl($scope) {
