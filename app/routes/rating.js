@@ -68,14 +68,15 @@ exports.like = function(req, res, next) {
     LikeModel.findOne({likeid: likeid, userid: userid}, function(err, data) {
         if (!err && !data) {
             LikeAuthorModel.findOne({likeid: likeid}, function(err, data) {
-                if (!err && data) {
-                    var newRating = new LikeModel({
-                        likeid: likeid,
-                        userid: userid,
-                        author: data.author
-                    });
-                    newRating.save();
-                }
+                var author = null;
+                if (!err && data)
+                    author = data.author;
+                var newRating = new LikeModel({
+                    likeid: likeid,
+                    userid: userid,
+                    author: author
+                });
+                newRating.save();
             });
         }
     });
