@@ -70,24 +70,11 @@
     <header class="course-header">
         <div class="row-fluid">
             <h1 class="page-header">
-                <a href="#/courses/{{course.id}}" ng-bind="course.name">
-                    <!--<img ng-src="{{logo}}" class="thumbnail course-logo">-->
-                    <!--{{ course.name }}-->
-                </a>
+                <a href="#/courses/{{course.id}}" ng-bind="course.name"></a>
             </h1>
             <nav class="tabbable course-nav">
                 <ul class="nav nav-tabs nav-parts">
                     <li ng-repeat="tab in modules" ng-class="{active: tab.active}"><a href="#/courses/{{course.id}}/{{tab.id}}" ng-bind="tab.name"></a></li>
-                    <!--<li class="dropdown">-->
-                        <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">Еще<b class="caret"></b></a>-->
-
-                        <!--<ul class="dropdown-menu">-->
-                            <!--<li><a href="#">sfd</a></li>-->
-                            <!--<li><a href="#">sdf</a></li>-->
-                            <!--<li><a href="#">adsf</a></li>-->
-                            <!--<li><a href="#">dsf</a></li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
                 </ul>
             </nav>
         </div>

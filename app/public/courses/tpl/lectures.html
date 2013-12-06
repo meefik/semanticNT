@@ -1,8 +1,6 @@
-<!-- styles are here only for development -->
-<link rel="stylesheet" href="./css/lecture.css"/>
-<link rel="stylesheet" href="../../js/lib/player/acornmediaplayer.base.css"/>
-<link rel="stylesheet" href="../../js/lib/player/themes/darkglass/acorn.darkglass.css"/>
 <script src="../../js/lib/player/jquery.acornmediaplayer.js"></script>
+<!-- add styles for template, use a custom function, but it is better to use require.js -->
+{{ addStyles(['lecture.css','acornmediaplayer.base.css','darkglass/acorn.darkglass.css']) }}
 <!-- Template block -->
 <div class="row-fluid parts-container" ng-class="{'hide-menu': toggleMenu}">
 
@@ -27,35 +25,51 @@
     </div>
     <div class="right-block span9" ng-controller="LectureCtrl">
         <div ng-hide="lectureId">
-            <p ng-hide="lastLecture">
+            <p ng-hide="lastLectureId">
                 Добро пожаловать в курс {{ course.name }}!
                 Выберите интересующую Вас лекцию в меню слева. Хорошего просмотра!
             </p>
-            <p ng-show="lastLecture">
-                Привет вновь! В последний раз Вы смотрели <a href="#/courses/{{courseId}}/lectures/{{lastLecture}}"> {{ lastLecture }}</a>.
+            <p ng-show="lastLectureId">
+                Привет вновь! В последний раз Вы смотрели <a href="#/courses/{{courseId}}/lectures/{{lastLectureId}}"> {{ lastLectureName }}</a>.
             </p>
         </div>
         <h3 ng-show="content.description" ng-bind="content.name"></h3>
         <p class="description" ng-show="content.description" ng-bind="content.description"></p>
 
-        <div class="media-wrap" ng-class="{'reverse-view': viewMod == 'presentationMod'}" ng-show="lectureId">
+        <div class="media-wrap"
+             ng-class="{'reverse-view': viewMod == 'presentationMod',
+                        'full-screen': fullScreen.isFullScreen,
+                        'only-video': !presentation.presentationPath}"
+             ng-show="lectureId">
 
-            <div class="toggle-view btn-group" ng-show="presentation.presentationPath">
-                <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
-                    <input type="radio"
+            <div class="toggle-view">
+                <div class="btn-group" ng-show="presentation.presentationPath">
+                    <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
+                        <input type="radio"
+                               hidden
+                               ng-model="viewMod"
+                               value="videoMod"
+                               ng-init="viewMod = 'videoMod'"/>
+                        <i class="icon-facetime-video">
+                        </i>
+                    </label>
+                    <label class="primary-presentation btn" ng-class="{'disabled': viewMod=='presentationMod'}">
+                        <input type="radio"
+                               hidden
+                               ng-model="viewMod"
+                               value="presentationMod"/>
+                        <i class="icon-picture">
+                        </i>
+                    </label>
+                </div>
+                <label class="fullscreen-btn btn">
+                    <input type="checkbox"
                            hidden
-                           ng-model="viewMod"
-                           value="videoMod"
-                           ng-init="viewMod = 'videoMod'"/>
-                    <i class="icon-facetime-video">
-                    </i>
-                </label>
-                <label class="primary-presentation btn" ng-class="{'disabled': viewMod=='presentationMod'}">
-                    <input type="radio"
-                           hidden
-                           ng-model="viewMod"
-                           value="presentationMod"/>
-                    <i class="icon-picture">
+                           ng-model="fullScreen.isFullScreen"
+                           ng-change="fullScreen.changeFullScreenView()"
+                           ng-checked="fullScreen.isFullScreen"
+                           value="fullScreen.isFullScreen"/>
+                    <i class="icon-fullscreen">
                     </i>
                 </label>
             </div>

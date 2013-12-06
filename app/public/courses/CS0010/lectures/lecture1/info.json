@@ -14,7 +14,7 @@
                 "Not Ok"
             ],
             "rightOption" : 1,
-            "time" : 3
+            "time" : 10
         },
         {
             "question" : "What is up?",
@@ -23,7 +23,7 @@
                 "Not hi"
             ],
             "rightOption" : 2,
-            "time" : 10
+            "time" : 15
         },
         {
             "question" : "Another question?",
@@ -34,7 +34,7 @@
                 "bla bla"
             ],
             "rightOption" : 2,
-            "time" : 20
+            "time" : 25
         }
     ]
 }

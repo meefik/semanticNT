@@ -384,8 +384,10 @@ function LecturesCtrl($scope, $routeParams, $http, $cookies) {
     var lectureId = $routeParams.lectureId;
     $scope.lectureId = lectureId;
 
-    lectureId ? $cookies.lastLecture = lectureId : '';
-    $scope.lastLecture = $cookies.lastLecture;
+//  save last viewed lecture in cookies:
+    lectureId ? $cookies['lastLecture' + courseId] = lectureId : '';
+    var lastLectureId = $cookies['lastLecture' + courseId];
+    $scope.lastLectureId = lastLectureId;
 
     $http(
         {
@@ -394,13 +396,57 @@ function LecturesCtrl($scope, $routeParams, $http, $cookies) {
         }
     ).success(function(data, status){
         $scope.content = data.content;
+        if(lastLectureId) {
+            $scope.lastLectureName = getLastLectureName(data.content);
+        }
     });
+
+    $scope.addStyles = function(files) {
+        var head = document.documentElement.childNodes[0],
+            subPath = './css/',
+            missStyles = checkStyles(files);
+
+        if(!missStyles) return;
+
+        for(var i=0; i<missStyles.length; i++){
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = subPath + missStyles[i];
+            head.appendChild(link);
+        }
+
+        function checkStyles(files) {
+            var missStyles = [],
+                linkElem;
+
+            for(var i=0; i<files.length; i++){
+                linkElem = head.querySelector('[href="'+subPath+files[i]+'"]');
+                if(linkElem !== null) continue;
+
+                missStyles.push(files[i]);
+            }
+
+            return missStyles;
+        }
+    };
+
+    function getLastLectureName(content){
+        for(var i=0; i < content.length; i++){
+            for(var j=0; j < content[i].chapters.length; j++){
+                if(content[i].chapters[j].lectureId != lastLectureId) continue;
+                return content[i].chapters[j].name;
+            }
+        }
+    }
 
 
     //$scope.content = [{"id" : 1}, {"id": 2}];
 }
 
 function LectureCtrl($scope, $routeParams, $http) {
+
+    $scope.lectureId = $routeParams.lectureId;
+    if(!$scope.lectureId) return;
 
     var video = {
         videoInit: function(videoID) {
@@ -446,7 +492,7 @@ function LectureCtrl($scope, $routeParams, $http) {
                     console.log('presentation init!');
 
                     if( video.syncArr ){
-                        sync(video.videoElem, presentation.presentationElem, video.syncArr);
+                        sync();
                     }
                 }
 
@@ -474,7 +520,7 @@ function LectureCtrl($scope, $routeParams, $http) {
 
         changeSync: function() {
             if(this.isSync) {
-                sync(video.videoElem, presentation.presentationElem, video.syncArr);
+                sync();
             } else {
                 video.videoElem.off("timeupdate");
             }
@@ -493,7 +539,7 @@ function LectureCtrl($scope, $routeParams, $http) {
         },
 
         showQuiz: function() {
-//          hide success quiz:
+//          uncommented for hide success quiz:
 //            if(this.quizElem.verificationResult == 'success') return;
             this.quizElem.isShown = true;
             video.videoElem.pause();
@@ -520,8 +566,64 @@ function LectureCtrl($scope, $routeParams, $http) {
         }
     };
 
-    $scope.lectureId = $routeParams.lectureId;
-    if(!$scope.lectureId) return;
+    var fullScreen = {
+        init: function() {
+            var self = this;
+
+            this.elem = document.getElementsByClassName('media-wrap')[0];
+            this.isFullScreen = false;
+
+            subscribeToFullScreenChange(changeIsFullScreen);
+
+            function changeIsFullScreen() {
+                if(!normalizeFullScreenState()) {
+                    self.isFullScreen = false;
+                    $scope.$digest();
+                }
+            }
+
+            function subscribeToFullScreenChange(handler){
+                document.addEventListener("fullscreenchange",handler, false);
+                document.addEventListener("mozfullscreenchange", handler, false);
+                document.addEventListener("webkitfullscreenchange", handler, false);
+            }
+
+            function normalizeFullScreenState() {
+                if (undefined != document.mozFullScreen) {
+                    document.fullscreen = document.mozFullScreen;
+                } else if (undefined != document.webkitIsFullScreen) {
+                    document.fullscreen = document.webkitIsFullScreen;
+                }
+                return (document.fullscreen);
+            }
+
+            return this;
+        },
+
+        expandFullScreen: function(element) {
+            if (element.requestFullScreen) {
+                element.requestFullScreen();
+            } else if (element.webkitRequestFullScreen) {
+                element.webkitRequestFullScreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            }
+        },
+
+        cancelFullScreen: function() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+        },
+
+        changeFullScreenView: function(){
+            this.isFullScreen ? this.expandFullScreen(this.elem) : this.cancelFullScreen();
+        }
+    }.init();
 
     $http(
         {
@@ -547,12 +649,15 @@ function LectureCtrl($scope, $routeParams, $http) {
         }
     });
 
-    function sync(video, presentation, syncArr) {
+    function sync() {
         var arrDisabled = false,
-            syncArrLength = syncArr.length;
+            syncArr = video.syncArr,
+            syncArrLength = syncArr.length,
+            videoElem = video.videoElem,
+            presentationElem = presentation.presentationElem;
 
-        video.on( "timeupdate", function() {
-            var time = video.roundTime(),
+        videoElem.on( "timeupdate", function() {
+            var time = videoElem.roundTime(),
                 closestIndex;
 
             for(var i=0; i<syncArrLength; i++) {
@@ -564,13 +669,13 @@ function LectureCtrl($scope, $routeParams, $http) {
 
             if(!closestIndex) closestIndex = syncArrLength;
 
-            if(presentation.jumpTo) {
+            if(presentationElem.jumpTo) {
                 if(!arrDisabled) {
-                    presentation.next();
+                    presentationElem.next();
                     arrDisabled = true;
                 }
-                if( presentation.getCurrentSlide() != closestIndex ){
-                    presentation.jumpTo(closestIndex);
+                if( presentationElem.getCurrentSlide() != closestIndex ){
+                    presentationElem.jumpTo(closestIndex);
                 }
             }
         });
@@ -579,6 +684,7 @@ function LectureCtrl($scope, $routeParams, $http) {
     $scope.video = video;
     $scope.presentation = presentation;
     $scope.quiz = quiz;
+    $scope.fullScreen = fullScreen;
 }
 
 function WorkCtrl($scope) {
