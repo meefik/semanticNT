@@ -39,11 +39,11 @@
         <div class="media-wrap"
              ng-class="{'reverse-view': viewMod == 'presentationMod',
                         'full-screen': fullScreen.isFullScreen,
-                        'only-video': !presentation.presentationPath}"
+                        'only-video': !presentation.presentationData}"
              ng-show="lectureId">
 
             <div class="toggle-view">
-                <div class="btn-group" ng-show="presentation.presentationPath">
+                <div class="btn-group" ng-show="presentation.presentationData">
                     <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
                         <input type="radio"
                                hidden
@@ -83,21 +83,20 @@
                         <input hidden ng-model="toggleVideo" type="checkbox"/>
                     </i>
                 </label>
-                <video width="678" height="412" id="video" controls autoplay>
-                    <source ng-repeat="path in video.videoPath" ng-src="{{ path }}">
+                <video id="video" controls autoplay>
+                    <source ng-repeat="path in video.videoPath" ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ path }}">
                 </video>
                 <script>
-                    $('#video').acornMediaPlayer({
+                    $('video').acornMediaPlayer({
                         theme:'darkglass',
                         volumeSlider: 'vertical',
                         tooltipsOn: false
                     });
                 </script>
-
             </div>
 
             <div class="presentation-wrap"
-                 ng-show="presentation.presentationPath"
+                 ng-show="presentation.presentationData"
                  ng-class="{'hide-presentation': togglePresentation && viewMod != 'presentationMod'}">
 
                 <label class="toggle-presentation">
@@ -105,7 +104,13 @@
                         <input hidden ng-model="togglePresentation" type="checkbox"/>
                     </i>
                 </label>
-                <div id="presentation"></div>
+                <div id="presentation" class="presentation carousel">
+                    <ul class="carousel-inner">
+                        <li ng-repeat="slide in presentation.presentationData.slidesPath" class="item" ng-class="{'active': $first}">
+                            <img ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ slide }}"/>
+                        </li>
+                    </ul>
+                </div>
                 <div class="presentation-nav">
                     <label class="auto">
                         <input ng-change="presentation.changeSync()"
@@ -152,7 +157,14 @@
                            ng-click="quiz.hideQuiz()"
                            value="{{quiz.quizElem.verificationResult!='success' && 'Пропустить' || 'Сбросить'}}">
                 </form>
-                <div ng-show="quiz.quizElem.verificationResult" class="alert alert-{{ quiz.quizElem.verificationResult }}" ng-bind="quiz.quizElem.verificationResult"></div>
+                <div ng-show="quiz.quizElem.verificationResult" class="alert alert-{{ quiz.quizElem.verificationResult }}">
+                    <span ng-show="quiz.quizElem.verificationResult == 'error'">
+                        Ответ неверный. Попробуйте еще раз.
+                    </span>
+                    <span ng-show="quiz.quizElem.verificationResult == 'success'">
+                        Верно!
+                    </span>
+                </div>
             </div>
 
         </div>

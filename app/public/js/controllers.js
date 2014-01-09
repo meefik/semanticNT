@@ -452,75 +452,43 @@ function LectureCtrl($scope, $routeParams, $http) {
         videoInit: function(videoID) {
             this.videoElem = Popcorn('#'+videoID);
 
-//                controls init - be done after angular render (in html code now).
-//                $('#'+videoID).acornMediaPlayer({
-//                    theme:'darkglass',
-//                    volumeSlider: 'vertical',
-//                    tooltipsOn: false
-//                });
-
             console.log('video init!');
+        },
+        initCustomControl: function(videoID) {
+            console.log('custom controls init!', video.videoElem);
+            $('#'+videoID).acornMediaPlayer({
+                theme:'darkglass',
+                volumeSlider: 'vertical',
+                tooltipsOn: false
+            });
         }
     };
 
     var presentation = {
         presentationInit: function(presentationID) {
-
-            if( !window.swfobject ) {
-                var swfObj = getSwfObj('../../video/swfobject/swfobject.js');
-                swfObj.onload = function() {
-                    loadPlayer();
-                }
-            } else {
-                loadPlayer();
+            this.presentationElem = $('#'+presentationID).carousel();
+            this.presentationElem.carousel('pause');
+            if(this.syncArr) {
+                sync(this.presentationData.startSlide);
             }
-
-            function loadPlayer() {
-                var params = { allowScriptAccess: "always", wmode:"opaque" };
-                var atts = { id: presentationID };
-
-                var flashvars = { doc : presentation.presentationPath, startSlide : 1, rel : 0 };
-
-                swfobject.embedSWF("http://static.slidesharecdn.com/swf/ssplayer2.swf", presentationID, "auto", "auto", "8", null, flashvars, params, atts, playerLoaded);
-
-                function playerLoaded() {
-                    presentation.presentationElem = document.getElementById(presentationID);
-
-                    var counter = $("script[src^='http://b.scorecardresearch.com/']");
-                    if(counter) counter.remove();
-
-                    console.log('presentation init!');
-
-                    if( video.syncArr ){
-                        sync();
-                    }
-                }
-
-            }
-
-            function getSwfObj(swfObjPath) {
-                var script = document.createElement('script');
-                script.src = swfObjPath;
-                document.body.appendChild(script);
-                return script;
-            }
+            console.log('presentaion init!');
         },
 
         previousSlide: function() {
             this.isSync = false;
             video.videoElem.off("timeupdate");
-            this.presentationElem.previous();
+            this.presentationElem.carousel('prev');
         },
 
         nextSlide: function() {
             this.isSync = false;
             video.videoElem.off("timeupdate");
-            this.presentationElem.next();
+            this.presentationElem.carousel('next');
         },
 
         changeSync: function() {
             if(this.isSync) {
-                sync();
+                sync(this.presentationData.startSlide);
             } else {
                 video.videoElem.off("timeupdate");
             }
@@ -531,11 +499,28 @@ function LectureCtrl($scope, $routeParams, $http) {
         initQuiz: function() {
             this.quizList.forEach(function(item,i) {
                 video.videoElem.cue(item.time, function(){
-                    quiz.quizElem = quiz.quizList[i];
+                    var randQuestion = Math.floor(Math.random()*quiz.quizList[i].questionList.length);
+
+                    quiz.quizElem = quiz.quizList[i].questionList[randQuestion];
                     quiz.showQuiz();
                     $scope.$digest();
                 });
+
             });
+
+            video.videoElem.on('durationchange', function() {
+                var duration = video.videoElem.duration(),
+                    $playerSeek = $('.acorn-seek-slider');
+
+                quiz.quizList.forEach(function(item) {
+                    var $mark = $('<div class="quiz-mark"/>');
+                    $mark.css({
+                        left: item.time/duration*100 + '%'
+                    });
+                    $playerSeek.append($mark);
+                });
+            });
+
         },
 
         showQuiz: function() {
@@ -634,14 +619,14 @@ function LectureCtrl($scope, $routeParams, $http) {
         $scope.content = data;
 
         video.videoPath = data.videoPath;
-        presentation.presentationPath = data.presentationPath;
-        video.syncArr = data.syncArr;
+        presentation.presentationData = data.presentation;
+        presentation.syncArr = presentation.presentationData.syncArr;
         quiz.quizList = data.quizList;
 
         if(video.videoPath) {
             video.videoInit('video');
         }
-        if(presentation.presentationPath) {
+        if(presentation.presentationData) {
             presentation.presentationInit('presentation')
         }
         if(quiz.quizList) {
@@ -649,35 +634,29 @@ function LectureCtrl($scope, $routeParams, $http) {
         }
     });
 
-    function sync() {
-        var arrDisabled = false,
-            syncArr = video.syncArr,
+    function sync(startSlide) {
+        var syncArr = presentation.syncArr,
             syncArrLength = syncArr.length,
             videoElem = video.videoElem,
-            presentationElem = presentation.presentationElem;
+            presentationElem = presentation.presentationElem,
+            start = startSlide || 0;
 
-        videoElem.on( "timeupdate", function() {
+        videoElem.on("timeupdate", function() {
             var time = videoElem.roundTime(),
                 closestIndex;
 
-            for(var i=0; i<syncArrLength; i++) {
-                if(syncArr[i] >= time) {
-                    closestIndex = i+1;
+            for(var i = start; i<syncArrLength; i++) {
+                if(syncArr[i+""] >= time) {
+                    closestIndex = i;
                     break;
                 }
             }
 
-            if(!closestIndex) closestIndex = syncArrLength;
+            if(closestIndex == undefined) closestIndex = syncArrLength;
 
-            if(presentationElem.jumpTo) {
-                if(!arrDisabled) {
-                    presentationElem.next();
-                    arrDisabled = true;
-                }
-                if( presentationElem.getCurrentSlide() != closestIndex ){
-                    presentationElem.jumpTo(closestIndex);
-                }
-            }
+            presentationElem.carousel(closestIndex);
+            presentationElem.carousel('pause');
+            console.log('slide', closestIndex);
         });
     }
 

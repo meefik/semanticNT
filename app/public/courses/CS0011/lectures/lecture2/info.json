@@ -1,0 +1,39 @@
+{
+    "name": "Часть 2. Виды токов в электрической цепи.",
+    "description": "Описание лекции 2 (без полного текста)",
+    "lectureId": "lecture1",
+    "videoPath": ["video2.mp4"],
+    "presentation": {
+        "slidesPath": ["presentationSlides/Слайд1.png",
+            "presentationSlides/Слайд2.png",
+            "presentationSlides/Слайд3.png",
+            "presentationSlides/Слайд5.png",
+            "presentationSlides/Слайд6.png",
+            "presentationSlides/Слайд8.png",
+            "presentationSlides/Слайд10.png",
+            "presentationSlides/Слайд9.png",
+            "presentationSlides/Слайд12.png",
+            "presentationSlides/Слайд13.png",
+            "presentationSlides/Слайд14.png",
+            "presentationSlides/Слайд15.png"],
+        "syncArr": [0,0,0,133],
+        "startSlide": 3
+    },
+    "quizList" : [
+        {
+            "questionList": [
+                {
+                    "question" : "Укажите физический закон, соответствующий балансу мощностей в электрической цепи.",
+                    "variants" : [
+                        "Закон сохранения энергии ",
+                        "Закон полного тока",
+                        "Закон электромагнитной индукции",
+                        "Закон сохранения импульса"
+                    ],
+                    "rightOption" : 1
+                }
+            ],
+            "time" : 624
+        }
+    ]
+}

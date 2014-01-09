@@ -9,19 +9,22 @@
   -ms-transition: width 0.2s;
   -o-transition: width 0.2s;
   transition: width 0.2s;
+  height: auto;
+  overflow-x: hidden;
 }
 .left-block .toggle-menu {
   display: none;
 }
 .left-block .chapters-list {
   padding: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  height: 100%;
+  overflow-y: auto;
 }
 .left-block .chapters-list > li {
-  line-height: 28px;
+  line-height: 22px;
   padding-left: 12px;
   padding-right: 12px;
+  margin-bottom: 5px;
 }
 .left-block .chapters-list > li.active {
   background: #dddddd;
@@ -31,9 +34,11 @@
   padding-left: 12px;
   padding-right: 12px;
   margin: 0;
+  margin-bottom: 10px;
 }
 .left-block.lecture-menu {
   position: absolute;
+  left: 0;
   height: 100%;
   padding-right: 25px;
   z-index: 2;
@@ -43,14 +48,14 @@
 }
 .right-block.span9 {
   margin-left: 0;
-  padding-left: 25px;
-  width: 76.858974%;
+  width: 75.858974%;
   float: right !important;
   -webkit-transition: width 0.2s;
   -moz-transition: width 0.2s;
   -ms-transition: width 0.2s;
   -o-transition: width 0.2s;
   transition: width 0.2s;
+  padding-left: 10px;
 }
 .right-block.span9 .presentation-wrap object {
   width: 100%;
@@ -73,28 +78,40 @@
 .video-wrap .acorn-player.darkglass .acorn-fullscreen-button {
   display: none;
 }
+.video-wrap .quiz-mark {
+  position: absolute;
+  width: 4px;
+  background: #fde910;
+  height: 100%;
+  margin-left: -2px;
+}
 .video-wrap .toggle-video {
   display: none;
 }
 .presentation-wrap {
   position: absolute;
   width: 30%;
-  height: 40%;
   right: 0;
-  bottom: 67px;
+  bottom: 30px;
 }
-.presentation-wrap:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.presentation-wrap .presentation {
+  margin: 0;
+  padding: 0;
+}
+.presentation-wrap .presentation > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.presentation-wrap .presentation > ul > li {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
 }
 .presentation-wrap .presentation-nav {
   text-align: center;
   background: #f5f5f5;
-  margin-top: -11%;
   position: relative;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
@@ -117,9 +134,9 @@
 }
 .quiz-wrap {
   position: absolute;
-  top: 35%;
+  top: 10%;
   left: -240px;
-  width: 200px;
+  width: 460px;
   opacity: 0;
   z-index: 1;
   -webkit-transition: left 0.2s, margin-left 0.3s ease-in, opacity 0.2s;
@@ -134,7 +151,7 @@
 .quiz-show {
   opacity: 1;
   left: 50%;
-  margin-left: -100px;
+  margin-left: -230px;
 }
 .toggle-menu {
   position: absolute;
@@ -217,26 +234,25 @@
   background-position: -264px -96px;
 }
 .hide-menu .right-block {
-  width: 100%;
-  padding-left: 25px;
+  width: 98%;
+  padding-left: 10px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 .hide-menu .presentation-wrap {
-  bottom: 61px;
+  bottom: 30px;
 }
 .hide-menu .reverse-view .presentation-wrap {
   position: static;
   width: auto;
-  height: 585px;
 }
 .presentation-wrap.hide-presentation {
   height: 0;
   bottom: 51px;
 }
-.presentation-wrap.hide-presentation object {
-  height: 0 !important;
+.presentation-wrap.hide-presentation .presentation ul {
+  height: 0;
 }
 .presentation-wrap.hide-presentation .presentation-nav {
   display: none;
@@ -264,10 +280,8 @@
   position: absolute;
   z-index: 1;
   width: 30%;
-  /*height: 40%;*/
-
   right: 0;
-  bottom: 41px;
+  bottom: 35px;
 }
 .reverse-view .presentation-wrap {
   -webkit-transition: none;
@@ -288,11 +302,6 @@
 .reverse-view .presentation-wrap {
   position: static;
   width: auto;
-  height: 455px;
-}
-.reverse-view .presentation-wrap .presentation-nav {
-  height: 30px;
-  margin-top: -46px;
 }
 .reverse-view .acorn-player.darkglass {
   padding-bottom: 3px;
@@ -316,8 +325,6 @@
   width: 11%;
 }
 .full-screen {
-  width: 100%;
-  height: 100%;
   margin: 0;
   background: #000000;
 }
@@ -367,7 +374,7 @@
     position: absolute;
   }
   .parts-container .right-block {
-    width: 100%;
+    width: 98%;
   }
 }
 @media (max-width: 767px) {
@@ -377,21 +384,7 @@
   .hide-menu .left-block {
     width: 0;
   }
-  .right-block {
+  .right-block.span9 {
     padding-left: 25px;
-  }
-  .reverse-view .presentation-wrap {
-    height: 440px;
-  }
-  .hide-menu .reverse-view .presentation-wrap {
-    height: 440px;
-  }
-}
-@media (max-width: 480px) {
-  .reverse-view .presentation-wrap {
-    height: 270px;
-  }
-  .hide-menu .reverse-view .presentation-wrap {
-    height: 270px;
   }
 }

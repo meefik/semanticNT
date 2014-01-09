@@ -1,0 +1,39 @@
+{
+    "name": "Часть 1. Схемы электрической цепи.",
+    "description": "Описание лекции 1 (без полного текста)",
+    "lectureId": "lecture1",
+    "videoPath": ["video1.mp4"],
+    "presentation": {
+        "slidesPath": ["presentationSlides/Слайд1.png",
+            "presentationSlides/Слайд2.png",
+            "presentationSlides/Слайд3.png",
+            "presentationSlides/Слайд5.png",
+            "presentationSlides/Слайд6.png",
+            "presentationSlides/Слайд8.png",
+            "presentationSlides/Слайд10.png",
+            "presentationSlides/Слайд9.png",
+            "presentationSlides/Слайд12.png",
+            "presentationSlides/Слайд13.png",
+            "presentationSlides/Слайд14.png",
+            "presentationSlides/Слайд15.png"],
+        "syncArr" : [10,458],
+        "startSlide": 0
+    },
+    "quizList" : [
+        {
+            "questionList": [
+                {
+                    "question" : "Какой вид схемы электрической цепи соответствует изображению электромагнитных процессов?",
+                    "variants" : [
+                        "Схема замещения",
+                        "Принципиальная схема",
+                        "Монтажная схема",
+                        "Схема соединений"
+                    ],
+                    "rightOption" : 1
+                }
+            ],
+            "time" : 566
+        }
+    ]
+}
