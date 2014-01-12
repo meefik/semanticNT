@@ -1,0 +1,19 @@
+<style type="text/css">
+    .like {
+        opacity: 0.6;
+        cursor: pointer;
+        border: 1px lightgray dotted;
+        padding: 4px;
+    }
+    .like:hover {
+        opacity: 0.9;
+    }
+    .like .counter {
+        color: black;
+    }
+    .likeup {
+        opacity: 0.7;
+        color: green;
+     }
+</style>
+<span id="{{item._id}}" class="like" ng-click="setLike(item._id)" ng-init="isLiked(item._id)">Мне нравится <i class="icon-heart"></i> <span class="counter"></span></span>

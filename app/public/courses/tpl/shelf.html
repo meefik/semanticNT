@@ -79,6 +79,7 @@
             <div style="font-size: small; text-align: right">
                 <span class="date">{{item.author}}</span>,
                 <span class="date">{{item.date | dateToText}}</span>
+                <span ng-include="'courses/tpl/likes.html'"></span>
             </div>
         </div>
         <div ng-show="isEditor($index)" class="box">

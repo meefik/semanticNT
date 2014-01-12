@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
+function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile, Rating) {
 
     $rootScope.getProfile = function (userid) {
         if (userid) {
@@ -91,6 +91,33 @@ function AppCtrl($rootScope, $scope, $location, $http, $cookieStore, Profile) {
         else
             return false;
     };
+    
+    $scope.setLike = function (likeid) {
+        var liked = $('#'+likeid).attr('class');
+        $('#'+likeid).toggleClass('likeup');
+        var count = $('#' + likeid).find('.counter').html();
+        if (liked.indexOf('likeup') > -1) {
+            (new Rating({likeid: likeid})).$unlike();
+            count--;
+        } else {
+            (new Rating({likeid: likeid})).$like();
+            count++;
+        }
+        if (count < 1) count = '';
+        $('#' + likeid).find('.counter').html(count);
+    };
+
+    $scope.isLiked = function(likeid) {
+        var data = Rating.get({likeId: likeid}, function() {
+            if (data.liked) {
+                $('#' + likeid).toggleClass('likeup');
+            }
+            if (data.count > 0) {
+                $('#' + likeid).find('.counter').html(data.count);
+            }
+        });
+    };
+    
 }
 
 function LoginFormCtrl($rootScope, $scope, $http) {
@@ -241,8 +268,10 @@ function MyCoursesCtrl($rootScope, $scope, Courses, Profile) {
     };
 }
 
-function ProfileCtrl() {
-
+function ProfileCtrl($rootScope, Rating) {
+    var data = Rating.get({userid: $rootScope.profile.login}, function() {
+        $rootScope.profile.rating = data.rating;
+    });
 }
 
 function InfoCtrl($rootScope, $scope, $routeParams, Courses, Profile) {
