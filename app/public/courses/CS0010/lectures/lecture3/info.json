@@ -1,0 +1,7 @@
+{
+    "name": "Лекция 3",
+    "description": "Описание лекции 3 (без полного текста)",
+    "lectureId": "lecture3",
+    "videoPath": ["http://learn.javascript.ru/files/nodejs-mp4/intro-3-install.mp4"],
+    "textId": "text1"
+}

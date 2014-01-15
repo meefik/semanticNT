@@ -1,0 +1,29 @@
+{
+    "content": [
+        {
+            "name": "Блок лекций 1",
+            "chapters": [
+                {
+                    "name": "Лекция 1",
+                    "description": "Описание лекции 1 (без полного текста)",
+                    "lectureId": "lecture1"
+                }
+            ]
+        },
+        {
+            "name": "Блок лекций 2",
+            "chapters": [
+                {
+                    "name": "Лекция 2.1",
+                    "description": "Описание лекции 1.",
+                    "lectureId": "lecture2"
+                },
+                {
+                    "name": "Лекция 2.2",
+                    "description": "Описание лекции 2.",
+                    "lectureId": "lecture3"
+                }
+            ]
+        }
+    ]
+}

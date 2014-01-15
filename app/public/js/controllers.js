@@ -278,7 +278,6 @@ function InfoCtrl($rootScope, $scope, $routeParams, Courses, Profile) {
     $scope.course = Courses.get({courseId: $routeParams.courseId}, function () {
         //$scope.course.id = $routeParams.courseId;
     });
-
     //$scope.mycourses = MyCourses.query();
 
     $scope.getContent = function () {
@@ -406,11 +405,18 @@ function NewsCtrl($scope, $routeParams, Courses) {
     };
 }
 
-function LecturesCtrl($scope, $routeParams, $http) {
+function LecturesCtrl($scope, $routeParams, $http, $cookies) {
     $scope.template = 'courses/tpl/lectures.html';
 
     var courseId = $routeParams.courseId;
     $scope.courseId = courseId;
+    var lectureId = $routeParams.lectureId;
+    $scope.lectureId = lectureId;
+
+//  save last viewed lecture in cookies:
+    lectureId ? $cookies['lastLecture' + courseId] = lectureId : '';
+    var lastLectureId = $cookies['lastLecture' + courseId];
+    $scope.lastLectureId = lastLectureId;
 
     $http(
         {
@@ -418,10 +424,275 @@ function LecturesCtrl($scope, $routeParams, $http) {
             "url" : "courses/" + courseId + "/json/lectures.json"
         }
     ).success(function(data, status){
-            $scope.content = data.content;
-        });
+        $scope.content = data.content;
+        if(lastLectureId) {
+            $scope.lastLectureName = getLastLectureName(data.content);
+        }
+    });
+
+    $scope.addStyles = function(files) {
+        var head = document.documentElement.childNodes[0],
+            subPath = './css/',
+            missStyles = checkStyles(files);
+
+        if(!missStyles) return;
+
+        for(var i=0; i<missStyles.length; i++){
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = subPath + missStyles[i];
+            head.appendChild(link);
+        }
+
+        function checkStyles(files) {
+            var missStyles = [],
+                linkElem;
+
+            for(var i=0; i<files.length; i++){
+                linkElem = head.querySelector('[href="'+subPath+files[i]+'"]');
+                if(linkElem !== null) continue;
+
+                missStyles.push(files[i]);
+            }
+
+            return missStyles;
+        }
+    };
+
+    function getLastLectureName(content){
+        for(var i=0; i < content.length; i++){
+            for(var j=0; j < content[i].chapters.length; j++){
+                if(content[i].chapters[j].lectureId != lastLectureId) continue;
+                return content[i].chapters[j].name;
+            }
+        }
+    }
+
 
     //$scope.content = [{"id" : 1}, {"id": 2}];
+}
+
+function LectureCtrl($scope, $routeParams, $http) {
+
+    $scope.lectureId = $routeParams.lectureId;
+    if(!$scope.lectureId) return;
+
+    var video = {
+        videoInit: function(videoID) {
+            this.videoElem = Popcorn('#'+videoID);
+
+            console.log('video init!');
+        },
+        initCustomControl: function(videoID) {
+            console.log('custom controls init!', video.videoElem);
+            $('#'+videoID).acornMediaPlayer({
+                theme:'darkglass',
+                volumeSlider: 'vertical',
+                tooltipsOn: false
+            });
+        }
+    };
+
+    var presentation = {
+        presentationInit: function(presentationID) {
+            this.presentationElem = $('#'+presentationID).carousel();
+            this.presentationElem.carousel('pause');
+            if(this.syncArr) {
+                sync(this.presentationData.startSlide);
+            }
+            console.log('presentaion init!');
+        },
+
+        previousSlide: function() {
+            this.isSync = false;
+            video.videoElem.off("timeupdate");
+            this.presentationElem.carousel('prev');
+        },
+
+        nextSlide: function() {
+            this.isSync = false;
+            video.videoElem.off("timeupdate");
+            this.presentationElem.carousel('next');
+        },
+
+        changeSync: function() {
+            if(this.isSync) {
+                sync(this.presentationData.startSlide);
+            } else {
+                video.videoElem.off("timeupdate");
+            }
+        }
+    };
+
+    var quiz = {
+        initQuiz: function() {
+            this.quizList.forEach(function(item,i) {
+                video.videoElem.cue(item.time, function(){
+                    var randQuestion = Math.floor(Math.random()*quiz.quizList[i].questionList.length);
+
+                    quiz.quizElem = quiz.quizList[i].questionList[randQuestion];
+                    quiz.showQuiz();
+                    $scope.$digest();
+                });
+
+            });
+
+            video.videoElem.on('durationchange', function() {
+                var duration = video.videoElem.duration(),
+                    $playerSeek = $('.acorn-seek-slider');
+
+                quiz.quizList.forEach(function(item) {
+                    var $mark = $('<div class="quiz-mark"/>');
+                    $mark.css({
+                        left: item.time/duration*100 + '%'
+                    });
+                    $playerSeek.append($mark);
+                });
+            });
+
+        },
+
+        showQuiz: function() {
+//          uncommented for hide success quiz:
+//            if(this.quizElem.verificationResult == 'success') return;
+            this.quizElem.isShown = true;
+            video.videoElem.pause();
+        },
+
+        hideQuiz: function() {
+            this.quizElem.isShown = false;
+            this.quizElem.verificationResult = false;
+            this.quizElem.selectedOption = null;
+            video.videoElem.play();
+        },
+
+        saveQuizContinue: function() {
+            this.quizElem.isShown = false;
+            video.videoElem.play();
+        },
+
+        checkQuiz: function() {
+            if(this.quizElem.selectedOption == this.quizElem.rightOption) {
+                this.quizElem.verificationResult = 'success';
+            } else {
+                this.quizElem.verificationResult = 'error'
+            }
+        }
+    };
+
+    var fullScreen = {
+        init: function() {
+            var self = this;
+
+            this.elem = document.getElementsByClassName('media-wrap')[0];
+            this.isFullScreen = false;
+
+            subscribeToFullScreenChange(changeIsFullScreen);
+
+            function changeIsFullScreen() {
+                if(!normalizeFullScreenState()) {
+                    self.isFullScreen = false;
+                    $scope.$digest();
+                }
+            }
+
+            function subscribeToFullScreenChange(handler){
+                document.addEventListener("fullscreenchange",handler, false);
+                document.addEventListener("mozfullscreenchange", handler, false);
+                document.addEventListener("webkitfullscreenchange", handler, false);
+            }
+
+            function normalizeFullScreenState() {
+                if (undefined != document.mozFullScreen) {
+                    document.fullscreen = document.mozFullScreen;
+                } else if (undefined != document.webkitIsFullScreen) {
+                    document.fullscreen = document.webkitIsFullScreen;
+                }
+                return (document.fullscreen);
+            }
+
+            return this;
+        },
+
+        expandFullScreen: function(element) {
+            if (element.requestFullScreen) {
+                element.requestFullScreen();
+            } else if (element.webkitRequestFullScreen) {
+                element.webkitRequestFullScreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            }
+        },
+
+        cancelFullScreen: function() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitCancelFullScreen) {
+                document.webkitCancelFullScreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            }
+        },
+
+        changeFullScreenView: function(){
+            this.isFullScreen ? this.expandFullScreen(this.elem) : this.cancelFullScreen();
+        }
+    }.init();
+
+    $http(
+        {
+            "method": "GET",
+            "url" : "courses/" + $scope.courseId + "/lectures/" + $scope.lectureId + "/info.json"
+        }
+    ).success(function(data, status){
+        $scope.content = data;
+
+        video.videoPath = data.videoPath;
+        presentation.presentationData = data.presentation;
+        presentation.syncArr = presentation.presentationData.syncArr;
+        quiz.quizList = data.quizList;
+
+        if(video.videoPath) {
+            video.videoInit('video');
+        }
+        if(presentation.presentationData) {
+            presentation.presentationInit('presentation')
+        }
+        if(quiz.quizList) {
+            quiz.initQuiz();
+        }
+    });
+
+    function sync(startSlide) {
+        var syncArr = presentation.syncArr,
+            syncArrLength = syncArr.length,
+            videoElem = video.videoElem,
+            presentationElem = presentation.presentationElem,
+            start = startSlide || 0;
+
+        videoElem.on("timeupdate", function() {
+            var time = videoElem.roundTime(),
+                closestIndex;
+
+            for(var i = start; i<syncArrLength; i++) {
+                if(syncArr[i+""] >= time) {
+                    closestIndex = i;
+                    break;
+                }
+            }
+
+            if(closestIndex == undefined) closestIndex = syncArrLength;
+
+            presentationElem.carousel(closestIndex);
+            presentationElem.carousel('pause');
+            console.log('slide', closestIndex);
+        });
+    }
+
+    $scope.video = video;
+    $scope.presentation = presentation;
+    $scope.quiz = quiz;
+    $scope.fullScreen = fullScreen;
 }
 
 function WorkCtrl($scope) {

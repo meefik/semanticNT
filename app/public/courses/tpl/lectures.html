@@ -1,20 +1,173 @@
+<script src="../../js/lib/player/jquery.acornmediaplayer.js"></script>
+<!-- add styles for template, use a custom function, but it is better to use require.js -->
+{{ addStyles(['lecture.css','acornmediaplayer.base.css','darkglass/acorn.darkglass.css']) }}
 <!-- Template block -->
-<div ng-repeat="block in content">
-    <h3>&#187; {{block.name}}</h3>
-    <table class="table">
-        <tr ng-repeat="chapter in block.chapters">
-            <td>
-                <p><i class="icon-film"></i> <a href="#/courses/{{courseId}}/video/{{chapter.videoId}}" ><b>{{chapter.name}}</b></a></p>
-                <p ng-show="chapter.description">{{chapter.description}}</p>
-            </td>
-            <td>
-                <p ng-show="chapter.text" class="text-right">
-                    <a href="/courses/{{courseId}}/video/{{chapter.textSrc}}" target="_blank"><i class="icon-print"></i> Полный текст</a>
+<div class="row-fluid parts-container" ng-class="{'hide-menu': toggleMenu}">
+
+    <div class="left-block well span3" ng-class="{'lecture-menu':lectureId}">
+        <label class="toggle-menu">
+            <i class="icon-arrow-left">
+                <input hidden ng-checked="false" ng-model="toggleMenu" type="checkbox">
+            </i>
+        </label>
+        <ul class="nav nav-list chapters-list" ng-repeat="block in content">
+            <li class="nav-header" ng-bind="block.name"></li>
+            <li ng-repeat="chapter in block.chapters" ng-class="{active: chapter.lectureId==lectureId}">
+                <p>
+                    <i class="icon-film"></i>
+                    <a href="#/courses/{{courseId}}/lectures/{{chapter.lectureId}}" title="{{ chapter.name }}">
+                        <b ng-bind="chapter.name"></b>
+                    </a>
                 </p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2"></td>
-        </tr>
-    </table>
+            </li>
+            <li class="divider"></li>
+        </ul>
+    </div>
+    <div class="right-block span9" ng-controller="LectureCtrl">
+        <div ng-hide="lectureId">
+            <p ng-hide="lastLectureId">
+                Добро пожаловать в курс {{ course.name }}!
+                Выберите интересующую Вас лекцию в меню слева. Хорошего просмотра!
+            </p>
+            <p ng-show="lastLectureId">
+                Привет вновь! В последний раз Вы смотрели <a href="#/courses/{{courseId}}/lectures/{{lastLectureId}}"> {{ lastLectureName }}</a>.
+            </p>
+        </div>
+        <h3 ng-show="content.description" ng-bind="content.name"></h3>
+        <p class="description" ng-show="content.description" ng-bind="content.description"></p>
+
+        <div class="media-wrap"
+             ng-class="{'reverse-view': viewMod == 'presentationMod',
+                        'full-screen': fullScreen.isFullScreen,
+                        'only-video': !presentation.presentationData}"
+             ng-show="lectureId">
+
+            <div class="toggle-view">
+                <div class="btn-group" ng-show="presentation.presentationData">
+                    <label class="primary-video btn" ng-class="{'disabled': viewMod=='videoMod'}">
+                        <input type="radio"
+                               hidden
+                               ng-model="viewMod"
+                               value="videoMod"
+                               ng-init="viewMod = 'videoMod'"/>
+                        <i class="icon-facetime-video">
+                        </i>
+                    </label>
+                    <label class="primary-presentation btn" ng-class="{'disabled': viewMod=='presentationMod'}">
+                        <input type="radio"
+                               hidden
+                               ng-model="viewMod"
+                               value="presentationMod"/>
+                        <i class="icon-picture">
+                        </i>
+                    </label>
+                </div>
+                <label class="fullscreen-btn btn">
+                    <input type="checkbox"
+                           hidden
+                           ng-model="fullScreen.isFullScreen"
+                           ng-change="fullScreen.changeFullScreenView()"
+                           ng-checked="fullScreen.isFullScreen"
+                           value="fullScreen.isFullScreen"/>
+                    <i class="icon-fullscreen">
+                    </i>
+                </label>
+            </div>
+
+            <div class="video-wrap"
+                 ng-show="video.videoPath"
+                 ng-class="{'hide-video':toggleVideo && viewMod == 'presentationMod'}">
+
+                <label class="toggle-video">
+                    <i class="icon-minus" ng-class="{'icon-plus': toggleVideo}">
+                        <input hidden ng-model="toggleVideo" type="checkbox"/>
+                    </i>
+                </label>
+                <video id="video" controls autoplay>
+                    <source ng-repeat="path in video.videoPath" ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ path }}">
+                </video>
+                <script>
+                    $('video').acornMediaPlayer({
+                        theme:'darkglass',
+                        volumeSlider: 'vertical',
+                        tooltipsOn: false
+                    });
+                </script>
+            </div>
+
+            <div class="presentation-wrap"
+                 ng-show="presentation.presentationData"
+                 ng-class="{'hide-presentation': togglePresentation && viewMod != 'presentationMod'}">
+
+                <label class="toggle-presentation">
+                    <i class="icon-minus" ng-class="{'icon-plus': togglePresentation}">
+                        <input hidden ng-model="togglePresentation" type="checkbox"/>
+                    </i>
+                </label>
+                <div id="presentation" class="presentation carousel">
+                    <ul class="carousel-inner">
+                        <li ng-repeat="slide in presentation.presentationData.slidesPath" class="item" ng-class="{'active': $first}">
+                            <img ng-src="/courses/{{courseId}}/lectures/{{lectureId}}/{{ slide }}"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="presentation-nav">
+                    <label class="auto">
+                        <input ng-change="presentation.changeSync()"
+                               ng-init="presentation.isSync = true"
+                               ng-model="presentation.isSync"
+                               ng-checked="presentation.isSync"
+                               type="checkbox"/> auto
+                    </label>
+                    <div class="buttons">
+                        <button class="btn" ng-click="presentation.previousSlide()">
+                            <i class="icon-chevron-left"></i>
+                        </button>
+                        <button class="btn" ng-click="presentation.nextSlide()">
+                            <i class="icon-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="quiz-wrap well" ng-class="{'quiz-show':quiz.quizElem.isShown}">
+                <form ng-submit="quiz.quizElem.selectedOption && quiz.checkQuiz()">
+                    <p class="quiz-question" ng-bind="quiz.quizElem.question"></p>
+
+                    <label ng-repeat="var in quiz.quizElem.variants">
+                        <input type="radio"
+                               ng-model="quiz.quizElem.selectedOption"
+                               value="{{ $index+1 }}"/>
+                        {{ var }}
+                    </label>
+
+                    <input class="btn btn-mini btn-primary"
+                           ng-show="quiz.quizElem.verificationResult!='success'"
+                           ng-class="{'disabled' : !quiz.quizElem.selectedOption}"
+                           type="submit" value="Отправить"/>
+
+                    <input class="btn btn-mini btn-success"
+                           ng-show="quiz.quizElem.verificationResult=='success'"
+                           ng-click="quiz.saveQuizContinue()"
+                           type="button" value="Продолжить"/>
+
+                    <input class="btn btn-mini"
+                           type="button"
+                           ng-click="quiz.hideQuiz()"
+                           value="{{quiz.quizElem.verificationResult!='success' && 'Пропустить' || 'Сбросить'}}">
+                </form>
+                <div ng-show="quiz.quizElem.verificationResult" class="alert alert-{{ quiz.quizElem.verificationResult }}">
+                    <span ng-show="quiz.quizElem.verificationResult == 'error'">
+                        Ответ неверный. Попробуйте еще раз.
+                    </span>
+                    <span ng-show="quiz.quizElem.verificationResult == 'success'">
+                        Верно!
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
