@@ -109,7 +109,8 @@
     <div ng-repeat="course in catalog | orderBy:'begin'" style="clear: both; margin-bottom: 20px">
         <a class="thumbnail" href="#video" ng-click="catalog.name=course.name; catalog.video=course.video" data-toggle="modal" style="text-decoration: none; color: #333; border-radius: 25px; min-height: 160px; padding: 15px; border-color: #04357a">
             <div>
-                <img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">
+                <!--<img ng-src="courses/{{course.id}}/img/logo.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">-->
+                <img ng-src="img/demo-course-{{course.id}}.png" style="border-radius: 10px;float: left;margin: 0 20px 0px 0;">
 
                 <div style="white-space: nowrap; float: right; padding-top: 85px; text-align: right">
                     <p><span class="circle type1">{{course.beginDate | dateToText:'day'}}</span> <span style="font-weight: bold">{{course.beginDate | dateToText:'month'}} {{course.beginDate | dateToText:'year'}} г.</span></p>
