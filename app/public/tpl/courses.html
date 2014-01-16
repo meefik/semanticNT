@@ -18,6 +18,11 @@
         height: 110px;
         width: 210px;
     }
+    .course-block {
+        height: 150px;
+        margin-bottom: 1em;
+        overflow: hidden;
+    }
 </style>
 <div class="container">
     <h2 class="page-header">Каталог курсов</h2>
@@ -37,7 +42,7 @@
         </div>
     </div>
     <div class="right-block">
-        <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="thumbnail">
+        <div ng-repeat="course in catalog | filter:query | orderBy:orderProp" class="thumbnail course-block">
             <a href="#/courses/{{course.id}}">
                 <img ng-src="courses/{{course.id}}/img/logo.png" class="img-polaroid course-logo">
             </a>

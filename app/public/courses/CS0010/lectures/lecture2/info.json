@@ -1,9 +1,0 @@
-{
-    "name": "Лекция 2",
-    "description": "Описание лекции 2 (без полного текста)",
-    "lectureId": "lecture1",
-    "videoPath": ["http://learn.javascript.ru/files/nodejs-mp4/intro-2-whatisnode.mp4"],
-    "presentationPath": "nodejs-120828171101-phpapp01",
-    "syncArr": [5,15,25,35,45,55],
-    "textId": "text1"
-}
